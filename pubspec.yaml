@@ -21,6 +21,7 @@ dependencies:
   provider: ^6.0.2
   retrofit: ^3.0.1+1
   surf_logger: ^1.1.0
+  adaptive_navigation: ^0.0.7
 
 dev_dependencies:
   flutter_test:
