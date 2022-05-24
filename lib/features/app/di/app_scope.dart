@@ -1,15 +1,14 @@
-import 'dart:ui';
-
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/material.dart';
 import 'package:kartograph/config/app_config.dart';
 import 'package:kartograph/config/environment/environment.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_routes.dart';
 import 'package:kartograph/features/navigation/service/router.dart';
+import 'package:kartograph/features/navigation/widget/bottom_sheet.dart';
 import 'package:kartograph/util/default_error_handler.dart';
-
 
 /// Scope of dependencies which need through all app's life.
 class AppScope implements IAppScope {
@@ -42,7 +41,37 @@ class AppScope implements IAppScope {
     _router = AppRouter(
       delegate: AppRoutes(),
       initialLocation: AppRoutePaths.tempScreen,
+      navigatorBuilder:
+          (context, state, child) =>
+              Navigator(
+                // если убрать - ошибка
+                // ignore: avoid_annotating_with_dynamic
+        onPopPage: (route, dynamic result) {
+          route.didPop(result);
+          return false; // don't pop the single page on the root navigator
+        },
+        pages: [
+          MaterialPage<void>(
+            child: BottomNavigator(
+              selectedIndex: _pickBottom(state.subloc),
+              body: child,
+            ),
+          ),
+        ],
+      ),
     );
+  }
+
+  int _pickBottom(String stateSubloc) {
+    switch (stateSubloc) {
+      case AppRoutePaths.placesScreen:
+        return 0;
+      case AppRoutePaths.mapScreen:
+        return 1;
+      case AppRoutePaths.settingScreen:
+        return 2;
+    }
+    return 1;
   }
 
   Dio _initDio(Iterable<Interceptor> additionalInterceptors) {
@@ -97,3 +126,59 @@ abstract class IAppScope {
   /// Class that coordinates navigation for the whole app.
   AppRouter get router;
 }
+
+// class SharedScaffold extends StatefulWidget {
+//   const SharedScaffold({
+//     required this.selectedIndex,
+//     required this.body,
+//     Key? key,
+//   }) : super(key: key);
+//
+//   final int selectedIndex;
+//   final Widget body;
+//
+//   @override
+//   State<SharedScaffold> createState() => _SharedScaffoldState();
+// }
+//
+// class _SharedScaffoldState extends State<SharedScaffold> {
+//   @override
+//   Widget build(BuildContext context) => AdaptiveNavigationScaffold(
+//     selectedIndex: widget.selectedIndex,
+//     destinations: const [
+//       AdaptiveScaffoldDestination(title: 'Page 1', icon: Icons.first_page),
+//       AdaptiveScaffoldDestination(title: 'Page 2', icon: Icons.last_page),
+//       AdaptiveScaffoldDestination(title: 'About', icon: Icons.info),
+//     ],
+//     // appBar: AdaptiveAppBar(title: const Text("App.title")),
+//     navigationTypeResolver: (context) =>
+//     _drawerSize ? NavigationType.drawer : NavigationType.bottom,
+//     onDestinationSelected: (index) async {
+//       // if there's a drawer, close it
+//       if (_drawerSize) Navigator.pop(context);
+//
+//       switch (index) {
+//         case 0:
+//           context.go('/');
+//           break;
+//         case 1:
+//           context.go('/page2');
+//           break;
+//         // case 2:
+//         //   final packageInfo = await PackageInfo.fromPlatform();
+//         //   showAboutDialog(
+//         //     context: context,
+//         //     applicationName: packageInfo.appName,
+//         //     applicationVersion: 'v${packageInfo.version}',
+//         //     applicationLegalese: 'Copyright © 2022, Acme, Corp.',
+//         //   );
+//         //   break;
+//         default:
+//           throw Exception('Invalid index');
+//       }
+//     },
+//     body: widget.body,
+//   );
+//
+//   bool get _drawerSize => MediaQuery.of(context).size.width >= 600;
+// }
