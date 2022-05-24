@@ -35,11 +35,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/fonts/
-    - assets/icons/
-    - assets/images/
-fonts:
-  - family: Kartograph
-    fonts:
-      - asset: assets/fonts/Kartograph.ttf
+
+  fonts:
+    - family: Kartograph
+      fonts:
+        - asset: assets/fonts/Kartograph.ttf
