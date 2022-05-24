@@ -39,3 +39,7 @@ flutter:
     - assets/fonts/
     - assets/icons/
     - assets/images/
+fonts:
+  - family: Kartograph
+    fonts:
+      - asset: assets/fonts/Kartograph.ttf
