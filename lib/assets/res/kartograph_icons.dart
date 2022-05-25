@@ -16,11 +16,6 @@
 import 'package:flutter/widgets.dart';
 
 class Kartograph {
-  Kartograph._();
-
-  static const _kFontFam = 'Kartograph';
-  static const String? _kFontPkg = null;
-
   static const IconData cafe = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData hotel = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData museum = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
@@ -66,4 +61,9 @@ class Kartograph {
   static const IconData way_arrows_1 = IconData(0xe82a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData way_arrows_2 = IconData(0xe82b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData way_arrows = IconData(0xe82c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+
+  static const _kFontFam = 'Kartograph';
+  static const String? _kFontPkg = null;
+
+  Kartograph._();
 }
