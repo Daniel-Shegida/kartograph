@@ -1,60 +1,46 @@
-import 'package:adaptive_navigation/adaptive_navigation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:kartograph/assets/res/kartograph_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
-import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
+import 'package:routemaster/routemaster.dart';
 
-/// widget for bottom navigation
-class BottomNavigator extends StatefulWidget {
-  /// index of selected screen
-  final int selectedIndex;
-  /// selected screen
-  final Widget body;
-
-  /// constructor for bottom navigation
-  const BottomNavigator({
-    required this.selectedIndex,
-    required this.body,
-    Key? key,
-  }) : super(key: key);
+/// bottom that navigate main part of project
+class BottomNavigator extends StatelessWidget {
+  /// constructor of [BottomNavigator]
+  const BottomNavigator({Key? key}) : super(key: key);
 
   @override
-  State<BottomNavigator> createState() => _BottomNavigatorState();
-}
+  Widget build(BuildContext context) {
+    final tabPage = TabPage.of(context);
 
-class _BottomNavigatorState extends State<BottomNavigator> {
-  bool get _drawerSize => MediaQuery.of(context).size.width >= 600;
-
-  @override
-  Widget build(BuildContext context) => AdaptiveNavigationScaffold(
-        selectedIndex: widget.selectedIndex,
-        destinations: const [
-          AdaptiveScaffoldDestination(
-              title: ProjectStrings.placesBottom, icon: Kartograph.list_full,),
-          AdaptiveScaffoldDestination(
-              title: ProjectStrings.mapBottom, icon: Kartograph.map,),
-          AdaptiveScaffoldDestination(
-              title: ProjectStrings.settingBottom, icon: Kartograph.settings,),
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: tabPage.index,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.file_copy_outlined),
+            activeIcon: Icon(Icons.file_copy),
+            label: ProjectStrings.placesBottom,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.assignment_turned_in_outlined),
+            activeIcon: Icon(Icons.assignment_turned_in),
+            label: ProjectStrings.mapBottom,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_outlined),
+            activeIcon: Icon(Icons.account_circle),
+            label: ProjectStrings.settingBottom,
+          ),
         ],
-        navigationTypeResolver: (context) =>
-            _drawerSize ? NavigationType.drawer : NavigationType.bottom,
-        onDestinationSelected: (index) async {
-          if (_drawerSize) Navigator.pop(context);
-          switch (index) {
-            case 0:
-              context.go(AppRoutePaths.placesScreen);
-              break;
-            case 1:
-              context.go(AppRoutePaths.mapScreen);
-              break;
-            case 2:
-              context.go(AppRoutePaths.settingScreen);
-              break;
-            default:
-              throw Exception('Invalid index');
-          }
+        onTap: (index) {
+          tabPage.index = index;
         },
-        body: widget.body,
-      );
+      ),
+      body: TabBarView(
+        controller: tabPage.controller,
+        children: [
+          for (final stack in tabPage.stacks) PageStackNavigator(stack: stack),
+        ],
+      ),
+    );
+  }
 }
