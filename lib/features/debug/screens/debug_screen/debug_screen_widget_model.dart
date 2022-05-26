@@ -7,7 +7,6 @@ import 'package:kartograph/config/urls.dart';
 import 'package:kartograph/features/app/di/app_scope.dart';
 import 'package:kartograph/features/debug/screens/debug_screen/debug_screen.dart';
 import 'package:kartograph/features/debug/screens/debug_screen/debug_screen_model.dart';
-import 'package:kartograph/features/navigation/service/router.dart';
 import 'package:provider/provider.dart';
 
 
@@ -23,8 +22,7 @@ DebugScreenWidgetModel debugScreenWidgetModelFactory(
     Environment<AppConfig>.instance(),
     appDependencies.applicationRebuilder,
   );
-  final router = appDependencies.router;
-  return DebugScreenWidgetModel(model, router);
+  return DebugScreenWidgetModel(model);
 }
 
 /// Widget Model for DebugScreen.
@@ -32,9 +30,6 @@ class DebugScreenWidgetModel extends WidgetModel<DebugScreen, DebugScreenModel>
     implements IDebugScreenWidgetModel {
   /// Empty string.
   static const String _emptyString = '';
-
-  /// Class that coordinates navigation for the whole app.
-  final AppRouter router;
 
   final _textEditingController = TextEditingController();
   final _debugOptionsState = StateNotifier<DebugOptions>();
@@ -58,7 +53,6 @@ class DebugScreenWidgetModel extends WidgetModel<DebugScreen, DebugScreenModel>
   /// Create an instance [DebugScreenModel].
   DebugScreenWidgetModel(
     DebugScreenModel model,
-    this.router,
   ) : super(model);
 
   @override
@@ -73,10 +67,7 @@ class DebugScreenWidgetModel extends WidgetModel<DebugScreen, DebugScreenModel>
     super.dispose();
   }
 
-  @override
-  void closeScreen() {
-    router.pop();
-  }
+
 
   @override
   void urlChange(UrlType? urlType) => _urlState.accept(urlType);
@@ -142,6 +133,11 @@ class DebugScreenWidgetModel extends WidgetModel<DebugScreen, DebugScreenModel>
       proxyEditingController.text = _emptyString;
     }
     _debugOptionsState.accept(config.debugOptions);
+  }
+
+  @override
+  void closeScreen() {
+    // TODO: implement closeScreen
   }
 }
 
