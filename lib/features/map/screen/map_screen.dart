@@ -16,9 +16,6 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
   @override
   Widget build(IMapWidgetModel wm) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(''),
-      ),
       body: MapLayoutBuilder(
         controller: wm.controller,
         builder: (context, transformer) {
