@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -10,24 +12,57 @@ class BottomNavigator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabPage = TabPage.of(context);
+    final Widget svgIcon = SvgPicture.network(
+      'https://site-that-takes-a-while.com/image.svg',
+      semanticsLabel: 'A shark?!',
+      // placeholderBuilder: (BuildContext context) => Container(
+      //     padding: const EdgeInsets.all(30.0),
+      //     child: const CircularProgressIndicator()),
+    );
 
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: tabPage.index,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.file_copy_outlined),
-            activeIcon: Icon(Icons.file_copy),
+            icon: SvgPicture.asset(
+                "assets/icons/List.svg",
+                color: ProjectColors.mainLightTheme,
+            ),
+            // Icon(Icons.file_copy_outlined),
+            activeIcon: SvgPicture.asset(
+                "assets/icons/List Full.svg",
+                color: ProjectColors.mainLightTheme,
+            ),
+      // Icon(Icons.file_copy),
             label: ProjectStrings.placesBottom,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.assignment_turned_in_outlined),
-            activeIcon: Icon(Icons.assignment_turned_in),
+            icon: SvgPicture.asset(
+                "assets/icons/Map.svg",
+                color: ProjectColors.mainLightTheme,
+                semanticsLabel: 'A red up arrow'
+            ),
+            // Icon(Icons.assignment_turned_in_outlined),
+            activeIcon: SvgPicture.asset(
+                "assets/icons/Map Full.svg",
+                color: ProjectColors.mainLightTheme,
+            ),
+            // Icon(Icons.assignment_turned_in),
             label: ProjectStrings.mapBottom,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_outlined),
-            activeIcon: Icon(Icons.account_circle),
+            icon:
+            // svgIcon,
+            SvgPicture.asset(
+                  "assets/icons/Settings.svg",
+                  color: ProjectColors.mainLightTheme,
+              ),
+            // Icon(Icons.account_circle_outlined),
+            activeIcon: SvgPicture.asset(
+                "assets/icons/Settings-fill.svg",
+                color: ProjectColors.mainLightTheme,
+            ),
             label: ProjectStrings.settingBottom,
           ),
         ],
