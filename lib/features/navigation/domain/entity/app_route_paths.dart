@@ -6,9 +6,6 @@
 /// static const String screenPath = '/screenPath';
 /// ```
 abstract class AppRoutePaths {
-  /// Path to temp screen.
-  static const String tempScreen = '/tempScreen';
-
   /// Path to tabs.
   static const String tabs = '/tabs/';
 
