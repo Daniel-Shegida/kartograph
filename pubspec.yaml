@@ -16,12 +16,13 @@ dependencies:
   firebase_crashlytics: ^2.7.2
   flutter_localizations:
     sdk: flutter
-  go_router: ^3.1.0
   logger: ^1.1.0
   provider: ^6.0.2
   retrofit: ^3.0.1+1
   surf_logger: ^1.1.0
-  adaptive_navigation: ^0.0.7
+#  навигация
+  routemaster: ^1.0.0
+#  иконки
   flutter_svg: ^1.1.0
 
 dev_dependencies:
@@ -38,7 +39,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  fonts:
-    - family: Kartograph
-      fonts:
-        - asset: assets/fonts/Kartograph.ttf
+  assets:
+    - assets/icons/
+    - assets/images/

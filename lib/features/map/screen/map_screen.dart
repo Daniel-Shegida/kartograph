@@ -16,7 +16,9 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
       appBar: AppBar(
         title: const Text(""),
       ),
-      body: Center(),
+      body: Center(
+        child: Text("map"),
+      ),
     );
   }
 }
