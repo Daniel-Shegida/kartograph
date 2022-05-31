@@ -2,6 +2,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/features/map/screen/map_screen_wm.dart';
+import 'package:kartograph/features/map/widgets/marker.dart';
 import 'package:kartograph/util/map_widget.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
@@ -109,20 +110,7 @@ class _MarkersStackState extends State<MarkersStack> {
     Color color, [
     IconData icon = Icons.location_on,
   ]) {
-    return Positioned(
-      left: pos.dx - 24,
-      top: pos.dy - 24,
-      width: 48,
-      height: 48,
-      child: GestureDetector(
-        child: Icon(
-          icon,
-          color: color,
-          size: 48,
-        ),
-        onTap: () {},
-      ),
-    );
+    return Marker(leftPos: pos.dx, topPos: pos.dy, iconData: icon, color: color);
   }
 
   Widget _build(BuildContext context, BoxConstraints constraints) {
