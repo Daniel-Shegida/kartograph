@@ -1,22 +1,16 @@
-import 'dart:ui';
-
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/material.dart';
 import 'package:kartograph/config/app_config.dart';
 import 'package:kartograph/config/environment/environment.dart';
-import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
-import 'package:kartograph/features/navigation/domain/entity/app_routes.dart';
-import 'package:kartograph/features/navigation/service/router.dart';
 import 'package:kartograph/util/default_error_handler.dart';
-
 
 /// Scope of dependencies which need through all app's life.
 class AppScope implements IAppScope {
   late final Dio _dio;
   late final ErrorHandler _errorHandler;
   late final VoidCallback _applicationRebuilder;
-  late final AppRouter _router;
 
   @override
   Dio get dio => _dio;
@@ -27,9 +21,6 @@ class AppScope implements IAppScope {
   @override
   VoidCallback get applicationRebuilder => _applicationRebuilder;
 
-  @override
-  AppRouter get router => _router;
-
   /// Create an instance [AppScope].
   AppScope({
     required VoidCallback applicationRebuilder,
@@ -39,10 +30,6 @@ class AppScope implements IAppScope {
 
     _dio = _initDio(additionalInterceptors);
     _errorHandler = DefaultErrorHandler();
-    _router = AppRouter(
-      delegate: AppRoutes(),
-      initialLocation: AppRoutePaths.tempScreen,
-    );
   }
 
   Dio _initDio(Iterable<Interceptor> additionalInterceptors) {
@@ -94,6 +81,4 @@ abstract class IAppScope {
   /// Callback to rebuild the whole application.
   VoidCallback get applicationRebuilder;
 
-  /// Class that coordinates navigation for the whole app.
-  AppRouter get router;
 }
