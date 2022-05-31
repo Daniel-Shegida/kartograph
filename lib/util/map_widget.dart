@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:map/map.dart';
 
 /// виджет, отображающий карту на MapScreen
@@ -14,8 +15,9 @@ class MapWidget extends StatelessWidget {
     return Map(
       controller: mapController,
       builder: (context, x, y, z) {
-        final url =
-            'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/$z/$x/$y?access_token=pk.eyJ1IjoidGVzdGVyLWRvbm8iLCJhIjoiY2wzbG1idXVuMW9jZzNkcXdnNGZwN2NlOSJ9.LGGfGe5NuuAyD-FFepK47g';
+
+        final url = ProjectStrings.getUrl(x, y, z);
+
 
         return CachedNetworkImage(
           imageUrl: url,
