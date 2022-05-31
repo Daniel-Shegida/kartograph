@@ -82,12 +82,6 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   }
 }
 
-final markers = [
-  LatLng(35.674, 51.41),
-  LatLng(35.678, 51.41),
-  LatLng(35.682, 51.41),
-  LatLng(35.686, 51.41),
-];
 
 /// Interface of [MapWidgetModel].
 abstract class IMapWidgetModel extends IWidgetModel {

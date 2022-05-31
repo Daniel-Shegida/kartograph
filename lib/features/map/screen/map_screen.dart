@@ -1,8 +1,10 @@
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/features/map/screen/map_screen_wm.dart';
+import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 
 /// Main Screen
@@ -26,8 +28,9 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
             onScaleStart: wm.onScaleStart,
             onScaleUpdate: wm.onScaleUpdate,
             onTapUp: (details) {
-              // final location =
-              //     transformer.fromXYCoordsToLatLng(details.localPosition);
+              final location =
+                  transformer.fromXYCoordsToLatLng(details.localPosition);
+              wm.markers.add(location);
             },
             child: Listener(
               behavior: HitTestBehavior.opaque,
@@ -52,7 +55,7 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                     },
                   ),
                   MarkersStack(
-                      controller: wm.controller, transformer: transformer,),
+                      controller: wm.controller, transformer: transformer, markers: wm.markers,),
                 ],
               ),
             ),
@@ -71,10 +74,14 @@ class MarkersStack extends StatefulWidget {
   /// Map transformer
   final MapTransformer transformer;
 
+  /// маркеры на карие
+  final List<LatLng> markers;
+
   /// MarkersStack constructor.
   const MarkersStack({
     required this.controller,
     required this.transformer,
+    required this.markers,
     Key? key,
   }) : super(key: key);
 
@@ -126,7 +133,7 @@ class _MarkersStackState extends State<MarkersStack> {
     final children = <Widget>[];
 
     final markerPositions =
-        markers.map(widget.transformer.fromLatLngToXYCoords);
+        widget.markers.map(widget.transformer.fromLatLngToXYCoords);
 
     final markerWidgets = markerPositions.map(
       (pos) {
