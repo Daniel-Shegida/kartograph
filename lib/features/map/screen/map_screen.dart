@@ -2,6 +2,9 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kartograph/assets/colors/colors.dart';
+import 'package:kartograph/assets/res/project_icons.dart';
+import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/map/screen/map_screen_wm.dart';
 import 'package:kartograph/util/map_widget.dart';
 import 'package:latlng/latlng.dart';
@@ -50,23 +53,91 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                     transformer: transformer,
                     markers: wm.markers,
                   ),
-                  Row(
-                    children: [
-                      OutlinedButton(
-                        onPressed: () {},
-                        child: Container(),
-                        style: OutlinedButton.styleFrom(
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: const [
+                            _RoundMapButton(svgPath: ProjectIcons.refresh,),
+                            _AddPlaceButton(),
+                            _RoundMapButton(svgPath: ProjectIcons.geo,),
+                          ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _AddPlaceButton extends StatelessWidget {
+  const _AddPlaceButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 200,
+      height: 48,
+      decoration: const ShapeDecoration(
+        shape: StadiumBorder(),
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [Colors.yellow, Colors.green],
+        ),
+      ),
+      child: MaterialButton(
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        shape: const StadiumBorder(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SvgPicture.asset(
+              ProjectIcons.plus,
+              color: ProjectColors.white,
+            ),
+            const Text(
+              ProjectStrings.addPlace,
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ],
+        ),
+        onPressed: () {
+        },
+      ),
+    );
+  }
+}
+
+class _RoundMapButton extends StatelessWidget {
+  /// путь к svg
+  final String svgPath;
+
+  const _RoundMapButton({required this.svgPath, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return                           SizedBox(
+      height: 50,
+      width: 50,
+
+      child: MaterialButton(
+        onPressed: () {},
+        child: SvgPicture.asset(
+        svgPath,
+        color: ProjectColors.textColorPrimary,
+        ),
+        shape: const CircleBorder(),
+        color: ProjectColors.white,
       ),
     );
   }
