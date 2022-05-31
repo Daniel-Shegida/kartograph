@@ -13,7 +13,7 @@ MapWidgetModel mapWidgetModelFactory(BuildContext context) {
 /// WidgetModel for [MapScreen]
 class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     implements IMapWidgetModel {
-  final _controller = MapController(
+  final MapController _controller = MapController(
     location: LatLng(35.68, 51.41),
   );
 

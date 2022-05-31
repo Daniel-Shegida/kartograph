@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/gestures.dart';
@@ -18,24 +16,18 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
   @override
   Widget build(IMapWidgetModel wm) {
     return Scaffold(
-      body:     MapLayoutBuilder(
+      body:
+          MapLayoutBuilder(
         controller: wm.controller,
         builder: (context, transformer) {
-          final markerPositions =
-          wm.markers.map(transformer.fromLatLngToXYCoords).toList();
-
-          final markerWidgets = markerPositions.map(
-                (pos) => _buildMarkerWidget(pos, Colors.red),
-          );
-
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
             onDoubleTap: wm.onDoubleTap,
             onScaleStart: wm.onScaleStart,
             onScaleUpdate: wm.onScaleUpdate,
             onTapUp: (details) {
-              final location =
-              transformer.fromXYCoordsToLatLng(details.localPosition);
+              // final location =
+              //     transformer.fromXYCoordsToLatLng(details.localPosition);
             },
             child: Listener(
               behavior: HitTestBehavior.opaque,
@@ -59,7 +51,8 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                       );
                     },
                   ),
-                  ...markerWidgets,
+                  MarkersStack(
+                      controller: wm.controller, transformer: transformer,),
                 ],
               ),
             ),
@@ -67,11 +60,52 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
         },
       ),
     );
-
   }
+}
+
+/// виджет, что подготавливает стек маркеров для карты
+class MarkersStack extends StatefulWidget {
+  /// Map controller.
+  final MapController controller;
+
+  /// Map transformer
+  final MapTransformer transformer;
+
+  /// MarkersStack constructor.
+  const MarkersStack({
+    required this.controller,
+    required this.transformer,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _MarkersStackState();
+}
+
+class _MarkersStackState extends State<MarkersStack> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: _build);
+  }
+
   Widget _buildMarkerWidget(Offset pos, Color color,
-      [IconData icon = Icons.location_on]) {
-    print(pos);
+      [IconData icon = Icons.location_on,]) {
     return Positioned(
       left: pos.dx - 24,
       top: pos.dy - 24,
@@ -83,9 +117,27 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
           color: color,
           size: 48,
         ),
-        onTap: () {
-        },
+        onTap: () {},
       ),
     );
+  }
+
+  Widget _build(BuildContext context, BoxConstraints constraints) {
+    final children = <Widget>[];
+
+    final markerPositions =
+        markers.map(widget.transformer.fromLatLngToXYCoords);
+
+    final markerWidgets = markerPositions.map(
+      (pos) {
+        return _buildMarkerWidget(pos, Colors.red);
+      },
+    );
+
+    children.addAll(markerWidgets);
+
+    final stack = Stack(children: children);
+
+    return stack;
   }
 }
