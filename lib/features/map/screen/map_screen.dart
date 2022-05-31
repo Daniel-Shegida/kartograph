@@ -18,40 +18,48 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
   Widget build(IMapWidgetModel wm) {
     return Scaffold(
       body:
-          MapLayoutBuilder(
+      ValueListenableBuilder<MapController>(
+            builder: (BuildContext context, MapController value, Widget? child){
+              return MapLayoutBuilder(
         controller: wm.controller,
         builder: (context, transformer) {
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onDoubleTap: wm.onDoubleTap,
-            onScaleStart: wm.onScaleStart,
-            onScaleUpdate: wm.onScaleUpdate,
-            onTapUp: (details) {
-              final location =
-                  transformer.fromXYCoordsToLatLng(details.localPosition);
-              wm.markers.add(location);
-            },
-            child: Listener(
-              behavior: HitTestBehavior.opaque,
-              onPointerSignal: (event) {
-                if (event is PointerScrollEvent) {
-                  final delta = event.scrollDelta;
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onDoubleTap: wm.onDoubleTap,
+                onScaleStart: wm.onScaleStart,
+                onScaleUpdate: wm.onScaleUpdate,
+                onTapUp: (details) {
+                  final location =
+                      transformer.fromXYCoordsToLatLng(details.localPosition);
+                  wm.markers.add(location);
+                },
+                child: Listener(
+                  behavior: HitTestBehavior.opaque,
+                  onPointerSignal: (event) {
+                    if (event is PointerScrollEvent) {
+                      final delta = event.scrollDelta;
 
-                  wm.controller.zoom -= delta.dy / 1000.0;
-                }
-              },
-              child: Stack(
-                children: [
-                  MapWidget(mapController: wm.controller,),
-                  MarkersStack(
-                      controller: wm.controller, transformer: transformer, markers: wm.markers,),
-                ],
-              ),
-            ),
-          );
+                      wm.controller.zoom -= delta.dy / 1000.0;
+                    }
+                  },
+                  child: Stack(
+                    children: [
+                      MapWidget(mapController: wm.controller,),
+                      MarkersStack(
+                          controller: wm.controller, transformer: transformer, markers: wm.markers,),
+                    ],
+                  ),
+                ),
+              );
         },
+      );
+
+            },
+        valueListenable: ValueNotifier<MapController>(wm.controller),
+
       ),
-    );
+          );
+
   }
 }
 
