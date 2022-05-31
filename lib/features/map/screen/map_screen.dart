@@ -23,6 +23,8 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
               return MapLayoutBuilder(
         controller: value,
         builder: (context, transformer) {
+          // ignore: avoid_print
+          print("builder");
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onDoubleTap: wm.onDoubleTap,
