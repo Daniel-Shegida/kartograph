@@ -16,8 +16,8 @@ class MapWidget extends StatelessWidget {
       controller: mapController,
       builder: (context, x, y, z) {
 
-        final url =
-            '${ProjectStrings.mapSite}$z/$x/$y${ProjectStrings.mapToken}';
+        final url = ProjectStrings.getUrl(x, y, z);
+
 
         return CachedNetworkImage(
           imageUrl: url,
