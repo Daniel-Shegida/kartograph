@@ -21,7 +21,7 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
       ValueListenableBuilder<MapController>(
             builder: (BuildContext context, MapController value, Widget? child){
               return MapLayoutBuilder(
-        controller: wm.controller,
+        controller: value,
         builder: (context, transformer) {
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -39,14 +39,14 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                     if (event is PointerScrollEvent) {
                       final delta = event.scrollDelta;
 
-                      wm.controller.zoom -= delta.dy / 1000.0;
+                      value.zoom -= delta.dy / 1000.0;
                     }
                   },
                   child: Stack(
                     children: [
-                      MapWidget(mapController: wm.controller,),
+                      MapWidget(mapController: value,),
                       MarkersStack(
-                          controller: wm.controller, transformer: transformer, markers: wm.markers,),
+                          controller: value, transformer: transformer, markers: wm.markers,),
                     ],
                   ),
                 ),
