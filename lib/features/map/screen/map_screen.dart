@@ -17,51 +17,45 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
   @override
   Widget build(IMapWidgetModel wm) {
     return Scaffold(
-      body:
-      ValueListenableBuilder<MapController>(
-            builder: (BuildContext context, MapController value, Widget? child){
-              return MapLayoutBuilder(
-        controller: value,
+      body: MapLayoutBuilder(
+        controller: wm.controller,
         builder: (context, transformer) {
-          // ignore: avoid_print
-          print("builder");
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onDoubleTap: wm.onDoubleTap,
-                onScaleStart: wm.onScaleStart,
-                onScaleUpdate: wm.onScaleUpdate,
-                onTapUp: (details) {
-                  final location =
-                      transformer.fromXYCoordsToLatLng(details.localPosition);
-                  wm.markers.add(location);
-                },
-                child: Listener(
-                  behavior: HitTestBehavior.opaque,
-                  onPointerSignal: (event) {
-                    if (event is PointerScrollEvent) {
-                      final delta = event.scrollDelta;
-
-                      value.zoom -= delta.dy / 1000.0;
-                    }
-                  },
-                  child: Stack(
-                    children: [
-                      MapWidget(mapController: value,),
-                      MarkersStack(
-                          controller: value, transformer: transformer, markers: wm.markers,),
-                    ],
-                  ),
-                ),
-              );
-        },
-      );
-
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onDoubleTap: wm.onDoubleTap,
+            onScaleStart: wm.onScaleStart,
+            onScaleUpdate: wm.onScaleUpdate,
+            onTapUp: (details) {
+              final location =
+                  transformer.fromXYCoordsToLatLng(details.localPosition);
+              wm.markers.add(location);
             },
-        valueListenable: ValueNotifier<MapController>(wm.controller),
+            child: Listener(
+              behavior: HitTestBehavior.opaque,
+              onPointerSignal: (event) {
+                if (event is PointerScrollEvent) {
+                  final delta = event.scrollDelta;
 
-      ),
+                  wm.controller.zoom -= delta.dy / 1000.0;
+                }
+              },
+              child: Stack(
+                children: [
+                  MapWidget(
+                    mapController: wm.controller,
+                  ),
+                  MarkersStack(
+                    controller: wm.controller,
+                    transformer: transformer,
+                    markers: wm.markers,
+                  ),
+                ],
+              ),
+            ),
           );
-
+        },
+      ),
+    );
   }
 }
 
@@ -110,8 +104,11 @@ class _MarkersStackState extends State<MarkersStack> {
     return LayoutBuilder(builder: _build);
   }
 
-  Widget _buildMarkerWidget(Offset pos, Color color,
-      [IconData icon = Icons.location_on,]) {
+  Widget _buildMarkerWidget(
+    Offset pos,
+    Color color, [
+    IconData icon = Icons.location_on,
+  ]) {
     return Positioned(
       left: pos.dx - 24,
       top: pos.dy - 24,
