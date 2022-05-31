@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 
 /// виджет маркера на карте
 class Marker extends StatelessWidget {
+  /// горизонтальная позиция маркера
+  final double leftPos;
+  /// вертикальная позиция маркера
+  final double topPos;
+  /// иконка маркера
+  final IconData iconData;
+  /// цвет маркера
+  final Color color;
+
   /// конструктор [Marker]
   const Marker(
       {required this.leftPos,
@@ -11,10 +20,6 @@ class Marker extends StatelessWidget {
       Key? key,})
       : super(key: key);
 
-  final double leftPos;
-  final double topPos;
-  final IconData iconData;
-  final Color color;
 
   @override
   Widget build(BuildContext context) {
