@@ -1,6 +1,7 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kartograph/features/map/screen/map_screen_wm.dart';
 import 'package:kartograph/util/map_widget.dart';
 import 'package:latlng/latlng.dart';
@@ -48,6 +49,18 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                     controller: wm.controller,
                     transformer: transformer,
                     markers: wm.markers,
+                  ),
+                  Row(
+                    children: [
+                      OutlinedButton(
+                        onPressed: () {},
+                        child: Container(),
+                        style: OutlinedButton.styleFrom(
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(24),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

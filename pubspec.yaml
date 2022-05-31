@@ -26,6 +26,7 @@ dependencies:
 #  библиотеки отвечающие за работу с картами
   map: ^1.0.1
   latlng: ^0.1.0
+  flutter_svg: ^1.1.0
 
 dev_dependencies:
   flutter_test:
