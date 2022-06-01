@@ -13,3 +13,12 @@ dart_code_metrics:
 linter:
   rules:
     public_member_api_docs: true
+
+#analyzer:
+#  exclude:
+#    - lib/**/*.g.dart
+
+analyzer:
+  strong-mode:
+    implicit-dynamic: true
+    implicit-casts: true
