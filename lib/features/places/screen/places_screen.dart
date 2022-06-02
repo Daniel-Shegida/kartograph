@@ -29,11 +29,12 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
   }
 }
 
-void straq(){
+void straq() async{
   final PlaceRepository rep = PlaceRepository(RestClient(Dio()));
 
-  final  test = rep.getTest(1);
+  // final  test = await rep.getTest(1);
+  final  test2 = await rep.getPlaces();
 
   // ignore: avoid_print
-  print(test);
+  print(test2.first.name);
 }

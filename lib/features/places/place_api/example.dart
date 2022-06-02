@@ -1,27 +1,27 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:kartograph/api/data/place_responce.dart';
+import 'package:kartograph/features/places/place_api/placeDto.dart';
+import 'package:kartograph/features/places/place_api/req.dart';
 import 'package:kartograph/features/places/place_api/task.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 
 part 'example.g.dart';
 
-@RestApi(baseUrl: "https://5d42a6e2bc64f90014a56ca0.mockapi.io/api/v1/")
+@RestApi(baseUrl: "https://test-backend-flutter.surfstudio.ru/")
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
 
-  @GET("/tasks")
-  Future<List<PlaceResponse>> getTasks();
+  @GET("/place/1")
+  Future<PlaceResponse> getTasks();
+
+  @GET("/filtered_places")
+  Future<List<PlaceDto>> getPlaces(
+      @Body() double lat,
+      @Body() double lng,
+      @Body() double radius,
+      @Body() List<String> typeFilter,
+      @Body() String nameFilter,
+      );
 }
 
-@JsonSerializable()
-class Task {
-  String? id;
-  String? name;
-  String? avatar;
-  String? createdAt;
-
-  Task({this.id, this.name, this.avatar, this.createdAt});
-
-  factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
-  Map<String, dynamic> toJson() => _$TaskToJson(this);
-}
