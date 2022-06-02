@@ -17,7 +17,6 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     location: LatLng(35.68, 51.41),
   );
 
-  final test = _controller.
   final _markers = [
     LatLng(35.674, 51.41),
     LatLng(35.678, 51.41),
