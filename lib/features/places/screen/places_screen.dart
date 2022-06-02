@@ -15,6 +15,7 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
     return Scaffold(
       appBar: AppBar(),
       body: const Center(
+        child: Text("place"),
       ),
     );
   }

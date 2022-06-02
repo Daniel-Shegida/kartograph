@@ -6,6 +6,13 @@
 /// static const String screenPath = '/screenPath';
 /// ```
 abstract class AppRoutePaths {
-  /// Path to temp screen.
-  static const String tempScreen = '/tempScreen';
+  /// Path to tabs.
+  static const String tabs = '/tabs/';
+
+  /// Path to map screen.
+  static const String mapScreen = 'mapScreen';
+  /// Path to places screen.
+  static const String placesScreen = 'placesScreen';
+  /// Path to settings screen.
+  static const String settingScreen = 'settingScreen';
 }
