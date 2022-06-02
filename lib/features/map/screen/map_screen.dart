@@ -86,6 +86,7 @@ class _MarkersStackState extends State<MarkersStack> {
   @override
   void initState() {
     super.initState();
+    // dispose контроллера в wm
     widget.controller.addListener(() {
       if (mounted) {
         setState(() {});
@@ -95,7 +96,6 @@ class _MarkersStackState extends State<MarkersStack> {
 
   @override
   void dispose() {
-    widget.controller.dispose();
     super.dispose();
   }
 
