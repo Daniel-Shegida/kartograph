@@ -4,22 +4,28 @@ import 'package:flutter/material.dart';
 class Marker extends StatelessWidget {
   /// горизонтальная позиция маркера
   final double leftPos;
+
   /// вертикальная позиция маркера
   final double topPos;
+
   /// иконка маркера
   final IconData iconData;
+
   /// цвет маркера
   final Color color;
 
-  /// конструктор [Marker]
-  const Marker(
-      {required this.leftPos,
-      required this.topPos,
-      required this.iconData,
-      required this.color,
-      Key? key,})
-      : super(key: key);
+  /// цвет маркера
+  final VoidCallback func;
 
+  /// конструктор [Marker]
+  const Marker({
+    required this.leftPos,
+    required this.topPos,
+    required this.iconData,
+    required this.color,
+    required this.func,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +40,7 @@ class Marker extends StatelessWidget {
           color: color,
           size: 48,
         ),
-        onTap: () {
-          // ignore: avoid_print
-          print("touch");
-        },
+        onTap: func,
       ),
     );
   }

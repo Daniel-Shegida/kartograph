@@ -28,7 +28,7 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
             onScaleUpdate: wm.onScaleUpdate,
             onTapUp: (details) {
               final location =
-                  transformer.fromXYCoordsToLatLng(details.localPosition);
+              transformer.fromXYCoordsToLatLng(details.localPosition);
               wm.markers.add(location);
             },
             child: Listener(
@@ -102,33 +102,24 @@ class _MarkersStackState extends State<MarkersStack> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: _build);
-  }
-
-  Widget _buildMarkerWidget(
-    Offset pos,
-    Color color, [
-    IconData icon = Icons.location_on,
-  ]) {
-    return Marker(leftPos: pos.dx, topPos: pos.dy, iconData: icon, color: color);
-  }
-
-  Widget _build(BuildContext context, BoxConstraints constraints) {
-    final children = <Widget>[];
-
     final markerPositions =
-        widget.markers.map(widget.transformer.fromLatLngToXYCoords);
+    widget.markers.map(widget.transformer.fromLatLngToXYCoords);
 
     final markerWidgets = markerPositions.map(
-      (pos) {
-        return _buildMarkerWidget(pos, Colors.red);
+          (pos) {
+        return Marker(
+          leftPos: pos.dx,
+          topPos: pos.dy,
+          iconData: Icons.location_on,
+          color: Colors.red,
+          func: () {
+            // ignore: avoid_print
+            print('touch');
+          },);
       },
-    );
+    ).toList();
 
-    children.addAll(markerWidgets);
-
-    final stack = Stack(children: children);
-
-    return stack;
+    // return LayoutBuilder(builder: _build);
+    return Stack(children: markerWidgets);
   }
 }
