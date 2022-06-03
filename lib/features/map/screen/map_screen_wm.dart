@@ -43,6 +43,7 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   @override
   void initWidgetModel() {
     model.mapStateStream.listen(_updateState);
+    model.updatePersonalData();
     super.initWidgetModel();
   }
 
@@ -84,13 +85,13 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     }
   }
 
-
-
   void _updateState(BaseMapState state) {
+    if (state is MapContentState) {
 
+      controller.center = state.currentLocation;
+    }
   }
 }
-
 
 /// Interface of [MapWidgetModel].
 abstract class IMapWidgetModel extends IWidgetModel {

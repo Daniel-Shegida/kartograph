@@ -25,4 +25,13 @@ class MapModel extends ElementaryModel {
     super.init();
     _mapBloc.add(MapLoadEvent());
   }
+
+  /// Method for update personal data to the [MapBloc].
+  void updatePersonalData(
+      ) {
+    _mapBloc.add(
+      MapLoadEvent(
+      ),
+    );
+  }
 }
