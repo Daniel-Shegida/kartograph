@@ -18,6 +18,11 @@ dependencies:
   logger: ^1.1.0
   provider: ^6.0.2
   surf_logger: ^1.1.0
+  adaptive_navigation: ^0.0.7
+  cached_network_image: ^3.2.1
+#  библиотеки отвечающие за работу с картами
+  map: ^1.0.1
+  latlng: ^0.1.0
 #  навигация
   routemaster: ^1.0.0
 #  иконки
