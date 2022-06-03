@@ -48,7 +48,7 @@ class PlaceResponse {
 }
 
 /// функция трансформирующая ответ с сервера под конкретную реализацию места
-Place mapResponseToTest(PlaceResponse response) => Place(
+Place mapResponseToPlace(PlaceResponse response) => Place(
   id: response.id,
   lat: response.lat,
   lng: response.lng,

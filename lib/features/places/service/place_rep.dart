@@ -13,7 +13,7 @@ class PlaceRepository {
   Future<Place> getPlace(String placeId) async {
     final placeResponse = await _placeRepositoryApi.getPlace(placeId);
 
-    return mapResponseToTest(placeResponse);
+    return mapResponseToPlace(placeResponse);
   }
 
   /// удаляет место с сервера по id
@@ -25,7 +25,7 @@ class PlaceRepository {
   Future<Place> putPlace(String placeId, PlaceResponse body) async {
     final placeResponse = await _placeRepositoryApi.putPlace(placeId, body);
 
-    return mapResponseToTest(placeResponse);
+    return mapResponseToPlace(placeResponse);
   }
 
   /// создает новое место на сервере
@@ -37,6 +37,6 @@ class PlaceRepository {
   Future<List<Place>> getPlaces(int amount) async {
     final testResponses = await _placeRepositoryApi.getPlaces(amount);
 
-    return testResponses.map(mapResponseToTest).toList();
+    return testResponses.map(mapResponseToPlace).toList();
   }
 }
