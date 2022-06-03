@@ -13,13 +13,23 @@ MapWidgetModel mapWidgetModelFactory(BuildContext context) {
 /// WidgetModel for [MapScreen]
 class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     implements IMapWidgetModel {
-  final _controller = MapController(
+  final MapController _controller = MapController(
     location: LatLng(35.68, 51.41),
   );
+
+  final _markers = [
+    LatLng(35.674, 51.41),
+    LatLng(35.678, 51.41),
+    LatLng(35.682, 51.41),
+    LatLng(35.686, 51.41),
+  ];
 
   /// controller for map
   @override
   MapController get controller => _controller;
+
+  @override
+  List<LatLng> get markers => _markers;
 
   late Offset? _dragStart;
 
@@ -72,10 +82,14 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   }
 }
 
+
 /// Interface of [MapWidgetModel].
 abstract class IMapWidgetModel extends IWidgetModel {
   /// Text editing controller Main Screen.
   MapController get controller;
+
+  /// Text editing controller Main Screen.
+  List<LatLng> get markers;
 
   /// action to go back tp detail
   void gotoDefault();

@@ -1,8 +1,13 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kartograph/assets/colors/colors.dart';
+import 'package:kartograph/assets/res/project_icons.dart';
+import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/map/screen/map_screen_wm.dart';
 import 'package:kartograph/util/map_widget.dart';
+import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 
 /// Main Screen
@@ -24,6 +29,11 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
             onDoubleTap: wm.onDoubleTap,
             onScaleStart: wm.onScaleStart,
             onScaleUpdate: wm.onScaleUpdate,
+            onTapUp: (details) {
+              final location =
+                  transformer.fromXYCoordsToLatLng(details.localPosition);
+              wm.markers.add(location);
+            },
             child: Listener(
               behavior: HitTestBehavior.opaque,
               onPointerSignal: (event) {
@@ -38,6 +48,27 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                   MapWidget(
                     mapController: wm.controller,
                   ),
+                  MarkersStack(
+                    controller: wm.controller,
+                    transformer: transformer,
+                    markers: wm.markers,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: const [
+                            _RoundMapButton(svgPath: ProjectIcons.refresh,),
+                            _AddPlaceButton(),
+                            _RoundMapButton(svgPath: ProjectIcons.geo,),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -45,5 +76,155 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
         },
       ),
     );
+  }
+}
+
+class _AddPlaceButton extends StatelessWidget {
+  const _AddPlaceButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 200,
+      height: 48,
+      decoration: const ShapeDecoration(
+        shape: StadiumBorder(),
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [Colors.yellow, Colors.green],
+        ),
+      ),
+      child: MaterialButton(
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        shape: const StadiumBorder(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SvgPicture.asset(
+              ProjectIcons.plus,
+              color: ProjectColors.white,
+            ),
+            const Text(
+              ProjectStrings.addPlace,
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ],
+        ),
+        onPressed: () {
+        },
+      ),
+    );
+  }
+}
+
+class _RoundMapButton extends StatelessWidget {
+  /// путь к svg
+  final String svgPath;
+
+  const _RoundMapButton({required this.svgPath, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return                           SizedBox(
+      height: 50,
+      width: 50,
+
+      child: MaterialButton(
+        onPressed: () {},
+        child: SvgPicture.asset(
+        svgPath,
+        color: ProjectColors.textColorPrimary,
+        ),
+        shape: const CircleBorder(),
+        color: ProjectColors.white,
+      ),
+    );
+  }
+}
+
+/// виджет, что подготавливает стек маркеров для карты
+class MarkersStack extends StatefulWidget {
+  /// Map controller.
+  final MapController controller;
+
+  /// Map transformer
+  final MapTransformer transformer;
+
+  /// маркеры на карие
+  final List<LatLng> markers;
+
+  /// MarkersStack constructor.
+  const MarkersStack({
+    required this.controller,
+    required this.transformer,
+    required this.markers,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _MarkersStackState();
+}
+
+class _MarkersStackState extends State<MarkersStack> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: _build);
+  }
+
+  Widget _buildMarkerWidget(
+    Offset pos,
+    Color color, [
+    IconData icon = Icons.location_on,
+  ]) {
+    return Positioned(
+      left: pos.dx - 24,
+      top: pos.dy - 24,
+      width: 48,
+      height: 48,
+      child: GestureDetector(
+        child: Icon(
+          icon,
+          color: color,
+          size: 48,
+        ),
+        onTap: () {},
+      ),
+    );
+  }
+
+  Widget _build(BuildContext context, BoxConstraints constraints) {
+    final children = <Widget>[];
+
+    final markerPositions =
+        widget.markers.map(widget.transformer.fromLatLngToXYCoords);
+
+    final markerWidgets = markerPositions.map(
+      (pos) {
+        return _buildMarkerWidget(pos, Colors.red);
+      },
+    );
+
+    children.addAll(markerWidgets);
+
+    final stack = Stack(children: children);
+
+    return stack;
   }
 }
