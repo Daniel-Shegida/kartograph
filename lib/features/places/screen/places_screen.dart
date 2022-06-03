@@ -17,20 +17,14 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
     return Scaffold(
       appBar: AppBar(),
       body: const Center(
-        child: TextButton(onPressed: straq, child: Text("Click")),
+        child: TextButton(onPressed: testFuncs, child: Text("Click")),
       ),
     );
   }
 }
 
-void straq() async {
+void testFuncs() async {
   final PlaceRepository rep = PlaceRepository(RestClient(Dio()));
 
-  // final  test = await rep.getTest(1);
-  // final  test2 = await rep.getPlaces();
-
-  // ignore: avoid_print
-  // print(test.name);
-  // ignore: avoid_print
-  // print(test2.length);
+ // вставить функции для проверки
 }

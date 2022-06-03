@@ -1,28 +1,34 @@
-// Модель темы статьи с сервера
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kartograph/api/data/place.dart';
 
 part 'place_response.g.dart';
 
+/// класс ответа с сервера
 @JsonSerializable()
 class PlaceResponse {
+
+  /// id места на сервере
   final int id;
+
+  /// широта места
   final double lat;
-  /// Категория теста
+
+  /// долгота места
   final double lng;
 
-  /// Прогресс теста
+  /// название места
   final String name;
 
-  /// Количество раз прохождения теста
+  /// urls картинок места
   final List<String>  urls;
 
-  /// Задачи для теста
+  /// тип места
   final String placeType;
 
-  /// Массив, означающий правильно ли был отправлен ответ на вопрос или нет
+  /// описание места
   final String description;
 
+  /// полный конструктор ответа с сервера
   PlaceResponse({
     required this.id,
     required this.lat,
@@ -33,12 +39,15 @@ class PlaceResponse {
     required this.description,
   });
 
+  /// сгенерированная функция получающая [PlaceResponse] c json
   factory PlaceResponse.fromJson(Map<String, dynamic> json) =>
       _$PlaceResponseFromJson(json);
 
+  /// сгенерированная функция создающая [PlaceResponse] json для сервера
   Map<String, dynamic> toJson() => _$PlaceResponseToJson(this);
 }
 
+/// функция трансформирующая ответ с сервера под конкретную реализацию места
 Place mapResponseToTest(PlaceResponse response) => Place(
   id: response.id,
   lat: response.lat,

@@ -1,35 +1,43 @@
 import 'package:dio/dio.dart';
 import 'package:kartograph/api/data/place_response.dart';
+import 'package:kartograph/assets/strings/urls.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'place_api.g.dart';
 
-@RestApi(baseUrl: 'https://test-backend-flutter.surfstudio.ru/')
+/// апи со всеми функциями для обработки мест
+@RestApi(baseUrl: baseUrl)
 abstract class RestClient {
+  /// фабрика для ретрофита
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
 
-  @GET('place')
+  /// Получает список мест с сервера
+  @GET(PlaceUrls.place)
   Future<List<PlaceResponse>> getPlaces(
     @Query('count') int id,
   );
 
-  //
-  // @POST('place')
-  // void postPlace(
-  //     @Body() PlaceResponse body,
-  //     );
 
-  @GET('place/{id}')
+  /// создает новое место на сервере
+  @POST(PlaceUrls.place)
+  Future<void> postPlace(
+      @Body() PlaceResponse body,
+      );
+
+  /// Получает место с сервера по id
+  @GET('${PlaceUrls.place}/{id}')
   Future<PlaceResponse> getPlace(
     @Path('id') String id,
   );
 
-  @DELETE('place/{id}')
+  /// удаляет место с сервера по id
+  @DELETE('${PlaceUrls.place}/{id}')
   Future<PlaceResponse> deletePlace(
     @Path('id') String id,
   );
 
-  @GET('place/{id}')
+  /// заменяет место на сервере по id
+  @PUT('${PlaceUrls.place}/{id}')
   Future<PlaceResponse> putPlace(
     @Path('id') String id,
     @Body() PlaceResponse body,

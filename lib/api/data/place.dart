@@ -1,4 +1,26 @@
+/// класс места на картах и в списке
 class Place {
+
+  /// id места на сервере
+  int id;
+
+  /// широта места
+  double lat;
+
+  /// долгота места
+  double lng;
+
+  /// название места
+  String name;
+
+  /// urls картинок места
+  List<String> urls;
+
+  String placeType;
+
+  String description;
+
+  /// полный конструктор места
   Place({
     required this.id,
     required this.lat,
@@ -8,12 +30,4 @@ class Place {
     required this.placeType,
     required this.description,
   });
-
-  int id;
-  double lat;
-  double lng;
-  String name;
-  List<String> urls;
-  String placeType;
-  String description;
 }
