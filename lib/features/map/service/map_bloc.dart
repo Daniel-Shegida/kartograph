@@ -9,7 +9,7 @@ class MapBloc extends Bloc<BaseMapEvent, BaseMapState> {
   /// Constructor of [MapBloc]
   MapBloc() : super(LoadingState()) {
     /// при событии загрузки статей запускаем стейт со статьями
-    on<MapLoadEvent>((event, emit) async {
+    on<MapGetLocationEvent>((event, emit) async {
       bool serviceEnabled;
       LocationPermission permission;
 
@@ -36,6 +36,8 @@ class MapBloc extends Bloc<BaseMapEvent, BaseMapState> {
       }
 
       final location = await Geolocator.getCurrentPosition();
+      // ignore: avoid_print
+      print("bloc says: $location");
       emit(MapContentState(
         currentLocation: LatLng(location.latitude, location.longitude),
       ));
