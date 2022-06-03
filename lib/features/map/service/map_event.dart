@@ -9,6 +9,5 @@ abstract class BaseMapEvent extends Equatable {
   const BaseMapEvent();
 }
 
-
 /// map get current location event.
 class MapGetLocationEvent extends BaseMapEvent {}

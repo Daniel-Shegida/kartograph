@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/features/map/screen/map_screen.dart';
@@ -52,7 +50,6 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   @override
   void dispose() {
-
     super.dispose();
   }
 
@@ -100,11 +97,7 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   }
 
   void _updateState(BaseMapState state) {
-    // ignore: avoid_print
-    print(state.runtimeType);
     if (state is MapContentState) {
-      // ignore: avoid_print
-      print(state.currentLocation);
       controller.center = state.currentLocation;
     }
   }

@@ -36,8 +36,7 @@ class MapBloc extends Bloc<BaseMapEvent, BaseMapState> {
       }
 
       final location = await Geolocator.getCurrentPosition();
-      // ignore: avoid_print
-      print("bloc says: $location");
+
       emit(MapContentState(
         currentLocation: LatLng(location.latitude, location.longitude),
       ));

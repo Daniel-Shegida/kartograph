@@ -131,9 +131,11 @@ class _RoundMapButton extends StatelessWidget {
   /// функция  по нажатию на кнопку
   final VoidCallback onPressed;
 
-  const _RoundMapButton(
-      {required this.svgPath, required this.onPressed, Key? key})
-      : super(key: key);
+  const _RoundMapButton({
+    required this.svgPath,
+    required this.onPressed,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -205,10 +207,7 @@ class _MarkersStackState extends State<MarkersStack> {
           topPos: pos.dy,
           iconData: Icons.location_on,
           color: Colors.red,
-          onPressed: () {
-            // ignore: avoid_print
-            print('touch');
-          },
+          onPressed: () {},
         );
       },
     ).toList();

@@ -18,6 +18,7 @@ class MapContentState extends BaseMapState {
 
   @override
   List<Object> get props => [Kostil];
+
   /// конструктор состояния карты при получении координат
   MapContentState({
     required this.currentLocation,
@@ -26,8 +27,6 @@ class MapContentState extends BaseMapState {
 
 /// Состояние загрузки данных для карты.
 class LoadingState extends BaseMapState {
-
-
   @override
   List<Object> get props => [];
 }
