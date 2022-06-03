@@ -32,7 +32,7 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
             onScaleUpdate: wm.onScaleUpdate,
             onTapUp: (details) {
               final location =
-              transformer.fromXYCoordsToLatLng(details.localPosition);
+                  transformer.fromXYCoordsToLatLng(details.localPosition);
               wm.markers.add(location);
             },
             child: Listener(
@@ -61,10 +61,16 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const [
-                            _RoundMapButton(svgPath: ProjectIcons.refresh,),
-                            _AddPlaceButton(),
-                            _RoundMapButton(svgPath: ProjectIcons.geo,),
+                          children: [
+                            _RoundMapButton(
+                              svgPath: ProjectIcons.refresh,
+                              onPressed: wm.refresh,
+                            ),
+                            const _AddPlaceButton(),
+                            _RoundMapButton(
+                              svgPath: ProjectIcons.geo,
+                              onPressed: wm.getCurrentLocation,
+                            ),
                           ],
                         ),
                       ],
@@ -112,8 +118,7 @@ class _AddPlaceButton extends StatelessWidget {
             ),
           ],
         ),
-        onPressed: () {
-        },
+        onPressed: () {},
       ),
     );
   }
@@ -123,19 +128,23 @@ class _RoundMapButton extends StatelessWidget {
   /// путь к svg
   final String svgPath;
 
-  const _RoundMapButton({required this.svgPath, Key? key}) : super(key: key);
+  /// функция  по нажатию на кнопку
+  final VoidCallback onPressed;
+
+  const _RoundMapButton(
+      {required this.svgPath, required this.onPressed, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return                           SizedBox(
+    return SizedBox(
       height: 50,
       width: 50,
-
       child: MaterialButton(
-        onPressed: () {},
+        onPressed: onPressed,
         child: SvgPicture.asset(
-        svgPath,
-        color: ProjectColors.textColorPrimary,
+          svgPath,
+          color: ProjectColors.textColorPrimary,
         ),
         shape: const CircleBorder(),
         color: ProjectColors.white,
@@ -187,10 +196,10 @@ class _MarkersStackState extends State<MarkersStack> {
   @override
   Widget build(BuildContext context) {
     final markerPositions =
-    widget.markers.map(widget.transformer.fromLatLngToXYCoords);
+        widget.markers.map(widget.transformer.fromLatLngToXYCoords);
 
     final markerWidgets = markerPositions.map(
-          (pos) {
+      (pos) {
         return Marker(
           leftPos: pos.dx,
           topPos: pos.dy,
@@ -199,7 +208,8 @@ class _MarkersStackState extends State<MarkersStack> {
           onPressed: () {
             // ignore: avoid_print
             print('touch');
-          },);
+          },
+        );
       },
     ).toList();
 

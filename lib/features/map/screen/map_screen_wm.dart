@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/features/map/screen/map_screen.dart';
@@ -42,13 +44,15 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   @override
   void initWidgetModel() {
-    model.mapStateStream.listen(_updateState);
-    model.updatePersonalData();
+    var test = model.mapStateStream;
+    test.listen(_updateState);
+    model.getCurrentLocation();
     super.initWidgetModel();
   }
 
   @override
   void dispose() {
+
     super.dispose();
   }
 
@@ -85,9 +89,22 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     }
   }
 
-  void _updateState(BaseMapState state) {
-    if (state is MapContentState) {
+  @override
+  void getCurrentLocation() {
+    model.getCurrentLocation();
+  }
 
+  @override
+  void refresh() {
+    model.getCurrentLocation();
+  }
+
+  void _updateState(BaseMapState state) {
+    // ignore: avoid_print
+    print(state.runtimeType);
+    if (state is MapContentState) {
+      // ignore: avoid_print
+      print(state.currentLocation);
       controller.center = state.currentLocation;
     }
   }
@@ -112,4 +129,10 @@ abstract class IMapWidgetModel extends IWidgetModel {
 
   /// action for changing scale
   void onScaleUpdate(ScaleUpdateDetails details);
+
+  /// action to go back to current location
+  void getCurrentLocation();
+
+  /// пока ивента для него нет
+  void refresh();
 }

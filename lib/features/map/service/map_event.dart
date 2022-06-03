@@ -10,5 +10,5 @@ abstract class BaseMapEvent extends Equatable {
 }
 
 
-/// map load event.
-class MapLoadEvent extends BaseMapEvent {}
+/// map get current location event.
+class MapGetLocationEvent extends BaseMapEvent {}
