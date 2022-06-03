@@ -2,7 +2,9 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/features/map/screen/map_screen_wm.dart';
+import 'package:kartograph/features/map/widgets/marker.dart';
 import 'package:kartograph/util/map_widget.dart';
+import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 
 /// Main Screen
@@ -24,6 +26,11 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
             onDoubleTap: wm.onDoubleTap,
             onScaleStart: wm.onScaleStart,
             onScaleUpdate: wm.onScaleUpdate,
+            onTapUp: (details) {
+              final location =
+              transformer.fromXYCoordsToLatLng(details.localPosition);
+              wm.markers.add(location);
+            },
             child: Listener(
               behavior: HitTestBehavior.opaque,
               onPointerSignal: (event) {
@@ -38,6 +45,11 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                   MapWidget(
                     mapController: wm.controller,
                   ),
+                  MarkersStack(
+                    controller: wm.controller,
+                    transformer: transformer,
+                    markers: wm.markers,
+                  ),
                 ],
               ),
             ),
@@ -45,5 +57,69 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
         },
       ),
     );
+  }
+}
+
+/// виджет, что подготавливает стек маркеров для карты
+class MarkersStack extends StatefulWidget {
+  /// Map controller.
+  final MapController controller;
+
+  /// Map transformer
+  final MapTransformer transformer;
+
+  /// маркеры на карие
+  final List<LatLng> markers;
+
+  /// MarkersStack constructor.
+  const MarkersStack({
+    required this.controller,
+    required this.transformer,
+    required this.markers,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _MarkersStackState();
+}
+
+class _MarkersStackState extends State<MarkersStack> {
+  @override
+  void initState() {
+    super.initState();
+    // dispose контроллера в wm
+    widget.controller.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final markerPositions =
+    widget.markers.map(widget.transformer.fromLatLngToXYCoords);
+
+    final markerWidgets = markerPositions.map(
+          (pos) {
+        return Marker(
+          leftPos: pos.dx,
+          topPos: pos.dy,
+          iconData: Icons.location_on,
+          color: Colors.red,
+          onPressed: () {
+            // ignore: avoid_print
+            print('touch');
+          },);
+      },
+    ).toList();
+
+    // return LayoutBuilder(builder: _build);
+    return Stack(children: markerWidgets);
   }
 }
