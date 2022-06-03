@@ -20,6 +20,10 @@ dependencies:
   provider: ^6.0.2
   retrofit: ^3.0.1+1
   surf_logger: ^1.1.0
+  adaptive_navigation: ^0.0.7
+#  библиотеки для сервиса
+  flutter_bloc: ^8.0.1
+  equatable: ^2.0.3
 #  навигация
   routemaster: ^1.0.0
 #  иконки
