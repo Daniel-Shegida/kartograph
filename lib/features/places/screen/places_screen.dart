@@ -14,11 +14,8 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
   Widget build(IPlacesWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(),
-      body:  Center(
-        child: TextButton(onPressed: (){}
-
-        ,
-            child: const Text('Click'),),
+      body: const Center(
+        child: Text("place"),
       ),
     );
   }
