@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:latlng/latlng.dart';
 
 /// Base state for profile.
 abstract class BaseMapState extends Equatable {
@@ -6,8 +7,22 @@ abstract class BaseMapState extends Equatable {
   List<Object> get props => [];
 }
 
-/// Base state containing profile.
+/// Состояние карты с информацией о ней
 class MapContentState extends BaseMapState {
+  /// координаты текущего расположения
+  final LatLng currentLocation;
+
+  @override
+  List<Object> get props => [];
+  /// конструктор состояния карты при получении координат
+  MapContentState({
+    required this.currentLocation,
+  });
+}
+
+/// Состояние загрузки данных для карты.
+class LoadingState extends BaseMapState {
+
 
   @override
   List<Object> get props => [];
