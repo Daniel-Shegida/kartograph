@@ -28,7 +28,7 @@ dependencies:
   map: ^1.0.1
   latlng: ^0.1.0
   cached_network_image: ^3.2.1
-
+# геолокация
   geolocator: ^8.2.1
 
 dev_dependencies:
