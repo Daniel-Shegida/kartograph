@@ -26,6 +26,9 @@ dependencies:
 #  библиотеки отвечающие за работу с картами
   map: ^1.0.1
   latlng: ^0.1.0
+#  библиотеки для сервиса
+  flutter_bloc: ^8.0.1
+  equatable: ^2.0.3
 
 dev_dependencies:
   flutter_test:

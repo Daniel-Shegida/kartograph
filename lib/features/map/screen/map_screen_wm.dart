@@ -2,12 +2,14 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/features/map/screen/map_screen.dart';
 import 'package:kartograph/features/map/screen/map_screen_model.dart';
+import 'package:kartograph/features/map/service/map_bloc.dart';
+import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 
 /// Builder for [MapWidgetModel]
 MapWidgetModel mapWidgetModelFactory(BuildContext context) {
-  return MapWidgetModel(MapModel());
+  return MapWidgetModel(MapModel(MapBloc()));
 }
 
 /// WidgetModel for [MapScreen]
@@ -40,6 +42,7 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   @override
   void initWidgetModel() {
+    model.mapStateStream.listen(_updateState);
     super.initWidgetModel();
   }
 
@@ -79,6 +82,12 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
       _dragStart = now;
       _controller.drag(diff.dx, diff.dy);
     }
+  }
+
+
+
+  void _updateState(BaseMapState state) {
+
   }
 }
 
