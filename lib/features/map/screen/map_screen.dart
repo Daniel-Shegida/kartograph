@@ -112,7 +112,7 @@ class _MarkersStackState extends State<MarkersStack> {
           topPos: pos.dy,
           iconData: Icons.location_on,
           color: Colors.red,
-          func: () {
+          onPressed: () {
             // ignore: avoid_print
             print('touch');
           },);

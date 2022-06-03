@@ -15,7 +15,7 @@ class Marker extends StatelessWidget {
   final Color color;
 
   /// цвет маркера
-  final VoidCallback func;
+  final VoidCallback onPressed;
 
   /// конструктор [Marker]
   const Marker({
@@ -23,7 +23,7 @@ class Marker extends StatelessWidget {
     required this.topPos,
     required this.iconData,
     required this.color,
-    required this.func,
+    required this.onPressed,
     Key? key,
   }) : super(key: key);
 
@@ -40,7 +40,7 @@ class Marker extends StatelessWidget {
           color: color,
           size: 48,
         ),
-        onTap: func,
+        onTap: onPressed,
       ),
     );
   }
