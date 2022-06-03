@@ -5,6 +5,8 @@ import 'package:kartograph/config/debug_options.dart';
 import 'package:kartograph/config/environment/environment.dart';
 import 'package:kartograph/features/app/di/app_scope.dart';
 import 'package:kartograph/features/common/widgets/di_scope/di_scope.dart';
+import 'package:kartograph/features/navigation/domain/entity/app_routes.dart';
+import 'package:routemaster/routemaster.dart';
 
 /// App widget.
 class App extends StatefulWidget {
@@ -50,8 +52,8 @@ class _AppState extends State<App> {
             _getDebugConfig().debugShowCheckedModeBanner,
 
         /// This is for navigation.
-        routeInformationParser: _scope.router.routeInformationParser,
-        routerDelegate:_scope.router.routerDelegate,
+        routeInformationParser: const RoutemasterParser(),
+        routerDelegate: RoutemasterDelegate(routesBuilder: (_) => routes),
       ),
     );
   }
