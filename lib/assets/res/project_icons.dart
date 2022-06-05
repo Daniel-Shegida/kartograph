@@ -13,4 +13,6 @@ abstract class ProjectIcons {
   static const String settings = 'assets/icons/Settings.svg';
   /// SettingScreen bottom name.
   static const String settingsFull = 'assets/icons/Settings-fill.svg';
+  /// infoIcon name.
+  static const String infoIcon = 'assets/icons/Info.svg';
 }
