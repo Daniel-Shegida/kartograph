@@ -83,8 +83,8 @@ class _TutorialWatcherCard extends StatelessWidget {
       cardName: ProjectStrings.tutorialCard,
       onPressed: () {},
       icon: SvgPicture.asset(
-        ProjectIcons.list,
-        color: ProjectColors.mainLightTheme,
+        ProjectIcons.infoIcon,
+        color: ProjectColors.green,
       ),
       onHelper: helperFunc,
     );
