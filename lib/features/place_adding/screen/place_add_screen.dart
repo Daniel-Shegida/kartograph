@@ -25,10 +25,15 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
           child: Text(
             ProjectStrings.newPlace,
             style: const TextStyle(
-                color: ProjectColors.textColorGrey, fontSize: 16),
+              color: ProjectColors.textColorPrimary,
+              fontSize: 16,
+            ),
           ),
         ),
         leading: TextButton(
+          style: TextButton.styleFrom(
+            primary: ProjectColors.textColorGrey,
+          ),
           onPressed: () {},
           child: const Text(ProjectStrings.cancel),
         ),
@@ -36,61 +41,74 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _PlaceTitles(
-              titleText: ProjectStrings.category,
-            ),
-            DropdownButton<String>(
-              value: test,
-              icon: SvgPicture.asset(
-                ProjectIcons.view,
-                color: ProjectColors.mainLightTheme,
-              ),
-              isExpanded: true,
-              elevation: 16,
-              style: const TextStyle(color: Colors.deepPurple),
-              underline: Container(
-                height: 2,
-                color: Colors.deepPurpleAccent,
-              ),
-              onChanged: (String? newValue) {},
-              items: <String>['One', 'Two', 'Free', 'Four']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            _PlaceTitles(
-              titleText: ProjectStrings.name,
-            ),
-            _textInput(),
-            _PlaceTitles(
-              titleText: ProjectStrings.description,
-            ),
-            _textInput(
-              lines: 4,
-            ),
-            _coordinates(),
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                ProjectStrings.show,
-                style: TextStyle(
-                  color: Colors.green,
-                  fontSize: 20,
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewportConstraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: viewportConstraints.maxHeight,
+                ),
+                child: IntrinsicHeight(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _PlaceTitles(
+                        titleText: ProjectStrings.category,
+                      ),
+                      DropdownButton<String>(
+                        value: test,
+                        icon: SvgPicture.asset(
+                          ProjectIcons.view,
+                          color: ProjectColors.mainLightTheme,
+                        ),
+                        isExpanded: true,
+                        elevation: 16,
+                        style: const TextStyle(color: ProjectColors.textColorGrey),
+                        underline: Container(
+                          height: 2,
+                          color: ProjectColors.textColorGrey,
+                        ),
+                        onChanged: (String? newValue) {},
+                        items: <String>['One', 'Two', 'Free', 'Four']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      _PlaceTitles(
+                        titleText: ProjectStrings.name,
+                      ),
+                      _textInput(),
+                      _PlaceTitles(
+                        titleText: ProjectStrings.description,
+                      ),
+                      _textInput(
+                        lines: 4,
+                      ),
+                      _coordinates(),
+                      TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          ProjectStrings.show,
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                      Expanded(child: Container()),
+                      _AddPlaceButton(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Expanded(child: Container()),
-            _AddPlaceButton(),
-          ],
+            );
+          },
         ),
       ),
     );
@@ -186,6 +204,10 @@ class _textInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.green, width: 0.0),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
