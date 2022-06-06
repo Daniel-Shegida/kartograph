@@ -19,10 +19,20 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
   Widget build(IPlaceAddingWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Center(
+          child: Text(
+            ProjectStrings.newPlace,
+            style: const TextStyle(
+                color: ProjectColors.textColorGrey, fontSize: 16),
+          ),
+        ),
         leading: TextButton(
           onPressed: () {},
-          child: const Text("da"),
+          child: const Text(ProjectStrings.cancel),
         ),
+        leadingWidth: 100,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.5),
@@ -54,6 +64,9 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
                 );
               }).toList(),
             ),
+            SizedBox(
+              height: 24,
+            ),
             _PlaceTitles(
               titleText: ProjectStrings.name,
             ),
@@ -61,14 +74,17 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
             _PlaceTitles(
               titleText: ProjectStrings.description,
             ),
-            _textInput(lines: 4,),
+            _textInput(
+              lines: 4,
+            ),
             _coordinates(),
             TextButton(
               onPressed: () {},
               child: Text(
                 ProjectStrings.show,
                 style: TextStyle(
-                  color: ProjectColors.mainLightTheme,
+                  color: Colors.green,
+                  fontSize: 20,
                 ),
               ),
             ),
@@ -105,6 +121,7 @@ class _coordinates extends StatelessWidget {
       children: [
         Expanded(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _PlaceTitles(
                 titleText: ProjectStrings.latitude,
@@ -113,8 +130,12 @@ class _coordinates extends StatelessWidget {
             ],
           ),
         ),
+        SizedBox(
+          width: 16,
+        ),
         Expanded(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _PlaceTitles(
                 titleText: ProjectStrings.longitude,
@@ -160,7 +181,6 @@ class _textInput extends StatelessWidget {
   final int lines;
 
   const _textInput({this.lines = 1, Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
