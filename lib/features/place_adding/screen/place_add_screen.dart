@@ -55,28 +55,7 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
                       _PlaceTitles(
                         titleText: ProjectStrings.category,
                       ),
-                      DropdownButton<String>(
-                        value: test,
-                        icon: SvgPicture.asset(
-                          ProjectIcons.view,
-                          color: ProjectColors.mainLightTheme,
-                        ),
-                        isExpanded: true,
-                        elevation: 16,
-                        style: const TextStyle(color: ProjectColors.textColorGrey),
-                        underline: Container(
-                          height: 2,
-                          color: ProjectColors.textColorGrey,
-                        ),
-                        onChanged: (String? newValue) {},
-                        items: <String>['One', 'Two', 'Free', 'Four']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
+                      ChoisesWidget(),
                       SizedBox(
                         height: 24,
                       ),
@@ -218,6 +197,36 @@ class _textInput extends StatelessWidget {
       ),
       minLines: lines,
       maxLines: lines,
+    );
+  }
+}
+
+class ChoisesWidget extends StatelessWidget {
+  const ChoisesWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: 'One',
+      icon: SvgPicture.asset(
+        ProjectIcons.view,
+        color: ProjectColors.mainLightTheme,
+      ),
+      isExpanded: true,
+      elevation: 16,
+      style: const TextStyle(color: ProjectColors.textColorGrey),
+      underline: Container(
+        height: 2,
+        color: ProjectColors.textColorGrey,
+      ),
+      onChanged: (String? newValue) {},
+      items: <String>['One', 'Two', 'Free', 'Four']
+          .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
     );
   }
 }
