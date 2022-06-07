@@ -85,20 +85,23 @@ class PlaceAddingWidgetModel
 
   @override
   void initWidgetModel() {
-    _describeState.accept(false);
-    _nameState.accept(false);
-    _readyState.accept(false);
-    _currentValue.accept('other');
-    _nameController.addListener(nameHandle);
-    _describeController.addListener(describeHandle);
-    _latController.addListener(latHandle);
-    _lonController.addListener(lonHandle);
-
+    _setStartingStates();
+    _setControllers();
     super.initWidgetModel();
   }
 
   @override
   void dispose() {
+    _nameState.dispose();
+    _describeState.dispose();
+    _readyState.dispose();
+    _latState.dispose();
+    _lonState.accept(false);
+    _currentValue.dispose();
+    _nameController.dispose();
+    _describeController.dispose();
+    _latController.dispose();
+    _lonController.dispose();
     super.dispose();
   }
 
@@ -113,48 +116,47 @@ class PlaceAddingWidgetModel
   }
 
   /// функция для листенера контроллера поля имени
-  void nameHandle() {
+  void _nameHandle() {
     if (_nameController.text.isNotEmpty) {
       _nameState.accept(true);
-      checkPreparation();
+      _checkPreparation();
     } else {
       _nameState.accept(false);
     }
   }
 
   /// функция для листенера контроллера поля описания
-  void describeHandle() {
+  void _describeHandle() {
     if (_describeController.text.isNotEmpty) {
       _describeState.accept(true);
-      checkPreparation();
+      _checkPreparation();
     } else {
       _describeState.accept(false);
     }
   }
 
   /// функция для листенера контроллера поля широты
-  void latHandle() {
+  void _latHandle() {
     if (_latController.text.isNotEmpty &&
         double.tryParse(_latController.text) != null) {
       _latState.accept(true);
-      checkPreparation();
+      _checkPreparation();
     } else {
       _latState.accept(false);
     }
   }
 
   /// функция для листенера контроллера поля долготы
-  void lonHandle() {
+  void _lonHandle() {
     if (double.tryParse(_lonController.text) != null) {
       _lonState.accept(true);
-      checkPreparation();
+      _checkPreparation();
     } else {
       _lonState.accept(false);
     }
   }
 
-  /// функция проверяющая все ли поля заполнены нормально
-  void checkPreparation() {
+  void _checkPreparation() {
     if (_nameState.value! &&
         _describeState.value! &&
         _latState.value! &&
@@ -163,6 +165,24 @@ class PlaceAddingWidgetModel
     } else {
       _readyState.accept(false);
     }
+  }
+
+  /// функция проверяющая все ли поля заполнены нормально
+  void _setStartingStates() {
+    _nameState.accept(false);
+    _describeState.accept(false);
+    _readyState.accept(false);
+    _latState.accept(false);
+    _lonState.accept(false);
+    _currentValue.accept('other');
+  }
+
+  /// функция проверяющая все ли поля заполнены нормально
+  void _setControllers() {
+    _nameController.addListener(_nameHandle);
+    _describeController.addListener(_describeHandle);
+    _latController.addListener(_latHandle);
+    _lonController.addListener(_lonHandle);
   }
 }
 
