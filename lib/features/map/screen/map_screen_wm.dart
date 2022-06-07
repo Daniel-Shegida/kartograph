@@ -42,8 +42,8 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   @override
   void initWidgetModel() {
-    var test = model.mapStateStream;
-    test.listen(_updateState);
+    final blocStream = model.mapStateStream;
+    blocStream.listen(_updateState);
     model.getCurrentLocation();
     super.initWidgetModel();
   }
