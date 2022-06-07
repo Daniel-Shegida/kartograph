@@ -6,6 +6,7 @@ import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen_wm.dart';
 
+/// экран добавления места
 class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
   /// standard consctructor for elem
   const PlaceAddingScreen({
@@ -13,18 +14,16 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
     WidgetModelFactory wmFactory = placeAddingWidgetModelFactory,
   }) : super(wmFactory, key: key);
 
-  final String test = 'One';
-
   @override
   Widget build(IPlaceAddingWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Center(
+        title: const Center(
           child: Text(
             ProjectStrings.newPlace,
-            style: const TextStyle(
+            style: TextStyle(
               color: ProjectColors.textColorPrimary,
               fontSize: 16,
             ),
@@ -42,7 +41,7 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.5),
         child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints viewportConstraints) {
+          builder: (context, viewportConstraints) {
             return SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
@@ -52,27 +51,56 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _PlaceTitles(
+                      const _PlaceTitles(
                         titleText: ProjectStrings.category,
                       ),
-                      ChoisesWidget(),
-                      SizedBox(
+                      StateNotifierBuilder<String>(
+                        listenableState: wm.currentState,
+                        builder: (ctx, value) {
+                          return ChoisesWidget(
+                            currentValue: value!,
+                            list: wm.choises,
+                            onChange: wm.changeType,
+                          );
+                        },
+                      ),
+                      const SizedBox(
                         height: 24,
                       ),
-                      _PlaceTitles(
+                      const _PlaceTitles(
                         titleText: ProjectStrings.name,
                       ),
-                      _textInput(),
-                      _PlaceTitles(
+                      StateNotifierBuilder<bool>(
+                        listenableState: wm.nameState,
+                        builder: (ctx, value) {
+                          return _textInput(
+                            isPrepare: value ?? false,
+                            controller: wm.nameController,
+                          );
+                        },
+                      ),
+                      const _PlaceTitles(
                         titleText: ProjectStrings.description,
                       ),
-                      _textInput(
-                        lines: 4,
+                      StateNotifierBuilder<bool>(
+                        listenableState: wm.describeState,
+                        builder: (ctx, value) {
+                          return _textInput(
+                            lines: 4,
+                            isPrepare: value ?? false,
+                            controller: wm.describeController,
+                          );
+                        },
                       ),
-                      _coordinates(),
+                      _Coordinates(
+                        test: wm.latState,
+                        test2: wm.lonState,
+                        controller1: wm.latController,
+                        controller2: wm.lonController,
+                      ),
                       TextButton(
                         onPressed: () {},
-                        child: Text(
+                        child: const Text(
                           ProjectStrings.show,
                           style: TextStyle(
                             color: Colors.green,
@@ -81,7 +109,15 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
                         ),
                       ),
                       Expanded(child: Container()),
-                      _AddPlaceButton(),
+                      StateNotifierBuilder<bool>(
+                        listenableState: wm.readyState,
+                        builder: (ctx, value) {
+                          return _AddPlaceButton(
+                            onPressed: wm.createPlace,
+                            isReady: value ?? false,
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -109,8 +145,19 @@ class _PlaceTitles extends StatelessWidget {
   }
 }
 
-class _coordinates extends StatelessWidget {
-  const _coordinates({Key? key}) : super(key: key);
+class _Coordinates extends StatelessWidget {
+  final ListenableState<bool> test;
+  final ListenableState<bool> test2;
+  final TextEditingController controller1;
+  final TextEditingController controller2;
+
+  const _Coordinates({
+    required this.test,
+    required this.test2,
+    required this.controller1,
+    required this.controller2,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -120,24 +167,40 @@ class _coordinates extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _PlaceTitles(
+              const _PlaceTitles(
                 titleText: ProjectStrings.latitude,
               ),
-              _textInput(),
+              StateNotifierBuilder<bool>(
+                listenableState: test,
+                builder: (ctx, value) {
+                  return _textInput(
+                    isPrepare: value ?? false,
+                    controller: controller1,
+                  );
+                },
+              ),
             ],
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 16,
         ),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _PlaceTitles(
+              const _PlaceTitles(
                 titleText: ProjectStrings.longitude,
               ),
-              _textInput(),
+              StateNotifierBuilder<bool>(
+                listenableState: test2,
+                builder: (ctx, value) {
+                  return _textInput(
+                    isPrepare: value ?? false,
+                    controller: controller2,
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -147,7 +210,14 @@ class _coordinates extends StatelessWidget {
 }
 
 class _AddPlaceButton extends StatelessWidget {
-  const _AddPlaceButton({Key? key}) : super(key: key);
+  final VoidCallback onPressed;
+  final bool isReady;
+
+  const _AddPlaceButton({
+    required this.onPressed,
+    required this.isReady,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -155,20 +225,20 @@ class _AddPlaceButton extends StatelessWidget {
       height: 48,
       child: MaterialButton(
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        color: ProjectColors.textColorGrey,
+        color: Colors.green,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Text(
+          children: const [
+            Text(
               ProjectStrings.create,
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: TextStyle(color: Colors.black, fontSize: 20),
             ),
           ],
         ),
-        onPressed: () {},
+        onPressed: isReady ? onPressed : null,
       ),
     );
   }
@@ -176,15 +246,25 @@ class _AddPlaceButton extends StatelessWidget {
 
 class _textInput extends StatelessWidget {
   final int lines;
+  final bool isPrepare;
+  final TextEditingController controller;
 
-  const _textInput({this.lines = 1, Key? key}) : super(key: key);
+  const _textInput({
+    this.lines = 1,
+    required this.isPrepare,
+    required this.controller,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.green, width: 0.0),
+          borderSide: BorderSide(
+            color: isPrepare ? Colors.green : ProjectColors.textColorGrey,
+          ),
           borderRadius: BorderRadius.circular(10.0),
         ),
         border: OutlineInputBorder(
@@ -192,8 +272,9 @@ class _textInput extends StatelessWidget {
         ),
         hintText: ProjectStrings.hint,
         hintStyle:
-            TextStyle(fontSize: 16.0, color: ProjectColors.textColorGrey),
-        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+            const TextStyle(fontSize: 16.0, color: ProjectColors.textColorGrey),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
       ),
       minLines: lines,
       maxLines: lines,
@@ -202,12 +283,23 @@ class _textInput extends StatelessWidget {
 }
 
 class ChoisesWidget extends StatelessWidget {
-  const ChoisesWidget({Key? key}) : super(key: key);
+  final String currentValue;
+
+  final List<DropdownMenuItem<String>> list;
+
+  final void Function(String?) onChange;
+
+  const ChoisesWidget({
+    required this.currentValue,
+    required this.list,
+    required this.onChange,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
-      value: 'One',
+      value: currentValue,
       icon: SvgPicture.asset(
         ProjectIcons.view,
         color: ProjectColors.mainLightTheme,
@@ -219,14 +311,8 @@ class ChoisesWidget extends StatelessWidget {
         height: 2,
         color: ProjectColors.textColorGrey,
       ),
-      onChanged: (String? newValue) {},
-      items: <String>['One', 'Two', 'Free', 'Four']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
+      onChanged: onChange,
+      items: list,
     );
   }
 }
