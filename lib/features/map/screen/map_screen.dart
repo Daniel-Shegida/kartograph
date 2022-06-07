@@ -7,6 +7,7 @@ import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/map/screen/map_screen_wm.dart';
 import 'package:kartograph/features/map/widgets/marker.dart';
+import 'package:kartograph/features/map/widgets/round_button.dart';
 import 'package:kartograph/util/map_widget.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
@@ -32,7 +33,7 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
             onScaleUpdate: wm.onScaleUpdate,
             onTapUp: (details) {
               final location =
-              transformer.fromXYCoordsToLatLng(details.localPosition);
+                  transformer.fromXYCoordsToLatLng(details.localPosition);
               wm.markers.add(location);
             },
             child: Listener(
@@ -61,10 +62,10 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const [
-                            _RoundMapButton(svgPath: ProjectIcons.refresh,),
-                            _AddPlaceButton(),
-                            _RoundMapButton(svgPath: ProjectIcons.geo,),
+                          children: [
+                            _RoundRefreshButton(),
+                            const _AddPlaceButton(),
+                            _RoundGeoButton(),
                           ],
                         ),
                       ],
@@ -91,8 +92,6 @@ class _AddPlaceButton extends StatelessWidget {
       decoration: const ShapeDecoration(
         shape: StadiumBorder(),
         gradient: LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
           colors: [Colors.yellow, Colors.green],
         ),
       ),
@@ -112,34 +111,28 @@ class _AddPlaceButton extends StatelessWidget {
             ),
           ],
         ),
-        onPressed: () {
-        },
+        onPressed: () {},
       ),
     );
   }
 }
 
-class _RoundMapButton extends StatelessWidget {
-  /// путь к svg
-  final String svgPath;
-
-  const _RoundMapButton({required this.svgPath, Key? key}) : super(key: key);
-
+class _RoundRefreshButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return                           SizedBox(
-      height: 50,
-      width: 50,
+    return RoundButton(
+      svgPath: ProjectIcons.refresh,
+      onPressed: () {},
+    );
+  }
+}
 
-      child: MaterialButton(
-        onPressed: () {},
-        child: SvgPicture.asset(
-        svgPath,
-        color: ProjectColors.textColorPrimary,
-        ),
-        shape: const CircleBorder(),
-        color: ProjectColors.white,
-      ),
+class _RoundGeoButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return RoundButton(
+      svgPath: ProjectIcons.geo,
+      onPressed: () {},
     );
   }
 }
@@ -187,10 +180,10 @@ class _MarkersStackState extends State<MarkersStack> {
   @override
   Widget build(BuildContext context) {
     final markerPositions =
-    widget.markers.map(widget.transformer.fromLatLngToXYCoords);
+        widget.markers.map(widget.transformer.fromLatLngToXYCoords);
 
     final markerWidgets = markerPositions.map(
-          (pos) {
+      (pos) {
         return Marker(
           leftPos: pos.dx,
           topPos: pos.dy,
@@ -199,7 +192,8 @@ class _MarkersStackState extends State<MarkersStack> {
           onPressed: () {
             // ignore: avoid_print
             print('touch');
-          },);
+          },
+        );
       },
     ).toList();
 
