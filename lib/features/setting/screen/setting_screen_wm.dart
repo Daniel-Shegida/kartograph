@@ -1,6 +1,6 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:kartograph/assets/strings/projectStrings.dart';
+import 'package:kartograph/features/setting/domain/themes.dart';
 import 'package:kartograph/features/setting/screen/setting_screen.dart';
 import 'package:kartograph/features/setting/screen/setting_screen_model.dart';
 
@@ -13,22 +13,17 @@ SettingWidgetModel settingWidgetModelFactory(BuildContext context) {
 class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
     with SingleTickerProviderWidgetModelMixin
     implements ISettingWidgetModel {
-  final _themeNotifier = StateNotifier<bool>();
+  final _themeNotifier = StateNotifier<Themes>();
 
   @override
-  String get currentTheme => _currentTheme;
-
-  @override
-  StateNotifier<bool> get themeNotifier => _themeNotifier;
-
-  String _currentTheme = ProjectStrings.lightTheme;
+  StateNotifier<Themes> get themeNotifier => _themeNotifier;
 
   /// standard consctructor for elem
   SettingWidgetModel(SettingModel model) : super(model);
 
   @override
   void initWidgetModel() {
-    _themeNotifier.accept(false);
+    _themeNotifier.accept(Themes.light);
     super.initWidgetModel();
   }
 
@@ -38,12 +33,11 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
   }
 
   @override
-  void onThemeTap(bool switchFlag) {
-    _themeNotifier.accept(switchFlag);
-    if (_themeNotifier.value ?? false) {
-      _currentTheme = ProjectStrings.darkTheme;
+  void onChangedTheme(bool switchFlag) {
+    if (switchFlag) {
+      _themeNotifier.accept(Themes.dark);
     } else {
-      _currentTheme = ProjectStrings.lightTheme;
+      _themeNotifier.accept(Themes.light);
     }
   }
 
@@ -54,14 +48,11 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
 /// Interface of [SettingWidgetModel].
 abstract class ISettingWidgetModel extends IWidgetModel {
   /// уведомитель флага темы
-  StateNotifier<bool> get themeNotifier;
-
-  /// текущая тема
-  String get currentTheme;
+  StateNotifier<Themes> get themeNotifier;
 
   /// метод свитчера карточки темы
   // ignore: avoid_positional_boolean_parameters
-  void onThemeTap(bool switchFlag);
+  void onChangedTheme(bool switchFlag);
 
   /// метод карточки туториала
   void onTutorialTap();

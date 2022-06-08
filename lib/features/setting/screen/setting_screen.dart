@@ -4,8 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
+import 'package:kartograph/features/setting/domain/themes.dart';
 import 'package:kartograph/features/setting/screen/setting_screen_wm.dart';
-import 'package:kartograph/features/setting/widgets/cardWidget.dart';
 
 /// экран настроек
 class SettingScreen extends ElementaryWidget<ISettingWidgetModel> {
@@ -23,18 +23,18 @@ class SettingScreen extends ElementaryWidget<ISettingWidgetModel> {
       ),
       body: Column(
         children: [
-          StateNotifierBuilder<bool>(
+          StateNotifierBuilder<Themes>(
             listenableState: wm.themeNotifier,
             builder: (ctx, value) {
               return _ThemeChangerCard(
-                cardName: wm.currentTheme,
-                swithFlag: value ?? false,
-                switchFunc: wm.onThemeTap,
+                cardName: value!.themeName,
+                swithValue: value.condition,
+                onChanged: wm.onChangedTheme,
               );
             },
           ),
           _TutorialWatcherCard(
-            helperFunc: wm.onTutorialTap,
+            onTap: wm.onTutorialTap,
           ),
         ],
       ),
@@ -47,46 +47,47 @@ class _ThemeChangerCard extends StatelessWidget {
   final String cardName;
 
   /// текущий флаг темы
-  final bool swithFlag;
+  final bool swithValue;
 
   /// функция переключающая тему
-  final Function(bool) switchFunc;
+  final Function(bool) onChanged;
 
-  const _ThemeChangerCard(
-      {required this.cardName,
-      required this.swithFlag,
-      required this.switchFunc,
-      Key? key,})
-      : super(key: key);
+  const _ThemeChangerCard({
+    required this.cardName,
+    required this.swithValue,
+    required this.onChanged,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return CardWidget.withSwitch(
-      cardName: cardName,
-      onPressed: () {},
-      switchFlag: swithFlag,
-      switchFun: switchFunc,
+    return Card(
+      child: SwitchListTile(
+        title: Text(cardName),
+        value: swithValue,
+        onChanged: onChanged,
+      ),
     );
   }
 }
 
 class _TutorialWatcherCard extends StatelessWidget {
   /// функция которая активируется при нажатии на иконку
-  final Function() helperFunc;
+  final Function() onTap;
 
-  const _TutorialWatcherCard({required this.helperFunc, Key? key})
-      : super(key: key);
+  const _TutorialWatcherCard({required this.onTap, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return CardWidget.withHelper(
-      cardName: ProjectStrings.tutorialCard,
-      onPressed: () {},
-      icon: SvgPicture.asset(
-        ProjectIcons.infoIcon,
-        color: ProjectColors.green,
+    return Card(
+      child: ListTile(
+        title: const Text(ProjectStrings.tutorialCard),
+        trailing: SvgPicture.asset(
+          ProjectIcons.infoIcon,
+          color: ProjectColors.green,
+        ),
+        onTap: onTap,
       ),
-      onHelper: helperFunc,
     );
   }
 }
