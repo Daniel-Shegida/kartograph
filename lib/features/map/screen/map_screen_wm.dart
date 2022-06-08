@@ -84,13 +84,14 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     }
   }
 
-
-
-  void _updateState(BaseMapState state) {
-
+  @override
+  void onTap(TapUpDetails details, MapTransformer transformer) {
+    final location = transformer.fromXYCoordsToLatLng(details.localPosition);
+    markers.add(location);
   }
-}
 
+  void _updateState(BaseMapState state) {}
+}
 
 /// Interface of [MapWidgetModel].
 abstract class IMapWidgetModel extends IWidgetModel {
@@ -111,4 +112,7 @@ abstract class IMapWidgetModel extends IWidgetModel {
 
   /// action for changing scale
   void onScaleUpdate(ScaleUpdateDetails details);
+
+  /// action for changing scale
+  void onTap(TapUpDetails details, MapTransformer transformer);
 }

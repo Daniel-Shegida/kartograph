@@ -32,9 +32,7 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
             onScaleStart: wm.onScaleStart,
             onScaleUpdate: wm.onScaleUpdate,
             onTapUp: (details) {
-              final location =
-                  transformer.fromXYCoordsToLatLng(details.localPosition);
-              wm.markers.add(location);
+              wm.onTap(details, transformer);
             },
             child: Listener(
               behavior: HitTestBehavior.opaque,
