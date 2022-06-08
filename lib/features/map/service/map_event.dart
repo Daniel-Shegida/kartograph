@@ -1,10 +1,6 @@
-import 'package:equatable/equatable.dart';
 
 /// Basic map event.
-abstract class BaseMapEvent extends Equatable {
-  @override
-  List<Object?> get props => [];
-
+abstract class BaseMapEvent{
   /// Constructor.
   const BaseMapEvent();
 }
