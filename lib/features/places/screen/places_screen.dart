@@ -1,5 +1,6 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/places/screen/places_screeen_wm.dart';
@@ -19,8 +20,18 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
         elevation: 0,
         title: const _SearchTextInput(),
       ),
-      body: const Center(
-        child: Text("place"),
+      body:
+
+      StateNotifierBuilder<List<Place>>(
+        listenableState: wm.places,
+        builder: (ctx, value) {
+          return ListView.builder(
+            itemCount: value!.length,
+            itemBuilder: (context, index) {
+              return _PlacesCard(iconText: value[index].name, iconColor: Colors.green,);
+            },
+          );
+        },
       ),
     );
   }
