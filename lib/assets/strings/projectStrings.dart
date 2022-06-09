@@ -10,6 +10,10 @@ abstract class ProjectStrings {
   static const String mapSite = 'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/';
   /// Персональный токен.
   static const String mapToken = '?access_token=pk.eyJ1IjoidGVzdGVyLWRvbm8iLCJhIjoiY2wzbG1idXVuMW9jZzNkcXdnNGZwN2NlOSJ9.LGGfGe5NuuAyD-FFepK47g';
+  /// PlacesScreen название фильтра.
+  static const String filter = 'фильтр';
+  /// PlacesScreen название поиска.
+  static const String search = 'Поиск';
 
 
   /// Метод возвращающий url.
