@@ -43,7 +43,7 @@ class PlaceRepository {
   }
 
   /// получает список мест с сервера по фильтру
-  Future<List<Place>> search(
+  Future<List<Place>> getSearchedPlaces(
     double lat,
     double lng,
     double radius,

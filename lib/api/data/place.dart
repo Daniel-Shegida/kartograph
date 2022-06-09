@@ -16,8 +16,10 @@ class Place {
   /// urls картинок места
   List<String> urls;
 
+  /// тип места
   String placeType;
 
+  /// описание места
   String description;
 
   /// полный конструктор места

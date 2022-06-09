@@ -15,7 +15,7 @@ class PlaceDto {
   /// долгота места
   final double lng;
 
-  /// долгота места
+  /// дистанция до места места
   final double distance;
 
   /// название места

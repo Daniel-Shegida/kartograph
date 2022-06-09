@@ -44,8 +44,8 @@ abstract class RestClient {
     @Body() PlaceResponse body,
   );
 
-  /// заменяет место на сервере по id
-  @POST('filtered_places')
+  /// получает список мест с сервера по фильтру
+  @POST(PlaceUrls.filteredPlaces)
   Future<List<PlaceDto>> getFilteredPlaces(
     @Body() PlacesFilterRequestDto body,
   );
