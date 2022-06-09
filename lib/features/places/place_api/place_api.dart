@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:kartograph/api/data/places_filter_request_dto.dart';
 import 'package:kartograph/api/data/place_dto.dart';
 import 'package:kartograph/api/data/place_response.dart';
+import 'package:kartograph/api/data/places_filter_request_dto.dart';
 import 'package:kartograph/assets/strings/urls.dart';
 import 'package:retrofit/retrofit.dart';
 
