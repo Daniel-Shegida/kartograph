@@ -1,3 +1,5 @@
+import 'package:kartograph/api/data/places_filter_request_dto.dart';
+import 'package:kartograph/api/data/place_dto.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/api/data/place_response.dart';
 import 'package:kartograph/features/places/place_api/place_api.dart';
@@ -38,5 +40,25 @@ class PlaceRepository {
     final testResponses = await _placeRepositoryApi.getPlaces(amount);
 
     return testResponses.map(mapResponseToPlace).toList();
+  }
+
+  /// получает список мест с сервера по фильтру
+  Future<List<Place>> search(
+    double lat,
+    double lng,
+    double radius,
+    List<String> typeFilter,
+    String nameFilter,
+  ) async {
+    final test = PlacesFilterRequestDto(
+      lat: lat,
+      lng: lng,
+      radius: radius,
+      typeFilter: typeFilter,
+      nameFilter: nameFilter,
+    );
+    final testResponses = await _placeRepositoryApi.getFilteredPlaces(test);
+
+    return testResponses.map(mapDtoResponseToPlace).toList();
   }
 }

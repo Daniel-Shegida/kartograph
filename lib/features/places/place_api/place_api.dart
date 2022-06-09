@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:kartograph/api/data/places_filter_request_dto.dart';
+import 'package:kartograph/api/data/place_dto.dart';
 import 'package:kartograph/api/data/place_response.dart';
 import 'package:kartograph/assets/strings/urls.dart';
 import 'package:retrofit/retrofit.dart';
@@ -17,12 +19,11 @@ abstract class RestClient {
     @Query('count') int id,
   );
 
-
   /// создает новое место на сервере
   @POST(PlaceUrls.place)
   Future<void> postPlace(
-      @Body() PlaceResponse body,
-      );
+    @Body() PlaceResponse body,
+  );
 
   /// Получает место с сервера по id
   @GET('${PlaceUrls.place}/{id}')
@@ -41,5 +42,11 @@ abstract class RestClient {
   Future<PlaceResponse> putPlace(
     @Path('id') String id,
     @Body() PlaceResponse body,
+  );
+
+  /// заменяет место на сервере по id
+  @POST('filtered_places')
+  Future<List<PlaceDto>> getFilteredPlaces(
+    @Body() PlacesFilterRequestDto body,
   );
 }

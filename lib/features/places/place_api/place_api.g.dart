@@ -91,11 +91,30 @@ class _RestClient implements RestClient {
     _data.addAll(body.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<PlaceResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
+            Options(method: 'PUT', headers: _headers, extra: _extra)
                 .compose(_dio.options, 'place/${id}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = PlaceResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<PlaceDto>> getFilteredPlaces(body) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<PlaceDto>>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'filtered_places',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => PlaceDto.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 
