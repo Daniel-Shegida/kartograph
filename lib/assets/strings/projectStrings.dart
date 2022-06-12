@@ -32,6 +32,19 @@ abstract class ProjectStrings {
   /// долгота.
   static const String longitude = 'Долгота';
 
+  /// долгота.
+  static const String hotel = 'Отель';
+  /// долгота.
+  static const String restaurant = 'Рестаран';
+  /// долгота.
+  static const String other = 'Другое';
+  /// долгота.
+  static const String cafe = 'Кафе';
+  /// долгота.
+  static const String museum = 'Музей';
+  /// долгота.
+  static const String park = 'Парк';
+
 
   /// Метод возвращающий url.
   static String getUrl(int x, int y, int z){

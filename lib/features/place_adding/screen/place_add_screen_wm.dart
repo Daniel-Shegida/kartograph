@@ -1,5 +1,6 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:kartograph/features/place_adding/domain/categories.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen.dart';
 import 'package:kartograph/features/place_adding/screen/place_screen_model.dart';
 
@@ -23,7 +24,7 @@ class PlaceAddingWidgetModel
 
   final StateNotifier<bool> _readyState = StateNotifier<bool>();
 
-  final StateNotifier<String> _currentValue = StateNotifier<String>();
+  final StateNotifier<Categories> _currentValue = StateNotifier<Categories>();
 
   final TextEditingController _nameController = TextEditingController();
 
@@ -33,17 +34,11 @@ class PlaceAddingWidgetModel
 
   final TextEditingController _latController = TextEditingController();
 
-  final List<DropdownMenuItem<String>> _choises = [
-    'hotel',
-    'restaurant',
-    'other',
-    'cafe',
-    'museum',
-    'park',
-  ].map<DropdownMenuItem<String>>((value) {
-    return DropdownMenuItem<String>(
+  final List<DropdownMenuItem<Categories>> _choises =
+      Categories.values.map<DropdownMenuItem<Categories>>((value) {
+    return DropdownMenuItem<Categories>(
       value: value,
-      child: Text(value),
+      child: Text(value.categoryName),
     );
   }).toList();
 
@@ -75,10 +70,10 @@ class PlaceAddingWidgetModel
   StateNotifier<bool> get nameState => _nameState;
 
   @override
-  List<DropdownMenuItem<String>> get choises => _choises;
+  List<DropdownMenuItem<Categories>> get choises => _choises;
 
   @override
-  StateNotifier<String> get currentState => _currentValue;
+  StateNotifier<Categories> get currentState => _currentValue;
 
   /// standard consctructor for elem
   PlaceAddingWidgetModel(PlaceAddingModel model) : super(model);
@@ -111,7 +106,7 @@ class PlaceAddingWidgetModel
   }
 
   @override
-  void changeType(String? newType) {
+  void changeType(Categories? newType) {
     _currentValue.accept(newType);
   }
 
@@ -174,7 +169,7 @@ class PlaceAddingWidgetModel
     _readyState.accept(false);
     _latState.accept(false);
     _lonState.accept(false);
-    _currentValue.accept('other');
+    _currentValue.accept(Categories.other);
   }
 
   /// функция проверяющая все ли поля заполнены нормально
@@ -204,7 +199,7 @@ abstract class IPlaceAddingWidgetModel extends IWidgetModel {
   StateNotifier<bool> get readyState;
 
   /// выбронный тип места
-  StateNotifier<String> get currentState;
+  StateNotifier<Categories> get currentState;
 
   ///  контроллер поля имени
   TextEditingController get nameController;
@@ -219,10 +214,10 @@ abstract class IPlaceAddingWidgetModel extends IWidgetModel {
   TextEditingController get lonController;
 
   /// список типов мест
-  List<DropdownMenuItem<String>> get choises;
+  List<DropdownMenuItem<Categories>> get choises;
 
   /// метод изменения  типа
-  void changeType(String? newType);
+  void changeType(Categories? newType);
 
   /// метод создания нового места
   void createPlace();

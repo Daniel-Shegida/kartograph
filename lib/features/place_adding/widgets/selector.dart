@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
+import 'package:kartograph/features/place_adding/domain/categories.dart';
 
 /// виджет для выбора из нескольких элементов
 class SelectorWidget extends StatelessWidget {
   /// текущее выбранное значение
-  final String currentValue;
+  final Categories currentValue;
 
   /// список из выбора элементов
-  final List<DropdownMenuItem<String>> list;
+  final List<DropdownMenuItem<Categories>> list;
 
   /// функция переключающее элементы
-  final void Function(String?) onChange;
+  final void Function(Categories?) onChange;
 
   /// конструктор [SelectorWidget]
   const SelectorWidget({
@@ -24,7 +25,7 @@ class SelectorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
+    return DropdownButton<Categories>(
       value: currentValue,
       icon: SvgPicture.asset(
         ProjectIcons.view,

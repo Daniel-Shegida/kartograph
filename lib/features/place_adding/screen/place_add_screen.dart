@@ -2,6 +2,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
+import 'package:kartograph/features/place_adding/domain/categories.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen_wm.dart';
 import 'package:kartograph/features/place_adding/widgets/custom_text_field.dart';
 import 'package:kartograph/features/place_adding/widgets/locked_button.dart';
@@ -55,9 +56,9 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
                       const _PlaceTitles(
                         titleText: ProjectStrings.category,
                       ),
-                      StateNotifierBuilder<String>(
+                      StateNotifierBuilder<Categories>(
                         listenableState: wm.currentState,
-                        builder: (ctx, value) {
+                        builder: (_, value) {
                           return SelectorWidget(
                             currentValue: value!,
                             list: wm.choises,
@@ -73,7 +74,7 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
                       ),
                       StateNotifierBuilder<bool>(
                         listenableState: wm.nameState,
-                        builder: (ctx, value) {
+                        builder: (_, value) {
                           return CustomTextField(
                             isPrepare: value ?? false,
                             controller: wm.nameController,
@@ -85,7 +86,7 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
                       ),
                       StateNotifierBuilder<bool>(
                         listenableState: wm.describeState,
-                        builder: (ctx, value) {
+                        builder: (_, value) {
                           return CustomTextField(
                             lines: 4,
                             isPrepare: value ?? false,
@@ -112,7 +113,7 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
                       Expanded(child: Container()),
                       StateNotifierBuilder<bool>(
                         listenableState: wm.readyState,
-                        builder: (ctx, value) {
+                        builder: (_, value) {
                           return LockedButton(
                             onPressed: wm.createPlace,
                             isReady: value ?? false,
@@ -173,7 +174,7 @@ class _CoordsIput extends StatelessWidget {
               ),
               StateNotifierBuilder<bool>(
                 listenableState: latState,
-                builder: (ctx, value) {
+                builder: (_, value) {
                   return CustomTextField(
                     isPrepare: value ?? false,
                     controller: latController,
@@ -195,7 +196,7 @@ class _CoordsIput extends StatelessWidget {
               ),
               StateNotifierBuilder<bool>(
                 listenableState: longState,
-                builder: (ctx, value) {
+                builder: (_, value) {
                   return CustomTextField(
                     isPrepare: value ?? false,
                     controller: lonController,
