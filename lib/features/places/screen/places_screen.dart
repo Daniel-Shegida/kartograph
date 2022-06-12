@@ -17,14 +17,8 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
     return Scaffold(
       appBar: AppBar(),
       body: const Center(
-        child: TextButton(onPressed: testFuncs, child: Text("Click")),
+        child: TextButton(onPressed: null, child: Text("Click")),
       ),
     );
   }
-}
-
-void testFuncs() async {
-  final PlaceRepository rep = PlaceRepository(RestClient(Dio()));
-
- // вставить функции для проверки
 }
