@@ -7,6 +7,7 @@ import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/map/screen/map_screen_wm.dart';
 import 'package:kartograph/features/map/widgets/marker.dart';
+import 'package:kartograph/features/map/widgets/round_button.dart';
 import 'package:kartograph/util/map_widget.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
@@ -31,9 +32,7 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
             onScaleStart: wm.onScaleStart,
             onScaleUpdate: wm.onScaleUpdate,
             onTapUp: (details) {
-              final location =
-                  transformer.fromXYCoordsToLatLng(details.localPosition);
-              wm.markers.add(location);
+              wm.onTap(details, transformer);
             },
             child: Listener(
               behavior: HitTestBehavior.opaque,
@@ -62,13 +61,11 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            _RoundMapButton(
-                              svgPath: ProjectIcons.refresh,
+                            _RoundRefreshButton(
                               onPressed: wm.refresh,
                             ),
                             const _AddPlaceButton(),
-                            _RoundMapButton(
-                              svgPath: ProjectIcons.geo,
+                            _RoundGeoButton(
                               onPressed: wm.getCurrentLocation,
                             ),
                           ],
@@ -124,33 +121,38 @@ class _AddPlaceButton extends StatelessWidget {
   }
 }
 
-class _RoundMapButton extends StatelessWidget {
-  /// путь к svg
-  final String svgPath;
-
+class _RoundRefreshButton extends StatelessWidget {
   /// функция  по нажатию на кнопку
   final VoidCallback onPressed;
 
-  const _RoundMapButton({
-    required this.svgPath,
+  const _RoundRefreshButton({
     required this.onPressed,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50,
-      width: 50,
-      child: MaterialButton(
-        onPressed: onPressed,
-        child: SvgPicture.asset(
-          svgPath,
-          color: ProjectColors.textColorPrimary,
-        ),
-        shape: const CircleBorder(),
-        color: ProjectColors.white,
-      ),
+    return RoundButton(
+      svgPath: ProjectIcons.refresh,
+      onPressed: onPressed,
+    );
+  }
+}
+
+class _RoundGeoButton extends StatelessWidget {
+  /// функция  по нажатию на кнопку
+  final VoidCallback onPressed;
+
+  const _RoundGeoButton({
+    required this.onPressed,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RoundButton(
+      svgPath: ProjectIcons.geo,
+      onPressed: onPressed,
     );
   }
 }

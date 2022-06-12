@@ -87,6 +87,11 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   }
 
   @override
+  void onTap(TapUpDetails details, MapTransformer transformer) {
+    final location = transformer.fromXYCoordsToLatLng(details.localPosition);
+    markers.add(location);
+  }
+  @override
   void getCurrentLocation() {
     model.getCurrentLocation();
   }
@@ -102,6 +107,7 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     }
   }
 }
+
 
 /// Interface of [MapWidgetModel].
 abstract class IMapWidgetModel extends IWidgetModel {
@@ -122,6 +128,9 @@ abstract class IMapWidgetModel extends IWidgetModel {
 
   /// action for changing scale
   void onScaleUpdate(ScaleUpdateDetails details);
+
+  /// action for changing scale
+  void onTap(TapUpDetails details, MapTransformer transformer);
 
   /// action to go back to current location
   void getCurrentLocation();
