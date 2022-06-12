@@ -1,8 +1,13 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kartograph/assets/colors/colors.dart';
+import 'package:kartograph/assets/res/project_icons.dart';
+import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/map/screen/map_screen_wm.dart';
 import 'package:kartograph/features/map/widgets/marker.dart';
+import 'package:kartograph/features/map/widgets/round_button.dart';
 import 'package:kartograph/util/map_widget.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
@@ -27,9 +32,7 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
             onScaleStart: wm.onScaleStart,
             onScaleUpdate: wm.onScaleUpdate,
             onTapUp: (details) {
-              final location =
-              transformer.fromXYCoordsToLatLng(details.localPosition);
-              wm.markers.add(location);
+              wm.onTap(details, transformer);
             },
             child: Listener(
               behavior: HitTestBehavior.opaque,
@@ -50,12 +53,84 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                     transformer: transformer,
                     markers: wm.markers,
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _RoundRefreshButton(),
+                            const _AddPlaceButton(),
+                            _RoundGeoButton(),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
           );
         },
       ),
+    );
+  }
+}
+
+class _AddPlaceButton extends StatelessWidget {
+  const _AddPlaceButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 200,
+      height: 48,
+      decoration: const ShapeDecoration(
+        shape: StadiumBorder(),
+        gradient: LinearGradient(
+          colors: [Colors.yellow, Colors.green],
+        ),
+      ),
+      child: MaterialButton(
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        shape: const StadiumBorder(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SvgPicture.asset(
+              ProjectIcons.plus,
+              color: ProjectColors.white,
+            ),
+            const Text(
+              ProjectStrings.addPlace,
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ],
+        ),
+        onPressed: () {},
+      ),
+    );
+  }
+}
+
+class _RoundRefreshButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return RoundButton(
+      svgPath: ProjectIcons.refresh,
+      onPressed: () {},
+    );
+  }
+}
+
+class _RoundGeoButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return RoundButton(
+      svgPath: ProjectIcons.geo,
+      onPressed: () {},
     );
   }
 }
@@ -103,10 +178,10 @@ class _MarkersStackState extends State<MarkersStack> {
   @override
   Widget build(BuildContext context) {
     final markerPositions =
-    widget.markers.map(widget.transformer.fromLatLngToXYCoords);
+        widget.markers.map(widget.transformer.fromLatLngToXYCoords);
 
     final markerWidgets = markerPositions.map(
-          (pos) {
+      (pos) {
         return Marker(
           leftPos: pos.dx,
           topPos: pos.dy,
@@ -115,7 +190,8 @@ class _MarkersStackState extends State<MarkersStack> {
           onPressed: () {
             // ignore: avoid_print
             print('touch');
-          },);
+          },
+        );
       },
     ).toList();
 

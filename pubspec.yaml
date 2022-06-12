@@ -21,10 +21,6 @@ dependencies:
   retrofit: ^3.0.1+1
   surf_logger: ^1.1.0
   adaptive_navigation: ^0.0.7
-  cached_network_image: ^3.2.1
-#  библиотеки отвечающие за работу с картами
-  map: ^1.0.1
-  latlng: ^0.1.0
 #  библиотеки для сервиса
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
@@ -32,6 +28,11 @@ dependencies:
   routemaster: ^1.0.0
 #  иконки
   flutter_svg: ^1.1.0
+#  библиотеки отвечающие за работу с картами
+  map: ^1.0.1
+  latlng: ^0.1.0
+  cached_network_image: ^3.2.1
+
 
 dev_dependencies:
   flutter_test:
