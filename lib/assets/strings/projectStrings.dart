@@ -45,6 +45,9 @@ abstract class ProjectStrings {
   /// долгота.
   static const String park = 'Парк';
 
+  /// Название экрана добавить место
+  static const String addPlace = 'Новое место';
+
 
   /// Метод возвращающий url.
   static String getUrl(int x, int y, int z){

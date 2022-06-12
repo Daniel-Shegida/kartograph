@@ -1,5 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:kartograph/features/places/screen/places_screeen_wm.dart';
 
 class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
@@ -14,8 +17,9 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
   Widget build(IPlacesWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(),
-      body: const Center(
-        child: Text("place"),
+      body:  Center(
+        child: TextButton(onPressed: (){},
+        child: Text("place")),
       ),
     );
   }
