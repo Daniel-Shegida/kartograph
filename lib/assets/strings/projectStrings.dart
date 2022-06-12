@@ -11,7 +11,7 @@ abstract class ProjectStrings {
   /// Персональный токен.
   static const String mapToken = '?access_token=pk.eyJ1IjoidGVzdGVyLWRvbm8iLCJhIjoiY2wzbG1idXVuMW9jZzNkcXdnNGZwN2NlOSJ9.LGGfGe5NuuAyD-FFepK47g';
 
-  /// Персональный токен.
+  /// Название экрана добавить место
   static const String addPlace = 'Новое место';
 
 

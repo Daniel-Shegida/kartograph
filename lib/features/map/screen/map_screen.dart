@@ -61,9 +61,13 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            _RoundRefreshButton(),
+                            _RoundRefreshButton(
+                              onPressed: wm.refresh,
+                            ),
                             const _AddPlaceButton(),
-                            _RoundGeoButton(),
+                            _RoundGeoButton(
+                              onPressed: wm.getCurrentLocation,
+                            ),
                           ],
                         ),
                       ],
@@ -90,6 +94,8 @@ class _AddPlaceButton extends StatelessWidget {
       decoration: const ShapeDecoration(
         shape: StadiumBorder(),
         gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
           colors: [Colors.yellow, Colors.green],
         ),
       ),
@@ -116,21 +122,37 @@ class _AddPlaceButton extends StatelessWidget {
 }
 
 class _RoundRefreshButton extends StatelessWidget {
+  /// функция  по нажатию на кнопку
+  final VoidCallback onPressed;
+
+  const _RoundRefreshButton({
+    required this.onPressed,
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return RoundButton(
       svgPath: ProjectIcons.refresh,
-      onPressed: () {},
+      onPressed: onPressed,
     );
   }
 }
 
 class _RoundGeoButton extends StatelessWidget {
+  /// функция  по нажатию на кнопку
+  final VoidCallback onPressed;
+
+  const _RoundGeoButton({
+    required this.onPressed,
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return RoundButton(
       svgPath: ProjectIcons.geo,
-      onPressed: () {},
+      onPressed: onPressed,
     );
   }
 }
@@ -187,10 +209,7 @@ class _MarkersStackState extends State<MarkersStack> {
           topPos: pos.dy,
           iconData: Icons.location_on,
           color: Colors.red,
-          onPressed: () {
-            // ignore: avoid_print
-            print('touch');
-          },
+          onPressed: () {},
         );
       },
     ).toList();

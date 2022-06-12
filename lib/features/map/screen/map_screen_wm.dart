@@ -42,7 +42,9 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   @override
   void initWidgetModel() {
-    model.mapStateStream.listen(_updateState);
+    final blocStream = model.mapStateStream;
+    blocStream.listen(_updateState);
+    model.getCurrentLocation();
     super.initWidgetModel();
   }
 
@@ -89,9 +91,23 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     final location = transformer.fromXYCoordsToLatLng(details.localPosition);
     markers.add(location);
   }
+  @override
+  void getCurrentLocation() {
+    model.getCurrentLocation();
+  }
 
-  void _updateState(BaseMapState state) {}
+  @override
+  void refresh() {
+    model.getCurrentLocation();
+  }
+
+  void _updateState(BaseMapState state) {
+    if (state is MapContentState) {
+      controller.center = state.currentLocation;
+    }
+  }
 }
+
 
 /// Interface of [MapWidgetModel].
 abstract class IMapWidgetModel extends IWidgetModel {
@@ -115,4 +131,10 @@ abstract class IMapWidgetModel extends IWidgetModel {
 
   /// action for changing scale
   void onTap(TapUpDetails details, MapTransformer transformer);
+
+  /// action to go back to current location
+  void getCurrentLocation();
+
+  /// пока ивента для него нет
+  void refresh();
 }
