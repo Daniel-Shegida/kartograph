@@ -3,30 +3,29 @@ import 'package:kartograph/features/places/service/bloc/place_bloc.dart';
 import 'package:kartograph/features/places/service/bloc/place_event.dart';
 import 'package:kartograph/features/places/service/bloc/place_state.dart';
 
-/// Model of SpecialWidgetModel
+/// Модель экрана мест
 class PlacesModel extends ElementaryModel {
-  /// Bloc for working with profile states.
+  /// Блок с которого получают состояния.
   final PlaceBloc _placeBloc;
 
-  /// Stream to track the state of the profile_bloc.
+  /// Подписка на блок.
   Stream<BasePlaceState> get placeStateStream => _placeBloc.stream;
 
-  /// Gives the current state.
+  /// Получает стейт из блока.
   BasePlaceState get currentState => _placeBloc.state;
 
-  /// Create an instance [PlacesModel].
+  /// Конструктор [PlacesModel].
   PlacesModel(
-      this._placeBloc,
-      ) : super();
+    this._placeBloc,
+  ) : super();
 
+  /// иницилизация модели
   void init() {
     super.init();
-    _placeBloc.add(PlaceLoadEvent());
   }
 
-  void search(List<String> list) {
-    // ignore: avoid_print
-    print("model");
-    _placeBloc.add(PlaceSearchEvent(list: list));
+  /// получить список мест с параметрами поиска
+  void search(List<String> searchingTypeList, String search) {
+    _placeBloc.add(PlaceSearchEvent(searchingTypeList: searchingTypeList, search: search));
   }
 }

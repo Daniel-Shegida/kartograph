@@ -1,6 +1,4 @@
-// Builder for [SpecialWidgetModel]
 import 'package:elementary/elementary.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
@@ -9,6 +7,7 @@ import 'package:kartograph/features/places/screen/places_screen.dart';
 import 'package:kartograph/features/places/service/bloc/place_bloc.dart';
 import 'package:kartograph/features/places/service/bloc/place_state.dart';
 
+/// Factory for [PlacesWidgetModel]
 PlacesWidgetModel placesWidgetModelFactory(BuildContext context) {
   return PlacesWidgetModel(PlacesModel(PlaceBloc()));
 }
@@ -17,15 +16,15 @@ PlacesWidgetModel placesWidgetModelFactory(BuildContext context) {
 class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
     with SingleTickerProviderWidgetModelMixin
     implements IPlacesWidgetModel {
-  final  _controller = TextEditingController();
+  final _controller = TextEditingController();
 
-  final StateNotifier<List<Place>> _places = StateNotifier<List<Place>>();
+  final StateNotifier<List<Place>> _placesListState =
+      StateNotifier<List<Place>>();
 
-  final StateNotifier<bool> _bool = StateNotifier<bool>();
+  final List<String> _searchParams = [];
 
-  final List<String> searchParams = [];
-
-  final List<StateNotifier<bool>> _test = List<StateNotifier<bool>>.generate(
+  final List<StateNotifier<bool>> _checkBoxNotifier =
+      List<StateNotifier<bool>>.generate(
     Categories.values.length,
     (index) => StateNotifier<bool>(),
   );
@@ -33,12 +32,8 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   @override
   TextEditingController get controller => _controller;
 
-
   @override
-  StateNotifier<List<Place>> get places => _places;
-
-  @override
-  StateNotifier<bool> get boola => _bool;
+  StateNotifier<List<Place>> get placesListState => _placesListState;
 
   /// standard consctructor for elem
   PlacesWidgetModel(PlacesModel model) : super(model);
@@ -46,21 +41,13 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   @override
   void initWidgetModel() {
     model.placeStateStream.listen(_updateState);
-    _places.accept([
-      Place(
-        lng: 2,
-        id: 1,
-        urls: [],
-        name: 'sadasd',
-        description: '',
-        placeType: Categories.cafe,
-        lat: 2,
-      ),
-    ]);
-    _bool.accept(false);
-    for (final e in _test) {
-      e.accept(false);
+    placesListState.accept([]);
+    controller.addListener(_searchPlace);
+    for (var i = 0; i < _checkBoxNotifier.length; i++) {
+      _checkBoxNotifier[i].accept(true);
+      _searchParams.add(Categories.values.elementAt(i).name);
     }
+    _searchPlace();
     super.initWidgetModel();
   }
 
@@ -73,32 +60,27 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   void showPicker() {
     showModalBottomSheet<void>(
       context: context,
-      builder: (BuildContext context) {
+      builder: (_) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-          children:
-              List<Widget>.generate(Categories.values.length, (int index) {
+          children: List<Widget>.generate(Categories.values.length, (index) {
             return StateNotifierBuilder<bool>(
-              listenableState: _test[index],
+              listenableState: _checkBoxNotifier[index],
               builder: (_, value) {
                 return CheckboxListTile(
                   title: Text(Categories.values.elementAt(index).categoryName),
                   value: value,
-                  onChanged: (bool? value) {
-                    _test[index].accept(value);
-                    if (value == true) {
-                      // ignore: avoid_print
-                      print("$value, and index: $index");
-                      // ignore: avoid_print
-                      print(Categories.values.elementAt(index).name);
-                      searchParams.add(Categories.values.elementAt(index).name);
-                      _searchPlace(searchParams);
+                  onChanged: (value) {
+                    _checkBoxNotifier[index].accept(value);
+                    if (value ?? false) {
+                      _searchParams
+                          .add(Categories.values.elementAt(index).name);
                     } else {
-                      searchParams
+                      _searchParams
                           .remove(Categories.values.elementAt(index).name);
-                      _searchPlace(searchParams);
                     }
+                    _searchPlace();
                   },
                   secondary: Icon(
                     Icons.circle,
@@ -114,19 +96,13 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   }
 
   void _updateState(BasePlaceState state) {
-    if (state is PlaceContentTestState) {
-      // ignore: avoid_print
-      print("hmm");
-      _places.accept(state.list);
+    if (state is PlaceContentState) {
+      _placesListState.accept(state.list);
     }
   }
 
-  void _loadPlaces(int page) {}
-
-  void _searchPlace(List<String> list) {
-    // ignore: avoid_print
-    print("wm");
-    model.search(list);
+  void _searchPlace() {
+    model.search(_searchParams, controller.text);
   }
 }
 
@@ -136,10 +112,7 @@ abstract class IPlacesWidgetModel extends IWidgetModel {
   TextEditingController get controller;
 
   /// показываемые темы
-  StateNotifier<List<Place>> get places;
-
-  /// состояния поля долготы
-  StateNotifier<bool> get boola;
+  StateNotifier<List<Place>> get placesListState;
 
   /// action of dialog
   void showPicker();

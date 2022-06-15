@@ -1,11 +1,13 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/colors/colors.dart';
-import 'package:kartograph/assets/enums/categories.dart';
+import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/places/screen/places_screeen_wm.dart';
 
+/// экран просмотра существующих мест
 class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
   /// standard consctructor for elem
   const PlacesScreen({
@@ -21,21 +23,24 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
         elevation: 0,
         title: _SearchTextInput(
           onTap: wm.showPicker,
+          controller: wm.controller,
         ),
       ),
       body: StateNotifierBuilder<List<Place>>(
-        listenableState: wm.places,
+        listenableState: wm.placesListState,
         builder: (ctx, value) {
-          return ListView.builder(
-            itemCount: value!.length,
-            itemBuilder: (context, index) {
-              return _PlacesCard(
-                cardText: value[index].name,
-                cardColor: value[index].placeType.categoryColor,
-                cardPlaceType: value[index].placeType.categoryName,
-              );
-            },
-          );
+          return value?.isEmpty ?? false
+              ? const _WrongSearchWidget()
+              : ListView.builder(
+                  itemCount: value!.length,
+                  itemBuilder: (context, index) {
+                    return _PlacesCard(
+                      cardText: value[index].name,
+                      cardColor: value[index].placeType.categoryColor,
+                      cardPlaceType: value[index].placeType.categoryName,
+                    );
+                  },
+                );
         },
       ),
     );
@@ -73,8 +78,11 @@ class _SearchTextInput extends StatelessWidget {
   final TextEditingController controller;
   final void Function() onTap;
 
-  _SearchTextInput({required this.onTap, required this.controller, Key? key})
-      : super(key: key);
+  const _SearchTextInput({
+    required this.onTap,
+    required this.controller,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -88,11 +96,11 @@ class _SearchTextInput extends StatelessWidget {
             borderRadius: BorderRadius.circular(5),
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Center(
               child: TextField(
                 controller: controller,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: ProjectStrings.search,
                   hintStyle: TextStyle(fontSize: 17.0, color: Colors.grey),
                   border: InputBorder.none,
@@ -134,6 +142,41 @@ class _FilterBtn extends StatelessWidget {
         ),
         onPressed: onPressed,
       ),
+    );
+  }
+}
+
+class _WrongSearchWidget extends StatelessWidget {
+  const _WrongSearchWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SvgPicture.asset(
+          ProjectIcons.search,
+          color: ProjectColors.textColorGrey,
+          semanticsLabel: 'иконка поиска',
+          width: 64,
+          height: 64,
+        ),
+        const Text(
+          ProjectStrings.wrongSearch,
+          style: TextStyle(
+            height: 18,
+            color: ProjectColors.textColorGrey,
+          ),
+        ),
+        const Text(
+          ProjectStrings.wrongSearch2,
+          style: TextStyle(
+            height: 14,
+            color: ProjectColors.textColorGrey,
+          ),
+        ),
+      ],
     );
   }
 }
