@@ -28,7 +28,7 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
           return ListView.builder(
             itemCount: value!.length,
             itemBuilder: (context, index) {
-              return _PlacesCard(iconText: value[index].name, iconColor: Colors.green,);
+              return _PlacesCard(cardText: value[index].name, cardColor: Colors.green, cardPlaceType: value[index].placeType,);
             },
           );
         },
@@ -38,10 +38,11 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
 }
 
 class _PlacesCard extends StatelessWidget {
-  final Color iconColor;
-  final String iconText;
+  final Color cardColor;
+  final String cardText;
+  final String cardPlaceType;
 
-  const _PlacesCard({required this.iconColor, required this.iconText, Key? key})
+  const _PlacesCard({required this.cardColor, required this.cardText, required this.cardPlaceType, Key? key})
       : super(key: key);
 
   @override
@@ -50,11 +51,19 @@ class _PlacesCard extends StatelessWidget {
       child: ListTile(
         leading: Icon(
           Icons.circle,
-          color: iconColor,
+          color: cardColor,
         ),
-        title: Text(iconText),
+        title: Text(cardText),
+        subtitle: Text(cardPlaceType),
       ),
     );
+  }
+
+  Color func(String type){
+    switch(type){
+      case ProjectStrings.
+    }
+    return Colors.white;
   }
 }
 

@@ -15,6 +15,19 @@ abstract class ProjectStrings {
   /// PlacesScreen название поиска.
   static const String search = 'Поиск';
 
+  /// Отель.
+  static const String hotel = 'Отель';
+  /// Рестаран.
+  static const String restaurant = 'Рестаран';
+  /// Другое.
+  static const String other = 'Другое';
+  /// Кафе.
+  static const String cafe = 'Кафе';
+  /// Музей.
+  static const String museum = 'Музей';
+  /// Парк.
+  static const String park = 'Парк';
+
 
   /// Метод возвращающий url.
   static String getUrl(int x, int y, int z){
