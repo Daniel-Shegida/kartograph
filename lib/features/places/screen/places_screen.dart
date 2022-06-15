@@ -2,6 +2,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/colors/colors.dart';
+import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/places/screen/places_screeen_wm.dart';
 
@@ -18,17 +19,21 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const _SearchTextInput(),
+        title: _SearchTextInput(
+          onTap: wm.showPicker,
+        ),
       ),
-      body:
-
-      StateNotifierBuilder<List<Place>>(
+      body: StateNotifierBuilder<List<Place>>(
         listenableState: wm.places,
         builder: (ctx, value) {
           return ListView.builder(
             itemCount: value!.length,
             itemBuilder: (context, index) {
-              return _PlacesCard(cardText: value[index].name, cardColor: Colors.green, cardPlaceType: value[index].placeType,);
+              return _PlacesCard(
+                cardText: value[index].name,
+                cardColor: value[index].placeType.categoryColor,
+                cardPlaceType: value[index].placeType.categoryName,
+              );
             },
           );
         },
@@ -42,8 +47,12 @@ class _PlacesCard extends StatelessWidget {
   final String cardText;
   final String cardPlaceType;
 
-  const _PlacesCard({required this.cardColor, required this.cardText, required this.cardPlaceType, Key? key})
-      : super(key: key);
+  const _PlacesCard({
+    required this.cardColor,
+    required this.cardText,
+    required this.cardPlaceType,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,17 +67,14 @@ class _PlacesCard extends StatelessWidget {
       ),
     );
   }
-
-  Color func(String type){
-    switch(type){
-      case ProjectStrings.
-    }
-    return Colors.white;
-  }
 }
 
 class _SearchTextInput extends StatelessWidget {
-  const _SearchTextInput({Key? key}) : super(key: key);
+  final TextEditingController controller;
+  final void Function() onTap;
+
+  _SearchTextInput({required this.onTap, required this.controller, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,15 +84,29 @@ class _SearchTextInput extends StatelessWidget {
           width: double.infinity,
           height: 40,
           decoration: BoxDecoration(
-              color: ProjectColors.searchColor, borderRadius: BorderRadius.circular(5),),
-          child: const Center(
-            child: TextField(
-              decoration: InputDecoration(
-                  hintText: ProjectStrings.search, border: InputBorder.none,),
+            color: ProjectColors.searchColor,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: Center(
+              child: TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  hintText: ProjectStrings.search,
+                  hintStyle: TextStyle(fontSize: 17.0, color: Colors.grey),
+                  border: InputBorder.none,
+                ),
+              ),
             ),
           ),
         ),
-        Align(alignment: Alignment.centerRight, child: _FilterBtn(onPressed: () {  },)),
+        Align(
+          alignment: Alignment.centerRight,
+          child: _FilterBtn(
+            onPressed: onTap,
+          ),
+        ),
       ],
     );
   }
