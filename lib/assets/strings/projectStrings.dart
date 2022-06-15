@@ -32,17 +32,17 @@ abstract class ProjectStrings {
   /// долгота.
   static const String longitude = 'Долгота';
 
-  /// долгота.
+  /// Отель.
   static const String hotel = 'Отель';
-  /// долгота.
+  /// Рестаран.
   static const String restaurant = 'Рестаран';
-  /// долгота.
+  /// Другое.
   static const String other = 'Другое';
-  /// долгота.
+  /// Кафе.
   static const String cafe = 'Кафе';
-  /// долгота.
+  /// Музей.
   static const String museum = 'Музей';
-  /// долгота.
+  /// Парк.
   static const String park = 'Парк';
 
   /// Название экрана добавить место
