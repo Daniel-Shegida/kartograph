@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 abstract class ProjectColors {
   static const Color mainLightTheme = _greyBlue;
+  static const Color white = _white;
   static const Color textColorSecondary = _darkGrey;
   static const Color textColorPrimary = _oxfordBlue;
   static const Color textColorGrey = _black54;
@@ -20,5 +21,7 @@ abstract class ProjectColors {
   static const Color _darkGrey = Color(0xFFA7A7A7);
   static const Color _lightGrey = Color(0xFFE4E4E4);
   static const Color _greyBlue = Color(0xFF252849);
+  static const Color _white = Color(0xFFFFFFFF);
+
 
 }

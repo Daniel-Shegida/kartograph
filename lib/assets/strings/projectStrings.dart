@@ -2,13 +2,10 @@
 abstract class ProjectStrings {
   /// PlacesScreen bottom name.
   static const String placesBottom = 'places';
-
   /// MapScreen bottom name.
   static const String mapBottom = 'map';
-
   /// SettingScreen bottom name.
   static const String settingBottom = 'setting';
-
   /// Сайт откуда берется карта.
   static const String mapSite =
       'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/';
@@ -46,6 +43,9 @@ abstract class ProjectStrings {
 
   /// Ошибочные параметры поиска пояснение.
   static const String wrongSearch2 = 'Попробуйте изменить параметры поиска';
+  /// Название экрана добавить место
+  static const String addPlace = 'Новое место';
+
 
   /// Метод возвращающий url.
   static String getUrl(int x, int y, int z) {
