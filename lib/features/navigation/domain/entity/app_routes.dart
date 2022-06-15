@@ -1,5 +1,6 @@
 
 import 'package:kartograph/features/map/map_route.dart';
+import 'package:kartograph/features/map_adding/map_adding_route.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:kartograph/features/navigation/widget/bottom_sheet.dart';
 import 'package:kartograph/features/places/place_route.dart';
@@ -10,8 +11,12 @@ import 'package:routemaster/routemaster.dart';
 final routes = RouteMap(
   routes: {
     /// 'путь': (_) => MaterialPage(child: виджет),
+    // '/': (_) =>
+    // const Redirect('${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}'),
     '/': (_) =>
-    const Redirect('${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}'),
+    const Redirect('MapAdding'),
+
+
 
     '/tabs': (route) => const TabPage(
       child: BottomNavigator(),
@@ -29,5 +34,8 @@ final routes = RouteMap(
 
     '${AppRoutePaths.tabs}${AppRoutePaths.settingScreen}': (_) =>
     const SettingScreenRoute(),
+
+    'MapAdding': (_) =>
+    const MapAddingScreenRoute(),
   },
 );
