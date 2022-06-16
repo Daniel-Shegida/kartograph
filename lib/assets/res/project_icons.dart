@@ -22,4 +22,6 @@ abstract class ProjectIcons {
 
   /// Search icon.
   static const String search = 'assets/icons/Search.svg';
+  /// PlaceAdd type adding.
+  static const String view = 'assets/icons/View.svg';
 }

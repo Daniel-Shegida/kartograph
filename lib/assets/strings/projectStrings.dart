@@ -43,12 +43,34 @@ abstract class ProjectStrings {
 
   /// Ошибочные параметры поиска пояснение.
   static const String wrongSearch2 = 'Попробуйте изменить параметры поиска';
+  /// leading нэкрана добавить место
+  static const String cancel = 'Отмена';
+  /// Название экрана добавить место
+  static const String newPlace = 'Новое место';
+  /// добавить место категория.
+  static const String category = 'Категория';
+  /// добавить место название места.
+  static const String name = 'Название';
+  /// добавить место описание места.
+  static const String description = 'Описание';
+  /// добавить место подсказка полей.
+  static const String hint = 'Text';
+  /// добавить место указать на катре кнопка.
+  static const String show = 'Указать на карте';
+  /// добавить место создать место.
+  static const String create = 'Создать';
+  /// широта.
+  static const String latitude = 'Широта';
+  /// долгота.
+  static const String longitude = 'Долгота';
+
   /// Название экрана добавить место
   static const String addPlace = 'Новое место';
 
 
   /// Метод возвращающий url.
-  static String getUrl(int x, int y, int z) {
+  static String getUrl(int x, int y, int z){
     return '${ProjectStrings.mapSite}$z/$x/$y${ProjectStrings.mapToken}';
+
   }
 }
