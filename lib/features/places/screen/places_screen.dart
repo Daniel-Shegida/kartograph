@@ -1,12 +1,11 @@
-// ignore_for_file: avoid_print
-
+import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:kartograph/features/places/place_api/place_api.dart';
 import 'package:kartograph/features/places/screen/places_screeen_wm.dart';
+import 'package:kartograph/features/places/service/place_rep.dart';
 
 class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
-
   /// standard consctructor for elem
   const PlacesScreen({
     Key? key,
@@ -17,9 +16,8 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
   Widget build(IPlacesWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(),
-      body:  Center(
-        child: TextButton(onPressed: (){},
-        child: Text("place")),
+      body: const Center(
+        child: TextButton(onPressed: null, child: Text("Click")),
       ),
     );
   }
