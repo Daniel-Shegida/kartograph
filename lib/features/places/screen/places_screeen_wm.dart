@@ -53,6 +53,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
 
   @override
   void dispose() {
+    _controller.dispose();
     super.dispose();
   }
 
