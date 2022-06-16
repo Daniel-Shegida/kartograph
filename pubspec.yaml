@@ -5,7 +5,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.2 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -19,14 +19,19 @@ dependencies:
   provider: ^6.0.2
   surf_logger: ^1.1.0
   adaptive_navigation: ^0.0.7
-  cached_network_image: ^3.2.1
-#  библиотеки отвечающие за работу с картами
-  map: ^1.0.1
-  latlng: ^0.1.0
+#  библиотеки для сервиса
+  flutter_bloc: ^8.0.1
+  equatable: ^2.0.3
 #  навигация
   routemaster: ^1.0.0
 #  иконки
   flutter_svg: ^1.1.0
+#  библиотеки отвечающие за работу с картами
+  map: ^1.0.1
+  latlng: ^0.1.0
+  cached_network_image: ^3.2.1
+# геолокация
+  geolocator: ^8.2.1
 #  библиотеки для работы с сервером
 #  flutter pub run build_runner build
   json_annotation: ^4.5.0

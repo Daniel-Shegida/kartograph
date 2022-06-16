@@ -2,12 +2,14 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/features/map/screen/map_screen.dart';
 import 'package:kartograph/features/map/screen/map_screen_model.dart';
+import 'package:kartograph/features/map/service/map_bloc.dart';
+import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 
 /// Builder for [MapWidgetModel]
 MapWidgetModel mapWidgetModelFactory(BuildContext context) {
-  return MapWidgetModel(MapModel());
+  return MapWidgetModel(MapModel(MapBloc()));
 }
 
 /// WidgetModel for [MapScreen]
@@ -17,9 +19,19 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     location: LatLng(35.68, 51.41),
   );
 
+  final _markers = [
+    LatLng(35.674, 51.41),
+    LatLng(35.678, 51.41),
+    LatLng(35.682, 51.41),
+    LatLng(35.686, 51.41),
+  ];
+
   /// controller for map
   @override
   MapController get controller => _controller;
+
+  @override
+  List<LatLng> get markers => _markers;
 
   late Offset? _dragStart;
 
@@ -30,6 +42,9 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   @override
   void initWidgetModel() {
+    final blocStream = model.mapStateStream;
+    blocStream.listen(_updateState);
+    model.getCurrentLocation();
     super.initWidgetModel();
   }
 
@@ -70,12 +85,37 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
       _controller.drag(diff.dx, diff.dy);
     }
   }
+
+  @override
+  void onTap(TapUpDetails details, MapTransformer transformer) {
+    final location = transformer.fromXYCoordsToLatLng(details.localPosition);
+    markers.add(location);
+  }
+  @override
+  void getCurrentLocation() {
+    model.getCurrentLocation();
+  }
+
+  @override
+  void refresh() {
+    model.getCurrentLocation();
+  }
+
+  void _updateState(BaseMapState state) {
+    if (state is MapContentState) {
+      controller.center = state.currentLocation;
+    }
+  }
 }
+
 
 /// Interface of [MapWidgetModel].
 abstract class IMapWidgetModel extends IWidgetModel {
   /// Text editing controller Main Screen.
   MapController get controller;
+
+  /// Text editing controller Main Screen.
+  List<LatLng> get markers;
 
   /// action to go back tp detail
   void gotoDefault();
@@ -88,4 +128,13 @@ abstract class IMapWidgetModel extends IWidgetModel {
 
   /// action for changing scale
   void onScaleUpdate(ScaleUpdateDetails details);
+
+  /// action for changing scale
+  void onTap(TapUpDetails details, MapTransformer transformer);
+
+  /// action to go back to current location
+  void getCurrentLocation();
+
+  /// пока ивента для него нет
+  void refresh();
 }

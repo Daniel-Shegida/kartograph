@@ -13,4 +13,12 @@ abstract class ProjectIcons {
   static const String settings = 'assets/icons/Settings.svg';
   /// SettingScreen bottom name.
   static const String settingsFull = 'assets/icons/Settings-fill.svg';
+  /// MapRefresh bottom .
+  static const String refresh = 'assets/icons/Refresh.svg';
+  /// MapGeo bottom name.
+  static const String geo = 'assets/icons/Geolocation.svg';
+  /// MapPlus bottom name.
+  static const String plus = 'assets/icons/Plus.svg';
+  /// PlaceAdd type adding.
+  static const String view = 'assets/icons/View.svg';
 }
