@@ -26,14 +26,14 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
           controller: wm.controller,
         ),
       ),
-      body: StateNotifierBuilder<List<Place>>(
-        listenableState: wm.placesListState,
-        builder: (ctx, value) {
+      body: EntityStateNotifierBuilder<List<Place>>(
+        listenableEntityState: wm.placesListState,
+        builder: (_, value) {
           return value?.isEmpty ?? false
               ? const _WrongSearchWidget()
               : ListView.builder(
                   itemCount: value!.length,
-                  itemBuilder: (context, index) {
+                  itemBuilder: (_, index) {
                     return _PlacesCard(
                       cardText: value[index].name,
                       cardColor: value[index].placeType.categoryColor,
@@ -41,6 +41,14 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
                     );
                   },
                 );
+        },
+        loadingBuilder: (_, __) {
+          return Center(
+            child: Transform.scale(
+              scale: 2.5,
+              child: const CircularProgressIndicator(),
+            ),
+          );
         },
       ),
     );
@@ -60,7 +68,7 @@ class _PlacesCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(_) {
     return Card(
       child: ListTile(
         leading: Icon(
@@ -85,7 +93,7 @@ class _SearchTextInput extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(_) {
     return Stack(
       children: [
         Container(
@@ -126,7 +134,7 @@ class _FilterBtn extends StatelessWidget {
   const _FilterBtn({required this.onPressed, Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(_) {
     return SizedBox(
       width: 75,
       height: 40,
@@ -150,33 +158,34 @@ class _WrongSearchWidget extends StatelessWidget {
   const _WrongSearchWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SvgPicture.asset(
-          ProjectIcons.search,
-          color: ProjectColors.textColorGrey,
-          semanticsLabel: 'иконка поиска',
-          width: 64,
-          height: 64,
-        ),
-        const Text(
-          ProjectStrings.wrongSearch,
-          style: TextStyle(
-            height: 18,
+  Widget build(_) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SvgPicture.asset(
+            ProjectIcons.search,
             color: ProjectColors.textColorGrey,
+            semanticsLabel: 'иконка поиска',
+            width: 64,
+            height: 64,
           ),
-        ),
-        const Text(
-          ProjectStrings.wrongSearch2,
-          style: TextStyle(
-            height: 14,
-            color: ProjectColors.textColorGrey,
+          const Text(
+            ProjectStrings.wrongSearch,
+            style: TextStyle(
+              fontSize: 18,
+              color: ProjectColors.textColorGrey,
+            ),
           ),
-        ),
-      ],
+          const Text(
+            ProjectStrings.wrongSearch2,
+            style: TextStyle(
+              fontSize: 14,
+              color: ProjectColors.textColorGrey,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

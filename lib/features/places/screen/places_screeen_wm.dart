@@ -18,8 +18,8 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
     implements IPlacesWidgetModel {
   final _controller = TextEditingController();
 
-  final StateNotifier<List<Place>> _placesListState =
-      StateNotifier<List<Place>>();
+  final EntityStateNotifier<List<Place>> _placesListState =
+  EntityStateNotifier<List<Place>>();
 
   final List<String> _searchParams = [];
 
@@ -33,7 +33,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   TextEditingController get controller => _controller;
 
   @override
-  StateNotifier<List<Place>> get placesListState => _placesListState;
+  EntityStateNotifier<List<Place>> get placesListState => _placesListState;
 
   /// standard consctructor for elem
   PlacesWidgetModel(PlacesModel model) : super(model);
@@ -41,7 +41,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   @override
   void initWidgetModel() {
     model.placeStateStream.listen(_updateState);
-    placesListState.accept([]);
+    placesListState.loading();
     controller.addListener(_searchPlace);
     for (var i = 0; i < _checkBoxNotifier.length; i++) {
       _checkBoxNotifier[i].accept(true);
@@ -97,7 +97,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
 
   void _updateState(BasePlaceState state) {
     if (state is PlaceContentState) {
-      _placesListState.accept(state.list);
+      _placesListState.content(state.list);
     }
   }
 
@@ -112,7 +112,7 @@ abstract class IPlacesWidgetModel extends IWidgetModel {
   TextEditingController get controller;
 
   /// показываемые темы
-  StateNotifier<List<Place>> get placesListState;
+  EntityStateNotifier<List<Place>> get placesListState;
 
   /// action of dialog
   void showPicker();

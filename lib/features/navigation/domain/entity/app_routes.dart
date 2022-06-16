@@ -11,7 +11,7 @@ final routes = RouteMap(
   routes: {
     /// 'путь': (_) => MaterialPage(child: виджет),
     '/': (_) =>
-    const Redirect('${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}'),
+    const Redirect('${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}'),
 
     '/tabs': (route) => const TabPage(
       child: BottomNavigator(),
