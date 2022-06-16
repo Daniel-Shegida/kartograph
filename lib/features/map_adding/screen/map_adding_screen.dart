@@ -1,7 +1,10 @@
 import 'package:elementary/elementary.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/assets/colors/colors.dart';
+import 'package:kartograph/features/map/screen/map_screen.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_wm.dart';
+import 'package:kartograph/util/map_widget.dart';
 import 'package:map/map.dart';
 
 class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
