@@ -1,6 +1,7 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
+import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_model.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_screen.dart';
 import 'package:latlng/latlng.dart';
@@ -23,6 +24,12 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
     location: LatLng(35.68, 51.41),
   );
 
+  StateNotifier<List<LatLng>> _markers = StateNotifier<List<LatLng>>();
+
+  late Offset? _dragStart;
+
+  double _scaleStart = 1.0;
+
   /// standard consctructor for elem
   MapAddingWidgetModel(MapAddingModel model) : super(model);
 
@@ -34,6 +41,7 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   void initWidgetModel() {
     final blocStream = model.mapStateStream;
     blocStream.listen(_updateState);
+    _markers.accept([]);
     super.initWidgetModel();
   }
 
@@ -78,7 +86,7 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   @override
   void onTap(TapUpDetails details, MapTransformer transformer) {
     final location = transformer.fromXYCoordsToLatLng(details.localPosition);
-    markers.add(location);
+    markers.accept([LatLng(location.latitude, location.longitude)]);
   }
 
   @override
@@ -88,10 +96,9 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
 
   @override
   // TODO: implement markers
-  List<LatLng> get markers => [];
+  StateNotifier<List<LatLng>> get markers => _markers;
 
-  void _updateState(){
-  }
+  void _updateState(BaseMapState state) {}
 }
 
 /// Interface of [MapAddingWidgetModel].
@@ -100,7 +107,7 @@ abstract class IMapAddingWidgetModel extends IWidgetModel {
   MapController get controller;
 
   /// Text editing controller Main Screen.
-  List<LatLng> get markers;
+  StateNotifier<List<LatLng>> get markers;
 
   /// action to go back tp detail
   void gotoDefault();

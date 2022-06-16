@@ -19,4 +19,5 @@ abstract class ProjectIcons {
   static const String geo = 'assets/icons/Geolocation.svg';
   /// MapPlus bottom name.
   static const String plus = 'assets/icons/Plus.svg';
+
 }
