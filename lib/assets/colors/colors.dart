@@ -6,14 +6,15 @@ import 'package:flutter/material.dart';
 // /// Replenished as needed.
 // /// Use only the main palette.
 
-
 abstract class ProjectColors {
   static const Color mainLightTheme = _greyBlue;
+  static const Color mainGreenColor = _green;
   static const Color white = _white;
   static const Color textColorSecondary = _darkGrey;
   static const Color textColorPrimary = _oxfordBlue;
   static const Color textColorGrey = _black54;
   static const Color mapScreenHelper = _lightGrey;
+
 
 
 // Main palette (https://www.figma.com/file/Bzz1tcNFWc28YHlm2CRmbd/дизайн-ver-0.1?node-id=237%3A1514).
@@ -27,4 +28,5 @@ abstract class ProjectColors {
 
 
 
+  static const Color _green = Color(0xFF4CAF50);
 }

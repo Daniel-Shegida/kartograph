@@ -11,6 +11,40 @@ abstract class ProjectStrings {
   /// Персональный токен.
   static const String mapToken = '?access_token=pk.eyJ1IjoidGVzdGVyLWRvbm8iLCJhIjoiY2wzbG1idXVuMW9jZzNkcXdnNGZwN2NlOSJ9.LGGfGe5NuuAyD-FFepK47g';
 
+  /// leading нэкрана добавить место
+  static const String cancel = 'Отмена';
+  /// Название экрана добавить место
+  static const String newPlace = 'Новое место';
+  /// добавить место категория.
+  static const String category = 'Категория';
+  /// добавить место название места.
+  static const String name = 'Название';
+  /// добавить место описание места.
+  static const String description = 'Описание';
+  /// добавить место подсказка полей.
+  static const String hint = 'Text';
+  /// добавить место указать на катре кнопка.
+  static const String show = 'Указать на карте';
+  /// добавить место создать место.
+  static const String create = 'Создать';
+  /// широта.
+  static const String latitude = 'Широта';
+  /// долгота.
+  static const String longitude = 'Долгота';
+
+  /// Отель.
+  static const String hotel = 'Отель';
+  /// Рестаран.
+  static const String restaurant = 'Рестаран';
+  /// Другое.
+  static const String other = 'Другое';
+  /// Кафе.
+  static const String cafe = 'Кафе';
+  /// Музей.
+  static const String museum = 'Музей';
+  /// Парк.
+  static const String park = 'Парк';
+
   /// Название экрана добавить место
   static const String addPlace = 'Новое место';
 
