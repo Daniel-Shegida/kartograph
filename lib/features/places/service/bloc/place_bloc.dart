@@ -17,6 +17,7 @@ class PlaceBloc extends Bloc<BasePlaceEvent, BasePlaceState> {
   PlaceBloc() : super(InitPlaceContentState()) {
     on<PlaceSearchEvent>((event, emit) async {
       final list = await _rep.getSearchedPlaces(
+        /// TODO посмотреть возможность добавления координат при связывании приложения
         60,
         30,
         3000000.0,
