@@ -29,5 +29,9 @@ final routes = RouteMap(
     '${AppRoutePaths.tabs}${AppRoutePaths.settingScreen}': (_) =>
         const SettingScreenRoute(),
     'SettingScreenRoute': (_) => PlaceAddScreenRoute(),
+
+    '/tabs/profile/topicProgress/:search': (route) =>  ProfileTopicNamedRoute(
+      route.queryParameters['search'] ?? '0',
+    ),
   },
 );
