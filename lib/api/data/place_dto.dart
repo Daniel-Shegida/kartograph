@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/assets/enums/categories.dart';
 
 part 'place_dto.g.dart';
 
@@ -57,6 +58,6 @@ Place mapDtoResponseToPlace(PlaceDto response) => Place(
   lng: response.lng,
   name: response.name,
   urls: response.urls,
-  placeType: response.placeType,
+  placeType: Categories.values.byName(response.placeType),
   description: response.description,
 );

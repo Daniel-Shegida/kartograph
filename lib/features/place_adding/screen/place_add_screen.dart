@@ -1,8 +1,8 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/assets/colors/colors.dart';
+import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
-import 'package:kartograph/features/place_adding/domain/categories.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen_wm.dart';
 import 'package:kartograph/features/place_adding/widgets/custom_text_field.dart';
 import 'package:kartograph/features/place_adding/widgets/locked_button.dart';
