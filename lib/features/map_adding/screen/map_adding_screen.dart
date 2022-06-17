@@ -30,7 +30,7 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
             onPressed: () {},
             child: const Text(
               ProjectStrings.cancel,
-              style: TextStyle(color: ProjectColors.textColorGrey),
+              style: TextStyle(color: ProjectColors.textColorGrey, fontSize: 16),
             ),
           ),
         ),
@@ -38,14 +38,14 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
         title: const Text(
           ProjectStrings.location,
           style:
-              TextStyle(decorationColor: Colors.black87, color: Colors.black87),
+              TextStyle(color: ProjectColors.mainLightTheme, fontSize: 24),
         ),
         actions: [
           TextButton(
             onPressed: () {},
             child: const Text(
               ProjectStrings.ready,
-              style: TextStyle(color: Colors.green),
+              style: TextStyle(color: ProjectColors.mainGreenColor, fontSize: 16),
             ),
           ),
         ],
