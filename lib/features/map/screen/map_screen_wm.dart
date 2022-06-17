@@ -28,8 +28,8 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
         lng: 32,
         name: 'name',
         urls: ['urls'],
-        placeType: Categories.,
-        description: 'description')
+        placeType: Categories.other,
+        description: 'description',),
   ];
 
   /// controller for map
@@ -95,7 +95,6 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   @override
   void onTap(TapUpDetails details, MapTransformer transformer) {
     final location = transformer.fromXYCoordsToLatLng(details.localPosition);
-    // markers.add(location);
   }
 
   @override

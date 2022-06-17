@@ -1,5 +1,7 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_model.dart';
@@ -23,8 +25,14 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   final _controller = MapController(
     location: LatLng(35.68, 51.41),
   );
+  final StateNotifier<List<Place>> _markers = StateNotifier<List<Place>>();
 
-  StateNotifier<List<LatLng>> _markers = StateNotifier<List<LatLng>>();
+  /// controller for map
+  @override
+  MapController get controller => _controller;
+
+  @override
+  StateNotifier<List<Place>> get markers => _markers;
 
   late Offset? _dragStart;
 
@@ -33,14 +41,9 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   /// standard consctructor for elem
   MapAddingWidgetModel(MapAddingModel model) : super(model);
 
-  /// controller for map
-  @override
-  MapController get controller => _controller;
-
   @override
   void initWidgetModel() {
-    final blocStream = model.mapStateStream;
-    blocStream.listen(_updateState);
+    model.mapStateStream.listen(_updateState);
     _markers.accept([]);
     super.initWidgetModel();
   }
@@ -86,19 +89,27 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   @override
   void onTap(TapUpDetails details, MapTransformer transformer) {
     final location = transformer.fromXYCoordsToLatLng(details.localPosition);
-    markers.accept([LatLng(location.latitude, location.longitude)]);
+    _markers.accept([
+      _createPlaceAdder(
+        location.latitude,
+        location.longitude,
+      ),
+    ]);
   }
-
-  @override
-  void getCurrentLocation() {
-    model.getCurrentLocation();
-  }
-
-  @override
-  // TODO: implement markers
-  StateNotifier<List<LatLng>> get markers => _markers;
 
   void _updateState(BaseMapState state) {}
+
+  Place _createPlaceAdder(double lat, double long) {
+    return Place(
+      id: 1,
+      lat: lat,
+      lng: long,
+      name: 'name',
+      urls: [],
+      placeType: Categories.placeAdder,
+      description: 'description',
+    );
+  }
 }
 
 /// Interface of [MapAddingWidgetModel].
@@ -107,7 +118,7 @@ abstract class IMapAddingWidgetModel extends IWidgetModel {
   MapController get controller;
 
   /// Text editing controller Main Screen.
-  StateNotifier<List<LatLng>> get markers;
+  StateNotifier<List<Place>> get markers;
 
   /// action to go back tp detail
   void gotoDefault();

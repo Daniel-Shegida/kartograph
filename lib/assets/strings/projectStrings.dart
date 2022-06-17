@@ -63,9 +63,14 @@ abstract class ProjectStrings {
   static const String latitude = 'Широта';
   /// долгота.
   static const String longitude = 'Долгота';
-
   /// Название экрана добавить место
   static const String addPlace = 'Новое место';
+  /// местоположение на экране добавить место
+  static const String location = 'Местоположение';
+  /// готово на экране добавить место
+  static const String ready = 'готово';
+  /// подсказка на экране добавить место
+  static const String mapAddHint = 'потяните карту чтобы выбрать правильное местоположение';
 
 
   /// Метод возвращающий url.

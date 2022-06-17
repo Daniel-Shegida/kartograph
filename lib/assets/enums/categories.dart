@@ -4,22 +4,25 @@ import 'package:kartograph/assets/strings/projectStrings.dart';
 /// темы проекта
 enum Categories {
   /// отель
-  hotel(ProjectStrings.hotel, Colors.blue),
+  hotel(ProjectStrings.hotel, Colors.blue, Icons.location_on),
 
   /// рестаран
-  restaurant(ProjectStrings.restaurant, Colors.red),
+  restaurant(ProjectStrings.restaurant, Colors.red, Icons.location_on),
 
   /// другое
-  other(ProjectStrings.other, Colors.grey),
+  other(ProjectStrings.other, Colors.grey, Icons.location_on),
 
   /// кафе
-  cafe(ProjectStrings.cafe, Colors.deepOrangeAccent),
+  cafe(ProjectStrings.cafe, Colors.deepOrangeAccent, Icons.location_on),
 
   /// музей
-  museum(ProjectStrings.museum, Colors.orange),
+  museum(ProjectStrings.museum, Colors.orange, Icons.location_on),
 
   /// парк
-  park(ProjectStrings.park, Colors.green);
+  park(ProjectStrings.park, Colors.green, Icons.location_on),
+
+  /// добавление места
+  placeAdder('_', Colors.grey, Icons.add_circle);
 
   /// имя категории
   final String categoryName;
@@ -27,9 +30,13 @@ enum Categories {
   /// цвет категории
   final Color categoryColor;
 
+  /// цвет категории
+  final IconData categoryIcon;
+
   /// конструктор [Categories]
   const Categories(
-      this.categoryName,
-      this.categoryColor,
-      );
+    this.categoryName,
+    this.categoryColor,
+    this.categoryIcon,
+  );
 }
