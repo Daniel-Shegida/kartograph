@@ -208,8 +208,8 @@ class _MarkersStackState extends State<MarkersStack1> {
         return Marker(
           leftPos: pos.dx,
           topPos: pos.dy,
-          iconData: Icons.add,
-          color: Colors.blue,
+          iconData: Icons.add_circle,
+          color: Colors.grey,
           onPressed: () {},
         );
       },
