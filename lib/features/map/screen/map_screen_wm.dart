@@ -1,5 +1,7 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/features/map/screen/map_screen.dart';
 import 'package:kartograph/features/map/screen/map_screen_model.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
@@ -20,10 +22,14 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   );
 
   final _markers = [
-    LatLng(35.674, 51.41),
-    LatLng(35.678, 51.41),
-    LatLng(35.682, 51.41),
-    LatLng(35.686, 51.41),
+    Place(
+        id: 1,
+        lat: 31,
+        lng: 32,
+        name: 'name',
+        urls: ['urls'],
+        placeType: Categories.,
+        description: 'description')
   ];
 
   /// controller for map
@@ -31,7 +37,7 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   MapController get controller => _controller;
 
   @override
-  List<LatLng> get markers => _markers;
+  List<Place> get markers => _markers;
 
   late Offset? _dragStart;
 
@@ -89,8 +95,9 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   @override
   void onTap(TapUpDetails details, MapTransformer transformer) {
     final location = transformer.fromXYCoordsToLatLng(details.localPosition);
-    markers.add(location);
+    // markers.add(location);
   }
+
   @override
   void getCurrentLocation() {
     model.getCurrentLocation();
@@ -108,14 +115,13 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   }
 }
 
-
 /// Interface of [MapWidgetModel].
 abstract class IMapWidgetModel extends IWidgetModel {
   /// Text editing controller Main Screen.
   MapController get controller;
 
   /// Text editing controller Main Screen.
-  List<LatLng> get markers;
+  List<Place> get markers;
 
   /// action to go back tp detail
   void gotoDefault();

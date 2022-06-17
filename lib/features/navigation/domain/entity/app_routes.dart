@@ -35,7 +35,6 @@ final routes = RouteMap(
     '${AppRoutePaths.tabs}${AppRoutePaths.settingScreen}': (_) =>
         const SettingScreenRoute(),
     'SettingScreenRoute': (_) => PlaceAddScreenRoute(),
-    const SettingScreenRoute(),
 
     'MapAdding': (_) =>
     const MapAddingScreenRoute(),

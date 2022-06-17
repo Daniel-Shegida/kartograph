@@ -2,6 +2,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
@@ -166,7 +167,7 @@ class MarkersStack extends StatefulWidget {
   final MapTransformer transformer;
 
   /// маркеры на карие
-  final List<LatLng> markers;
+  final List<Place> markers;
 
   /// MarkersStack constructor.
   const MarkersStack({
@@ -199,22 +200,34 @@ class _MarkersStackState extends State<MarkersStack> {
 
   @override
   Widget build(BuildContext context) {
-    final markerPositions =
-        widget.markers.map(widget.transformer.fromLatLngToXYCoords);
-
-    final markerWidgets = markerPositions.map(
-      (pos) {
-        return Marker(
-          leftPos: pos.dx,
-          topPos: pos.dy,
-          iconData: Icons.location_on,
-          color: Colors.red,
-          onPressed: () {},
+    final markerPositions = widget.markers.map(
+      (e) {
+        final pos = widget.transformer.fromLatLngToXYCoords(
+          LatLng(e.lat, e.lng),
         );
+        return Marker(
+                  leftPos: pos.dx,
+                  topPos: pos.dy,
+                  iconData: Icons.location_on,
+                  color: Colors.red,
+                  onPressed: () {},
+                );
       },
     ).toList();
 
+    // final markerWidgets = markerPositions.map(
+    //   (pos) {
+    //     return Marker(
+    //       leftPos: pos.dx,
+    //       topPos: pos.dy,
+    //       iconData: Icons.location_on,
+    //       color: Colors.red,
+    //       onPressed: () {},
+    //     );
+    //   },
+    // ).toList();
+
     // return LayoutBuilder(builder: _build);
-    return Stack(children: markerWidgets);
+    return Stack(children: markerPositions);
   }
 }
