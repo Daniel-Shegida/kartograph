@@ -1,7 +1,7 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
-import 'package:kartograph/assets/enums/categories.dart';
+import 'package:kartograph/features/places/domain/types_to_show.dart';
 import 'package:kartograph/features/places/screen/places_screeen_model.dart';
 import 'package:kartograph/features/places/screen/places_screen.dart';
 import 'package:kartograph/features/places/service/bloc/place_bloc.dart';
@@ -24,11 +24,8 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
 
   final List<String> _searchParams = [];
 
-  final List<StateNotifier<bool>> _checkBoxNotifier =
-      List<StateNotifier<bool>>.generate(
-    Categories.values.length,
-    (index) => StateNotifier<bool>(),
-  );
+  final StateNotifier<ListPlacesToShow> _checkBoxNotifier =
+      StateNotifier<ListPlacesToShow>();
 
   @override
   TextEditingController get controller => _controller;
@@ -44,9 +41,9 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
     model.placeStateStream.listen(_updateState);
     placesListState.loading();
     controller.addListener(_searchPlace);
-    for (var i = 0; i < _checkBoxNotifier.length; i++) {
-      _checkBoxNotifier[i].accept(true);
-      _searchParams.add(Categories.values.elementAt(i).name);
+    _checkBoxNotifier.accept(ListPlacesToShow.createStandard());
+    for (final e in _checkBoxNotifier.value!.listCategoriesToShow) {
+      _searchParams.add(e.category.name);
     }
     _searchPlace();
     super.initWidgetModel();
@@ -56,9 +53,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   void dispose() {
     _controller.dispose();
     _placesListState.dispose();
-    for (final e in _checkBoxNotifier) {
-      e.dispose();
-    }
+    _checkBoxNotifier.dispose();
     super.dispose();
   }
 
@@ -67,7 +62,10 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
     showModalBottomSheet<void>(
       context: context,
       builder: (_) {
-        return PlacesChoiseDialogWidget(statesList: _checkBoxNotifier, onChanged: _changeSearchTypes,);
+        return PlacesChoiseDialogWidget(
+          statesList: _checkBoxNotifier,
+          onChanged: _changeSearchTypes,
+        );
       },
     );
   }
@@ -83,12 +81,18 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   }
 
   void _changeSearchTypes(bool? isSearched, int index) {
-    _checkBoxNotifier[index].accept(isSearched);
     if (isSearched ?? false) {
-      _searchParams.add(Categories.values.elementAt(index).name);
+      _searchParams.add(
+        _checkBoxNotifier.value!.listCategoriesToShow[index].category.name,
+      );
     } else {
-      _searchParams.remove(Categories.values.elementAt(index).name);
+      _searchParams.remove(
+        _checkBoxNotifier.value!.listCategoriesToShow[index].category.name,
+      );
     }
+    _checkBoxNotifier.accept(_checkBoxNotifier.value!
+        .copyWith(indexToChange: index, valueToChange: isSearched!));
+
     _searchPlace();
   }
 }
