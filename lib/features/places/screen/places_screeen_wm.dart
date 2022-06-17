@@ -54,6 +54,10 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   @override
   void dispose() {
     _controller.dispose();
+    _placesListState.dispose();
+    for(final e in _checkBoxNotifier){
+      e.dispose();
+    }
     super.dispose();
   }
 
