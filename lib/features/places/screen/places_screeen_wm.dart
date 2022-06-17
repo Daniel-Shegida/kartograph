@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
@@ -33,12 +35,14 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   @override
   EntityStateNotifier<List<Place>> get placesListState => _placesListState;
 
+  late StreamSubscription _blocSubscription;
+
   /// standard consctructor for elem
   PlacesWidgetModel(PlacesModel model) : super(model);
 
   @override
   void initWidgetModel() {
-    model.placeStateStream.listen(_updateState);
+    _blocSubscription = model.placeStateStream.listen(_updateState);
     placesListState.loading();
     controller.addListener(_searchPlace);
     _checkBoxNotifier.accept(ListPlacesToShow.createStandard());
@@ -54,6 +58,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
     _controller.dispose();
     _placesListState.dispose();
     _checkBoxNotifier.dispose();
+    _blocSubscription.cancel();
     super.dispose();
   }
 
