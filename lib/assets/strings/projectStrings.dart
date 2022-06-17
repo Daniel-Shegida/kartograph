@@ -7,10 +7,42 @@ abstract class ProjectStrings {
   /// SettingScreen bottom name.
   static const String settingBottom = 'setting';
   /// Сайт откуда берется карта.
-  static const String mapSite = 'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/';
-  /// Персональный токен.
-  static const String mapToken = '?access_token=pk.eyJ1IjoidGVzdGVyLWRvbm8iLCJhIjoiY2wzbG1idXVuMW9jZzNkcXdnNGZwN2NlOSJ9.LGGfGe5NuuAyD-FFepK47g';
+  static const String mapSite =
+      'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/';
 
+  /// Персональный токен.
+  static const String mapToken =
+      '?access_token=pk.eyJ1IjoidGVzdGVyLWRvbm8iLCJhIjoiY2wzbG1idXVuMW9jZzNkcXdnNGZwN2NlOSJ9.LGGfGe5NuuAyD-FFepK47g';
+
+  /// PlacesScreen название фильтра.
+  static const String filter = 'фильтр';
+
+  /// PlacesScreen название поиска.
+  static const String search = 'Поиск';
+
+  /// Отель.
+  static const String hotel = 'Отель';
+
+  /// Рестаран.
+  static const String restaurant = 'Рестаран';
+
+  /// Другое.
+  static const String other = 'Другое';
+
+  /// Кафе.
+  static const String cafe = 'Кафе';
+
+  /// Музей.
+  static const String museum = 'Музей';
+
+  /// Парк.
+  static const String park = 'Парк';
+
+  /// Ошибочные параметры поиска.
+  static const String wrongSearch = 'Ничего не найдено';
+
+  /// Ошибочные параметры поиска пояснение.
+  static const String wrongSearch2 = 'Попробуйте изменить параметры поиска';
   /// leading нэкрана добавить место
   static const String cancel = 'Отмена';
   /// Название экрана добавить место
@@ -31,19 +63,6 @@ abstract class ProjectStrings {
   static const String latitude = 'Широта';
   /// долгота.
   static const String longitude = 'Долгота';
-
-  /// Отель.
-  static const String hotel = 'Отель';
-  /// Рестаран.
-  static const String restaurant = 'Рестаран';
-  /// Другое.
-  static const String other = 'Другое';
-  /// Кафе.
-  static const String cafe = 'Кафе';
-  /// Музей.
-  static const String museum = 'Музей';
-  /// Парк.
-  static const String park = 'Парк';
 
   /// Название экрана добавить место
   static const String addPlace = 'Новое место';

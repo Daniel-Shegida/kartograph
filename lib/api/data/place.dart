@@ -1,3 +1,5 @@
+import 'package:kartograph/assets/enums/categories.dart';
+
 /// класс места на картах и в списке
 class Place {
 
@@ -17,7 +19,7 @@ class Place {
   List<String> urls;
 
   /// тип места
-  String placeType;
+  Categories placeType;
 
   /// описание места
   String description;
