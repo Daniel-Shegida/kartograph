@@ -6,6 +6,7 @@ import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/places/screen/places_screeen_wm.dart';
+import 'package:routemaster/routemaster.dart';
 
 /// экран просмотра существующих мест
 class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
@@ -35,9 +36,8 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
                   itemCount: value!.length,
                   itemBuilder: (_, index) {
                     return _PlacesCard(
-                      cardText: value[index].name,
-                      cardColor: value[index].placeType.categoryColor,
-                      cardPlaceType: value[index].placeType.categoryName,
+                      cardPlace: value[index],
+                      onTap: wm.navigateToPlaceDetails,
                     );
                   },
                 );
@@ -56,14 +56,14 @@ class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
 }
 
 class _PlacesCard extends StatelessWidget {
-  final Color cardColor;
-  final String cardText;
-  final String cardPlaceType;
+  final Place cardPlace;
+
+  final Function(Place place) onTap;
+
 
   const _PlacesCard({
-    required this.cardColor,
-    required this.cardText,
-    required this.cardPlaceType,
+    required this.cardPlace,
+    required this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -71,12 +71,13 @@ class _PlacesCard extends StatelessWidget {
   Widget build(_) {
     return Card(
       child: ListTile(
+        onTap: () => onTap(cardPlace),
         leading: Icon(
           Icons.circle,
-          color: cardColor,
+          color: cardPlace.placeType.categoryColor,
         ),
-        title: Text(cardText),
-        subtitle: Text(cardPlaceType),
+        title: Text(cardPlace.name),
+        subtitle: Text(cardPlace.placeType.categoryName),
       ),
     );
   }

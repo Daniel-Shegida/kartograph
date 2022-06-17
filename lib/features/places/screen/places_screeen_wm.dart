@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
@@ -8,7 +7,9 @@ import 'package:kartograph/features/places/screen/places_screeen_model.dart';
 import 'package:kartograph/features/places/screen/places_screen.dart';
 import 'package:kartograph/features/places/service/bloc/place_bloc.dart';
 import 'package:kartograph/features/places/service/bloc/place_state.dart';
-import 'package:kartograph/features/places/widgets/places_choise_dialog.dart';
+import 'package:kartograph/features/places/widgets/places_choise_dialog.dart';\
+import 'package:routemaster/routemaster.dart';
+
 
 /// Factory for [PlacesWidgetModel]
 PlacesWidgetModel placesWidgetModelFactory(BuildContext context) {
@@ -75,6 +76,11 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
     );
   }
 
+  @override
+  void navigateToPlaceDetails(Place place) {
+    Routemaster.of(context).push('/tabs/profile/articles/${Strings.bookmarks}',queryParameters: {'search': Strings.bookmarks}),
+  }
+
   void _updateState(BasePlaceState state) {
     if (state is PlaceContentState) {
       _placesListState.content(state.list);
@@ -112,4 +118,7 @@ abstract class IPlacesWidgetModel extends IWidgetModel {
 
   /// action of dialog
   void showPicker();
+
+  /// action of navigate to a place on card
+  void navigateToPlaceDetails(Place place);
 }
