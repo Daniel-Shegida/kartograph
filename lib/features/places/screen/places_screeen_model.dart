@@ -20,8 +20,15 @@ class PlacesModel extends ElementaryModel {
   ) : super();
 
   /// иницилизация модели
+  @override
   void init() {
     super.init();
+  }
+  /// ada
+  @override
+  void dispose(){
+    _placeBloc.close();
+    super.dispose();
   }
 
   /// получить список мест с параметрами поиска

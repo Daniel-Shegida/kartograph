@@ -6,6 +6,7 @@ import 'package:kartograph/features/places/screen/places_screeen_model.dart';
 import 'package:kartograph/features/places/screen/places_screen.dart';
 import 'package:kartograph/features/places/service/bloc/place_bloc.dart';
 import 'package:kartograph/features/places/service/bloc/place_state.dart';
+import 'package:kartograph/features/places/widgets/places_choise_dialog.dart';
 
 /// Factory for [PlacesWidgetModel]
 PlacesWidgetModel placesWidgetModelFactory(BuildContext context) {
@@ -19,7 +20,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   final _controller = TextEditingController();
 
   final EntityStateNotifier<List<Place>> _placesListState =
-  EntityStateNotifier<List<Place>>();
+      EntityStateNotifier<List<Place>>();
 
   final List<String> _searchParams = [];
 
@@ -55,7 +56,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   void dispose() {
     _controller.dispose();
     _placesListState.dispose();
-    for(final e in _checkBoxNotifier){
+    for (final e in _checkBoxNotifier) {
       e.dispose();
     }
     super.dispose();
@@ -66,36 +67,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
     showModalBottomSheet<void>(
       context: context,
       builder: (_) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: List<Widget>.generate(Categories.values.length, (index) {
-            return StateNotifierBuilder<bool>(
-              listenableState: _checkBoxNotifier[index],
-              builder: (_, value) {
-                return CheckboxListTile(
-                  title: Text(Categories.values.elementAt(index).categoryName),
-                  value: value,
-                  onChanged: (value) {
-                    _checkBoxNotifier[index].accept(value);
-                    if (value ?? false) {
-                      _searchParams
-                          .add(Categories.values.elementAt(index).name);
-                    } else {
-                      _searchParams
-                          .remove(Categories.values.elementAt(index).name);
-                    }
-                    _searchPlace();
-                  },
-                  secondary: Icon(
-                    Icons.circle,
-                    color: Categories.values.elementAt(index).categoryColor,
-                  ),
-                );
-              },
-            );
-          }),
-        );
+        return PlacesChoiseDialogWidget(statesList: _checkBoxNotifier, onChanged: _changeSearchTypes,);
       },
     );
   }
@@ -108,6 +80,16 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
 
   void _searchPlace() {
     model.search(_searchParams, controller.text);
+  }
+
+  void _changeSearchTypes(bool? isSearched, int index) {
+    _checkBoxNotifier[index].accept(isSearched);
+    if (isSearched ?? false) {
+      _searchParams.add(Categories.values.elementAt(index).name);
+    } else {
+      _searchParams.remove(Categories.values.elementAt(index).name);
+    }
+    _searchPlace();
   }
 }
 
