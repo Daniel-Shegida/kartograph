@@ -1,4 +1,5 @@
 import 'package:kartograph/features/map/map_route.dart';
+import 'package:kartograph/features/map_adding/map_adding_route.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:kartograph/features/navigation/widget/bottom_sheet.dart';
 import 'package:kartograph/features/place_adding/place_add_route.dart';
@@ -10,6 +11,8 @@ import 'package:routemaster/routemaster.dart';
 final routes = RouteMap(
   routes: {
     /// 'путь': (_) => MaterialPage(child: виджет),
+    // '/': (_) =>
+    // const Redirect('${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}'),
     '/': (_) =>
         const Redirect('${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}'),
     '/tabs': (route) => const TabPage(
@@ -28,6 +31,10 @@ final routes = RouteMap(
 
     '${AppRoutePaths.tabs}${AppRoutePaths.settingScreen}': (_) =>
         const SettingScreenRoute(),
+    'SettingScreenRoute': (_) => PlaceAddScreenRoute(),
+
+    'MapAdding': (_) =>
+    const MapAddingScreenRoute(),
     'SettingScreenRoute': (_) => PlaceAddScreenRoute(),
 
     '/tabs/profile/topicProgress/:search': (route) =>  ProfileTopicNamedRoute(

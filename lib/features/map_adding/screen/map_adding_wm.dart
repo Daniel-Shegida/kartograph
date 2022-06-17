@@ -2,55 +2,49 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
-import 'package:kartograph/features/map/screen/map_screen.dart';
-import 'package:kartograph/features/map/screen/map_screen_model.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
+import 'package:kartograph/features/map_adding/screen/map_adding_model.dart';
+import 'package:kartograph/features/map_adding/screen/map_adding_screen.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 
-/// Builder for [MapWidgetModel]
-MapWidgetModel mapWidgetModelFactory(BuildContext context) {
-  return MapWidgetModel(MapModel(MapBloc()));
+/// Builder for [MapAddingWidgetModel]
+MapAddingWidgetModel mapAddingWidgetModelFactory(BuildContext context) {
+  return MapAddingWidgetModel(
+    MapAddingModel(
+      MapBloc(),
+    ),
+  );
 }
 
-/// WidgetModel for [MapScreen]
-class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
-    implements IMapWidgetModel {
+/// WidgetModel for [MapAddingScreen]
+class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
+    with SingleTickerProviderWidgetModelMixin
+    implements IMapAddingWidgetModel {
   final _controller = MapController(
     location: LatLng(35.68, 51.41),
   );
-
-  final _markers = [
-    Place(
-        id: 1,
-        lat: 31,
-        lng: 32,
-        name: 'name',
-        urls: ['urls'],
-        placeType: Categories.other,
-        description: 'description',),
-  ];
+  final StateNotifier<List<Place>> _markers = StateNotifier<List<Place>>();
 
   /// controller for map
   @override
   MapController get controller => _controller;
 
   @override
-  List<Place> get markers => _markers;
+  StateNotifier<List<Place>> get markers => _markers;
 
   late Offset? _dragStart;
 
   double _scaleStart = 1.0;
 
   /// standard consctructor for elem
-  MapWidgetModel(MapModel model) : super(model);
+  MapAddingWidgetModel(MapAddingModel model) : super(model);
 
   @override
   void initWidgetModel() {
-    final blocStream = model.mapStateStream;
-    blocStream.listen(_updateState);
-    model.getCurrentLocation();
+    model.mapStateStream.listen(_updateState);
+    _markers.accept([]);
     super.initWidgetModel();
   }
 
@@ -95,32 +89,36 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   @override
   void onTap(TapUpDetails details, MapTransformer transformer) {
     final location = transformer.fromXYCoordsToLatLng(details.localPosition);
+    _markers.accept([
+      _createPlaceAdder(
+        location.latitude,
+        location.longitude,
+      ),
+    ]);
   }
 
-  @override
-  void getCurrentLocation() {
-    model.getCurrentLocation();
-  }
+  void _updateState(BaseMapState state) {}
 
-  @override
-  void refresh() {
-    model.getCurrentLocation();
-  }
-
-  void _updateState(BaseMapState state) {
-    if (state is MapContentState) {
-      controller.center = state.currentLocation;
-    }
+  Place _createPlaceAdder(double lat, double long) {
+    return Place(
+      id: 1,
+      lat: lat,
+      lng: long,
+      name: 'name',
+      urls: [],
+      placeType: Categories.placeAdder,
+      description: 'description',
+    );
   }
 }
 
-/// Interface of [MapWidgetModel].
-abstract class IMapWidgetModel extends IWidgetModel {
+/// Interface of [MapAddingWidgetModel].
+abstract class IMapAddingWidgetModel extends IWidgetModel {
   /// Text editing controller Main Screen.
   MapController get controller;
 
   /// Text editing controller Main Screen.
-  List<Place> get markers;
+  StateNotifier<List<Place>> get markers;
 
   /// action to go back tp detail
   void gotoDefault();
@@ -136,10 +134,4 @@ abstract class IMapWidgetModel extends IWidgetModel {
 
   /// action for changing scale
   void onTap(TapUpDetails details, MapTransformer transformer);
-
-  /// action to go back to current location
-  void getCurrentLocation();
-
-  /// пока ивента для него нет
-  void refresh();
 }
