@@ -23,7 +23,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
 #  навигация
-  routemaster: ^1.0.0
+  routemaster: ^1.0.1
 #  иконки
   flutter_svg: ^1.1.0
 #  библиотеки для работы с сервером

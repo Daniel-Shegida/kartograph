@@ -1,14 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen.dart';
+import 'package:provider/provider.dart';
 
 /// Роут экрана [PlaceAddingScreen]
 class PlaceAddScreenRoute extends MaterialPage<PlaceAddingScreen> {
+  final String category;
+  final String name;
+  final String description;
+  final double lat;
+  final double lng;
 
   /// конструктор MaterialPage экрана [PlaceAddingScreen]
-  const PlaceAddScreenRoute()
-      : super(
+  PlaceAddScreenRoute({
+    required this.category,
+    required this.name,
+    required this.description,
+    required this.lat,
+    required this.lng,
+  }) : super(
+          child:
+              Provider.value(
+                value: Place(
+                    id: 1,
+                    lat: lat,
+                    lng: lng,
+                    name: name,
+                    urls: [''],
+                    placeType: Categories.values.byName(category),
+                    description: description,),
+                child:  PlaceAddingScreen(),
 
-    child: const PlaceAddingScreen(),
+              ),
+        );
 
-  );
+// child: constonst PlaceAddingScreen(),
 }

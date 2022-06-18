@@ -2,14 +2,14 @@ import 'dart:async';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:kartograph/features/places/domain/types_to_show.dart';
 import 'package:kartograph/features/places/screen/places_screeen_model.dart';
 import 'package:kartograph/features/places/screen/places_screen.dart';
 import 'package:kartograph/features/places/service/bloc/place_bloc.dart';
 import 'package:kartograph/features/places/service/bloc/place_state.dart';
-import 'package:kartograph/features/places/widgets/places_choise_dialog.dart';\
+import 'package:kartograph/features/places/widgets/places_choise_dialog.dart';
 import 'package:routemaster/routemaster.dart';
-
 
 /// Factory for [PlacesWidgetModel]
 PlacesWidgetModel placesWidgetModelFactory(BuildContext context) {
@@ -78,7 +78,17 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
 
   @override
   void navigateToPlaceDetails(Place place) {
-    Routemaster.of(context).push('/tabs/profile/articles/${Strings.bookmarks}',queryParameters: {'search': Strings.bookmarks}),
+    // ignore: avoid_print
+    print("da");
+    Routemaster.of(context).push('/Rest', queryParameters: {
+      'category': place.placeType.name,
+      'name': place.name,
+      'description': place.description,
+      'lat': place.lat.toString(),
+      'lng': place.lng.toString(),
+    });
+    // Routemaster.of(context).push('${AppRoutePaths.tabs}/test',);
+    // Routemaster.of(context).push('/MapAdding');
   }
 
   void _updateState(BasePlaceState state) {

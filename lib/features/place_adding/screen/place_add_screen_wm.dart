@@ -1,8 +1,10 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen.dart';
 import 'package:kartograph/features/place_adding/screen/place_screen_model.dart';
+import 'package:provider/provider.dart';
 
 /// factory for [PlaceAddingScreen]
 PlaceAddingWidgetModel placeAddingWidgetModelFactory(BuildContext context) {
@@ -33,6 +35,9 @@ class PlaceAddingWidgetModel
   final TextEditingController _lonController = TextEditingController();
 
   final TextEditingController _latController = TextEditingController();
+
+  late final Place _place;
+
 
   final List<DropdownMenuItem<Categories>> _choises =
       Categories.values.map<DropdownMenuItem<Categories>>((value) {
@@ -80,6 +85,7 @@ class PlaceAddingWidgetModel
 
   @override
   void initWidgetModel() {
+     // Place _place = context.read<Place>();
     _setStartingStates();
     _setControllers();
     super.initWidgetModel();
@@ -175,6 +181,7 @@ class PlaceAddingWidgetModel
   /// функция проверяющая все ли поля заполнены нормально
   void _setControllers() {
     _nameController.addListener(_nameHandle);
+    // _nameController.text = _place.name;
     _describeController.addListener(_describeHandle);
     _latController.addListener(_latHandle);
     _lonController.addListener(_lonHandle);
