@@ -5,6 +5,7 @@ import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen.dart';
 import 'package:kartograph/features/place_adding/screen/place_screen_model.dart';
 import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
 /// factory for [PlaceAddingScreen]
 PlaceAddingWidgetModel placeAddingWidgetModelFactory(BuildContext context) {
@@ -37,6 +38,8 @@ class PlaceAddingWidgetModel
   final TextEditingController _latController = TextEditingController();
 
   late final Place _place;
+
+  late final bool _isChange;
 
 
   final List<DropdownMenuItem<Categories>> _choises =
@@ -80,15 +83,28 @@ class PlaceAddingWidgetModel
   @override
   StateNotifier<Categories> get currentState => _currentValue;
 
+  @override
+  bool get isChange => _isChange;
+
   /// standard consctructor for elem
   PlaceAddingWidgetModel(PlaceAddingModel model) : super(model);
 
   @override
   void initWidgetModel() {
-     // Place _place = context.read<Place>();
-    _setStartingStates();
+    final tes3t = Routemaster.of(context).currentRoute;
+    _isChange = true;
+     _place = context.read<Place>();
+
+     _setStartingStates();
     _setControllers();
-    super.initWidgetModel();
+     String test = _place.name;
+     _currentValue.accept(_place.placeType);
+     _nameController.text = _place.name;
+     _describeController.text = _place.description;
+     _latController.text = _place.lat.toString();
+     _lonController.text = _place.lng.toString();
+
+     super.initWidgetModel();
   }
 
   @override
@@ -104,6 +120,38 @@ class PlaceAddingWidgetModel
     _latController.dispose();
     _lonController.dispose();
     super.dispose();
+  }
+
+  @override
+  void activate() {
+    super.activate();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
+  void reassemble() {
+    super.reassemble();
+  }
+
+
+  @override
+  void moveToMap() async{
+    Routemaster.of(context).push('MapAdding', queryParameters: {
+    'category': _place.placeType.name,
+    'name': _place.name,
+    'description': _place.description,
+    // 'lat': _place.lat.toString(),
+    // 'lng': _place.lng.toString(),
+    });
+  }
+
+  @override
+  void pop() {
+    Routemaster.of(context).pop();
   }
 
   @override
@@ -181,7 +229,6 @@ class PlaceAddingWidgetModel
   /// функция проверяющая все ли поля заполнены нормально
   void _setControllers() {
     _nameController.addListener(_nameHandle);
-    // _nameController.text = _place.name;
     _describeController.addListener(_describeHandle);
     _latController.addListener(_latHandle);
     _lonController.addListener(_lonHandle);
@@ -223,8 +270,17 @@ abstract class IPlaceAddingWidgetModel extends IWidgetModel {
   /// список типов мест
   List<DropdownMenuItem<Categories>> get choises;
 
+  /// изменять или создавать новое место
+  bool get isChange;
+
   /// метод изменения  типа
   void changeType(Categories? newType);
+
+  /// метод перехода на карту
+  void moveToMap();
+
+  /// метод перехода на карту
+  void pop();
 
   /// метод создания нового места
   void createPlace();

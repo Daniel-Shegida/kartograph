@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
@@ -8,6 +10,7 @@ import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
+import 'package:routemaster/routemaster.dart';
 
 /// Builder for [MapWidgetModel]
 MapWidgetModel mapWidgetModelFactory(BuildContext context) {
@@ -21,16 +24,12 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     location: LatLng(35.68, 51.41),
   );
 
-  final _markers = [
-    Place(
-        id: 1,
-        lat: 31,
-        lng: 32,
-        name: 'name',
-        urls: ['urls'],
-        placeType: Categories.other,
-        description: 'description',),
+  List<Place> _markers = [
+
   ];
+
+  final StateNotifier<List<Place>> _placesListState =
+  StateNotifier<List<Place>>();
 
   /// controller for map
   @override
@@ -39,7 +38,14 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   @override
   List<Place> get markers => _markers;
 
+  @override
+  StateNotifier<List<Place>> get placesListState => _placesListState;
+
+
   late Offset? _dragStart;
+
+  late StreamSubscription _blocSubscription;
+
 
   double _scaleStart = 1.0;
 
@@ -48,14 +54,16 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   @override
   void initWidgetModel() {
-    final blocStream = model.mapStateStream;
-    blocStream.listen(_updateState);
+    _blocSubscription = model.mapStateStream.listen(_updateState);
     model.getCurrentLocation();
+    _placesListState.accept([]);
+    _searchPlace();
     super.initWidgetModel();
   }
 
   @override
   void dispose() {
+    _blocSubscription.cancel();
     super.dispose();
   }
 
@@ -107,10 +115,37 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     model.getCurrentLocation();
   }
 
+  @override
+  void addPlace() {
+    Place _place = Place(id: 1, lat: 1, lng: 1, name: "name", urls: [], placeType: Categories.other, description: 'description');
+    Routemaster.of(context).push('MapAdding', queryParameters: {
+      'category': _place.placeType.name,
+      'name': _place.name,
+      'description': _place.description,
+      // 'lat': _place.lat.toString(),
+      // 'lng': _place.lng.toString(),
+    });
+  }
+
   void _updateState(BaseMapState state) {
     if (state is MapContentState) {
       controller.center = state.currentLocation;
     }
+    if (state is MapPlacesContentState) {
+      // ignore: avoid_print
+      print("MapPlacesContentState");
+      // ignore: avoid_print
+      _markers = state.list;
+      // ignore: avoid_print
+      print(_markers);
+      _placesListState.accept(state.list);
+
+    }
+  }
+
+  void _searchPlace() {
+    model.search();
+
   }
 }
 
@@ -121,6 +156,9 @@ abstract class IMapWidgetModel extends IWidgetModel {
 
   /// Text editing controller Main Screen.
   List<Place> get markers;
+
+  /// показываемые темы
+  StateNotifier<List<Place>> get placesListState;
 
   /// action to go back tp detail
   void gotoDefault();
@@ -142,4 +180,7 @@ abstract class IMapWidgetModel extends IWidgetModel {
 
   /// пока ивента для него нет
   void refresh();
+
+  /// переходит на экран добавления места
+  void addPlace();
 }

@@ -10,10 +10,15 @@ class LockedButton extends StatelessWidget {
   /// заблокирована ли кнопка
   final bool isReady;
 
+  /// изменять или создавать новое место
+  final bool isChange;
+
   /// конструктор [LockedButton]
   const LockedButton({
     required this.onPressed,
     required this.isReady,
+    required this.isChange,
+
     Key? key,
   }) : super(key: key);
 
@@ -29,9 +34,10 @@ class LockedButton extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: const [
+          children: [
             Text(
-              ProjectStrings.create,
+              isChange ? ProjectStrings.change
+                  : ProjectStrings.create,
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
           ],

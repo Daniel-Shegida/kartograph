@@ -2,6 +2,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
@@ -52,6 +53,16 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                     transformer: transformer,
                     markers: wm.markers,
                   ),
+                  StateNotifierBuilder<List<Place>>(
+                    listenableState: wm.placesListState,
+                    builder: (_, value) {
+                      return MarkersStack(
+                        controller: wm.controller,
+                        transformer: transformer,
+                        markers: value ?? [],
+                      );
+                    },
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: Column(
@@ -63,7 +74,7 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                             _RoundRefreshButton(
                               onPressed: wm.refresh,
                             ),
-                            const _AddPlaceButton(),
+                            _AddPlaceButton(onPressed: wm.addPlace,),
                             _RoundGeoButton(
                               onPressed: wm.getCurrentLocation,
                             ),
@@ -83,7 +94,8 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
 }
 
 class _AddPlaceButton extends StatelessWidget {
-  const _AddPlaceButton({Key? key}) : super(key: key);
+  final VoidCallback onPressed;
+  const _AddPlaceButton({required this.onPressed, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +126,7 @@ class _AddPlaceButton extends StatelessWidget {
             ),
           ],
         ),
-        onPressed: () {},
+        onPressed: onPressed,
       ),
     );
   }

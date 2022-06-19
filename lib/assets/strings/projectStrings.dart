@@ -59,6 +59,8 @@ abstract class ProjectStrings {
   static const String show = 'Указать на карте';
   /// добавить место создать место.
   static const String create = 'Создать';
+  /// добавить место изменить место.
+  static const String change = 'Изменить место';
   /// широта.
   static const String latitude = 'Широта';
   /// долгота.

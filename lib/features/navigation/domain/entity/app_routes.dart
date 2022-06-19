@@ -41,7 +41,21 @@ final routes = RouteMap(
           lng: double.parse(route.queryParameters['lng'] ?? '0'),
         ),
 
-    '/MapAdding': (_) => const MapAddingScreenRoute(),
+    '/Rest/MapAdding': (route) => MapAddingScreenRoute(
+      category: route.queryParameters['category'] ?? '0',
+      name: route.queryParameters['name'] ?? '0',
+      description: route.queryParameters['description'] ?? '0',
+      lat: double.parse(route.queryParameters['lat'] ?? '0'),
+      lng: double.parse(route.queryParameters['lng'] ?? '0'),
+    ),
+    '${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}/MapAdding': (route) =>  MapAddingScreenRoute(
+category: route.queryParameters['category'] ?? '0',
+name: route.queryParameters['name'] ?? '0',
+description: route.queryParameters['description'] ?? '0',
+lat: double.parse(route.queryParameters['lat'] ?? '0'),
+lng: double.parse(route.queryParameters['lng'] ?? '0'),
+),
+
 // 'SettingScreenRoute': (_) => PlaceAddScreenRoute(),
 
 // '/tabs/profile/topicProgress/:search': (route) =>  ProfileTopicNamedRoute(

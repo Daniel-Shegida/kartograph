@@ -27,7 +27,7 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
         elevation: 0,
         leading: Center(
           child: TextButton(
-            onPressed: () {},
+            onPressed: wm.pop,
             child: const Text(
               ProjectStrings.cancel,
               style: TextStyle(color: ProjectColors.textColorGrey, fontSize: 16),
@@ -42,7 +42,7 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: wm.create,
             child: const Text(
               ProjectStrings.ready,
               style: TextStyle(color: ProjectColors.mainGreenColor, fontSize: 16),

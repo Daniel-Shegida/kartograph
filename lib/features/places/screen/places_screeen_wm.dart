@@ -98,6 +98,12 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   }
 
   void _searchPlace() {
+    // ignore: avoid_print
+    print('_searchPlace');
+    // ignore: avoid_print
+    print(_searchParams);
+    // ignore: avoid_print
+    print(controller.text);
     model.search(_searchParams, controller.text);
   }
 

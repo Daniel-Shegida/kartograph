@@ -1,3 +1,4 @@
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
@@ -8,6 +9,8 @@ import 'package:kartograph/features/map_adding/screen/map_adding_model.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_screen.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
+import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
 /// Builder for [MapAddingWidgetModel]
 MapAddingWidgetModel mapAddingWidgetModelFactory(BuildContext context) {
@@ -27,6 +30,9 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   );
   final StateNotifier<List<Place>> _markers = StateNotifier<List<Place>>();
 
+  late final Place _place;
+
+
   /// controller for map
   @override
   MapController get controller => _controller;
@@ -45,6 +51,8 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   void initWidgetModel() {
     model.mapStateStream.listen(_updateState);
     _markers.accept([]);
+    _place = context.read<Place>();
+
     super.initWidgetModel();
   }
 
@@ -96,6 +104,24 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
       ),
     ]);
   }
+  @override
+  void pop() {
+    Routemaster.of(context).pop();
+  }
+
+  @override
+  void create() {
+    final test = _markers.value![0].lat;
+    Routemaster.of(context).replace('/Rest', queryParameters: {
+      'category': _place.placeType.name,
+      'name': _place.name,
+      'description': _place.description,
+      'lat': test.toString(),
+      'lng': test.toString(),
+    });
+
+  }
+
 
   void _updateState(BaseMapState state) {}
 
@@ -134,4 +160,10 @@ abstract class IMapAddingWidgetModel extends IWidgetModel {
 
   /// action for changing scale
   void onTap(TapUpDetails details, MapTransformer transformer);
+
+  /// om pop
+  void pop();
+
+  /// передать координаты точки
+  void create();
 }

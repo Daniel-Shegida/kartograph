@@ -35,7 +35,8 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
           style: TextButton.styleFrom(
             primary: ProjectColors.textColorGrey,
           ),
-          onPressed: () {},
+          onPressed: (){
+          },
           child: const Text(ProjectStrings.cancel),
         ),
         leadingWidth: 100,
@@ -101,7 +102,7 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
                         lonController: wm.lonController,
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: wm.moveToMap,
                         child: const Text(
                           ProjectStrings.show,
                           style: TextStyle(
@@ -117,6 +118,7 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
                           return LockedButton(
                             onPressed: wm.createPlace,
                             isReady: value ?? false,
+                            isChange: wm.isChange,
                           );
                         },
                       ),

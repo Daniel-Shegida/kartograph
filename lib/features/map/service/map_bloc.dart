@@ -1,11 +1,21 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/features/map/service/map_event.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
+import 'package:kartograph/features/places/place_api/place_api.dart';
+import 'package:kartograph/features/places/service/place_rep.dart';
 import 'package:latlng/latlng.dart';
 
 /// Bloc for working with profile states.
 class MapBloc extends Bloc<BaseMapEvent, BaseMapState> {
+  final PlaceRepository _rep = PlaceRepository(
+    RestClient(
+      Dio(),
+    ),
+  );
+
   /// Constructor of [MapBloc]
   MapBloc() : super(LoadingState()) {
     /// при событии загрузки статей запускаем стейт со статьями
@@ -42,5 +52,19 @@ class MapBloc extends Bloc<BaseMapEvent, BaseMapState> {
       ));
       // return await Geolocator.getCurrentPosition();
     });
+
+    /// обработка события загрузки мест на карте
+    on<MapGetPlacesEvent>((event, emit) async {
+      final list = await _rep.getSearchedPlaces(
+        /// TODO посмотреть возможность добавления координат при связывании приложения
+        60,
+        30,
+        3000000.0,
+        ['hotel', 'restaurant', 'other', 'cafe', 'museum', 'park'],
+        '',
+      );
+      emit(MapPlacesContentState(list: list));
+    });
   }
+
 }

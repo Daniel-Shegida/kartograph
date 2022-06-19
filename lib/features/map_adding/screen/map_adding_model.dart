@@ -32,4 +32,5 @@ class MapAddingModel extends ElementaryModel {
       MapGetLocationEvent(),
     );
   }
+
 }
