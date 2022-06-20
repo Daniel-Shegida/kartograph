@@ -315,7 +315,7 @@ abstract class IPlaceAddingWidgetModel extends IWidgetModel {
   /// метод перехода на карту
   void moveToMap();
 
-  /// метод перехода на карту
+  /// метод закрытия экрана
   void pop();
 
   /// метод создания нового места

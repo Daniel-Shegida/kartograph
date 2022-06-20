@@ -74,11 +74,5 @@ final routes = RouteMap(
       lat: double.parse(route.queryParameters['lat'] ?? '0'),
       lng: double.parse(route.queryParameters['lng'] ?? '0'),
     ),
-
-// 'SettingScreenRoute': (_) => PlaceAddScreenRoute(),
-
-// '/tabs/profile/topicProgress/:search': (route) =>  ProfileTopicNamedRoute(
-//   route.queryParameters['search'] ?? '0',
-// ),
   },
 );
