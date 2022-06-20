@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
-import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/features/map/screen/map_screen.dart';
 import 'package:kartograph/features/map/screen/map_screen_model.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
+import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 import 'package:routemaster/routemaster.dart';
@@ -24,28 +24,19 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     location: LatLng(35.68, 51.41),
   );
 
-  List<Place> _markers = [
-
-  ];
-
   final StateNotifier<List<Place>> _placesListState =
-  StateNotifier<List<Place>>();
+      StateNotifier<List<Place>>();
 
   /// controller for map
   @override
   MapController get controller => _controller;
 
   @override
-  List<Place> get markers => _markers;
-
-  @override
   StateNotifier<List<Place>> get placesListState => _placesListState;
-
 
   late Offset? _dragStart;
 
   late StreamSubscription _blocSubscription;
-
 
   double _scaleStart = 1.0;
 
@@ -101,9 +92,7 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   }
 
   @override
-  void onTap(TapUpDetails details, MapTransformer transformer) {
-    final location = transformer.fromXYCoordsToLatLng(details.localPosition);
-  }
+  void onTap(TapUpDetails details, MapTransformer transformer) {}
 
   @override
   void getCurrentLocation() {
@@ -117,13 +106,9 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   @override
   void addPlace() {
-    Place _place = Place(id: 1, lat: 1, lng: 1, name: "name", urls: [], placeType: Categories.other, description: 'description');
-    Routemaster.of(context).push('MapAdding', queryParameters: {
-      'category': _place.placeType.name,
-      'name': _place.name,
-      'description': _place.description,
-      // 'lat': _place.lat.toString(),
-      // 'lng': _place.lng.toString(),
+    Routemaster.of(context).push(AppRoutePaths.mapAdding, queryParameters: {
+      'lat': _controller.center.latitude.toString(),
+      'lng': _controller.center.longitude.toString(),
     });
   }
 
@@ -132,20 +117,12 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
       controller.center = state.currentLocation;
     }
     if (state is MapPlacesContentState) {
-      // ignore: avoid_print
-      print("MapPlacesContentState");
-      // ignore: avoid_print
-      _markers = state.list;
-      // ignore: avoid_print
-      print(_markers);
       _placesListState.accept(state.list);
-
     }
   }
 
   void _searchPlace() {
     model.search();
-
   }
 }
 
@@ -153,9 +130,6 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 abstract class IMapWidgetModel extends IWidgetModel {
   /// Text editing controller Main Screen.
   MapController get controller;
-
-  /// Text editing controller Main Screen.
-  List<Place> get markers;
 
   /// показываемые темы
   StateNotifier<List<Place>> get placesListState;

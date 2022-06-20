@@ -7,27 +7,28 @@ import 'package:provider/provider.dart';
 /// Роут экрана [PlaceAddingScreen]
 class PlaceAddScreenRoute extends MaterialPage<PlaceAddingScreen> {
   final String category;
-  final String name;
-  final String description;
-  final double lat;
-  final double lng;
+  final int? id;
+  final String? name;
+  final String? description;
+  final double? lat;
+  final double? lng;
 
   /// конструктор MaterialPage экрана [PlaceAddingScreen]
   PlaceAddScreenRoute({
     required this.category,
-    required this.name,
-    required this.description,
-    required this.lat,
-    required this.lng,
+    this.id,
+    this.name,
+    this.description,
+    this.lat,
+    this.lng,
   }) : super(
           child:
               Provider.value(
                 value: Place(
-                    id: 1,
+                    id: id,
                     lat: lat,
                     lng: lng,
                     name: name,
-                    urls: [''],
                     placeType: Categories.values.byName(category),
                     description: description,),
                 child:  PlaceAddingScreen(),

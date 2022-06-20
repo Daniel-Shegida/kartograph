@@ -2,6 +2,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
+import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen.dart';
 import 'package:kartograph/features/place_adding/screen/place_screen_model.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +41,6 @@ class PlaceAddingWidgetModel
   late final Place _place;
 
   late final bool _isChange;
-
 
   final List<DropdownMenuItem<Categories>> _choises =
       Categories.values.map<DropdownMenuItem<Categories>>((value) {
@@ -91,20 +91,29 @@ class PlaceAddingWidgetModel
 
   @override
   void initWidgetModel() {
-    final tes3t = Routemaster.of(context).currentRoute;
-    _isChange = true;
-     _place = context.read<Place>();
-
-     _setStartingStates();
+    _place = context.read<Place>();
+    _setStartingStates();
     _setControllers();
-     String test = _place.name;
-     _currentValue.accept(_place.placeType);
-     _nameController.text = _place.name;
-     _describeController.text = _place.description;
-     _latController.text = _place.lat.toString();
-     _lonController.text = _place.lng.toString();
+    if (_place.id != null) {
+      _isChange = true;
+    } else {
+      _isChange = false;
+    }
+    _currentValue.accept(_place.placeType);
+    if (_place.name != null && _place.name != '') {
+      _nameController.text = _place.name!;
+    }
+    if (_place.description != null && _place.description != '') {
+      _describeController.text = _place.description!;
+    }
+    if (_place.lat != 0) {
+      _latController.text = _place.lat.toString();
+    }
+    if (_place.lng != 0) {
+      _lonController.text = _place.lng.toString();
+    }
 
-     super.initWidgetModel();
+    super.initWidgetModel();
   }
 
   @override
@@ -137,26 +146,53 @@ class PlaceAddingWidgetModel
     super.reassemble();
   }
 
-
   @override
-  void moveToMap() async{
-    Routemaster.of(context).push('MapAdding', queryParameters: {
-    'category': _place.placeType.name,
-    'name': _place.name,
-    'description': _place.description,
-    // 'lat': _place.lat.toString(),
-    // 'lng': _place.lng.toString(),
+  void moveToMap() {
+    Routemaster.of(context).push(AppRoutePaths.mapAdding, queryParameters: {
+      'category': _place.placeType.name,
+      'name': _place.name ?? '',
+      'description': _place.description ?? '',
     });
   }
 
   @override
   void pop() {
-    Routemaster.of(context).pop();
+    if (_place.id != null) {
+      Routemaster.of(context).pop();
+    } else {
+      Routemaster.of(context)
+          .push('${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}');
+    }
   }
 
   @override
   void createPlace() {
-    _describeState.accept(true);
+    if (_place.id != null) {
+      model.putPlace(
+        Place(
+          placeType: _currentValue.value!,
+          id: _place.id,
+          name: _nameController.text,
+          description: _describeController.text,
+          lat: double.parse(_latController.text),
+          lng: double.parse(_lonController.text),
+        ),
+      );
+      Routemaster.of(context).pop();
+    } else {
+      model.postPlace(
+        Place(
+          placeType: _currentValue.value!,
+          name: _nameController.text,
+          description: _describeController.text,
+          lat: double.parse(_latController.text),
+          lng: double.parse(_lonController.text),
+        ),
+      );
+      Routemaster.of(context).pop();
+      Routemaster.of(context)
+          .push('${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}');
+    }
   }
 
   @override

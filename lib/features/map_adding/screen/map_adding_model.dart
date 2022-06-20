@@ -5,7 +5,6 @@ import 'package:kartograph/features/map/service/map_state.dart';
 
 /// Model of SpecialWidgetModel
 class MapAddingModel extends ElementaryModel {
-
   /// Bloc for working with profile states.
   final MapBloc _mapBloc;
 
@@ -17,13 +16,12 @@ class MapAddingModel extends ElementaryModel {
 
   /// Create an instance [MapAddingModel].
   MapAddingModel(
-      this._mapBloc,
-      ) : super();
+    this._mapBloc,
+  ) : super();
 
   @override
   void init() {
     super.init();
-    _mapBloc.add(MapGetLocationEvent());
   }
 
   /// Method for update personal data to the [MapBloc].
@@ -32,5 +30,4 @@ class MapAddingModel extends ElementaryModel {
       MapGetLocationEvent(),
     );
   }
-
 }

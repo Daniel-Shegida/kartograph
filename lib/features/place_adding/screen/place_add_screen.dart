@@ -22,10 +22,10 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Center(
+        title: Center(
           child: Text(
-            ProjectStrings.newPlace,
-            style: TextStyle(
+            wm.isChange ? ProjectStrings.change : ProjectStrings.newPlace,
+            style: const TextStyle(
               color: ProjectColors.textColorPrimary,
               fontSize: 16,
             ),
@@ -35,8 +35,7 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
           style: TextButton.styleFrom(
             primary: ProjectColors.textColorGrey,
           ),
-          onPressed: (){
-          },
+          onPressed: wm.pop,
           child: const Text(ProjectStrings.cancel),
         ),
         leadingWidth: 100,

@@ -48,11 +48,6 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                   MapWidget(
                     mapController: wm.controller,
                   ),
-                  MarkersStack(
-                    controller: wm.controller,
-                    transformer: transformer,
-                    markers: wm.markers,
-                  ),
                   StateNotifierBuilder<List<Place>>(
                     listenableState: wm.placesListState,
                     builder: (_, value) {
@@ -74,7 +69,9 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
                             _RoundRefreshButton(
                               onPressed: wm.refresh,
                             ),
-                            _AddPlaceButton(onPressed: wm.addPlace,),
+                            _AddPlaceButton(
+                              onPressed: wm.addPlace,
+                            ),
                             _RoundGeoButton(
                               onPressed: wm.getCurrentLocation,
                             ),
@@ -95,6 +92,7 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
 
 class _AddPlaceButton extends StatelessWidget {
   final VoidCallback onPressed;
+
   const _AddPlaceButton({required this.onPressed, Key? key}) : super(key: key);
 
   @override
@@ -105,8 +103,6 @@ class _AddPlaceButton extends StatelessWidget {
       decoration: const ShapeDecoration(
         shape: StadiumBorder(),
         gradient: LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
           colors: [Colors.yellow, Colors.green],
         ),
       ),

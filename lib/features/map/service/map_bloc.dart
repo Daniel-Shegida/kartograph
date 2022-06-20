@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/features/map/service/map_event.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:kartograph/features/places/place_api/place_api.dart';
@@ -50,15 +49,14 @@ class MapBloc extends Bloc<BaseMapEvent, BaseMapState> {
       emit(MapContentState(
         currentLocation: LatLng(location.latitude, location.longitude),
       ));
-      // return await Geolocator.getCurrentPosition();
     });
 
     /// обработка события загрузки мест на карте
     on<MapGetPlacesEvent>((event, emit) async {
       final list = await _rep.getSearchedPlaces(
         /// TODO посмотреть возможность добавления координат при связывании приложения
-        60,
-        30,
+        37,
+        -122,
         3000000.0,
         ['hotel', 'restaurant', 'other', 'cafe', 'museum', 'park'],
         '',
@@ -66,5 +64,4 @@ class MapBloc extends Bloc<BaseMapEvent, BaseMapState> {
       emit(MapPlacesContentState(list: list));
     });
   }
-
 }

@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:latlng/latlng.dart';
 

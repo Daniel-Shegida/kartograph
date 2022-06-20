@@ -78,17 +78,16 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
 
   @override
   void navigateToPlaceDetails(Place place) {
-    // ignore: avoid_print
-    print("da");
-    Routemaster.of(context).push('/Rest', queryParameters: {
-      'category': place.placeType.name,
-      'name': place.name,
-      'description': place.description,
-      'lat': place.lat.toString(),
-      'lng': place.lng.toString(),
-    });
-    // Routemaster.of(context).push('${AppRoutePaths.tabs}/test',);
-    // Routemaster.of(context).push('/MapAdding');
+    Routemaster.of(context).push(
+      '${AppRoutePaths.changingPlaceScreen}${place.id}',
+      queryParameters: {
+        'category': place.placeType.name,
+        'name': place.name!,
+        'description': place.description!,
+        'lat': place.lat.toString(),
+        'lng': place.lng.toString(),
+      },
+    );
   }
 
   void _updateState(BasePlaceState state) {
@@ -98,12 +97,6 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   }
 
   void _searchPlace() {
-    // ignore: avoid_print
-    print('_searchPlace');
-    // ignore: avoid_print
-    print(_searchParams);
-    // ignore: avoid_print
-    print(controller.text);
     model.search(_searchParams, controller.text);
   }
 

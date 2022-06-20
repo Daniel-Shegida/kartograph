@@ -1,4 +1,3 @@
-
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
@@ -7,6 +6,7 @@ import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_model.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_screen.dart';
+import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +32,6 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
 
   late final Place _place;
 
-
   /// controller for map
   @override
   MapController get controller => _controller;
@@ -52,7 +51,9 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
     model.mapStateStream.listen(_updateState);
     _markers.accept([]);
     _place = context.read<Place>();
-
+    if (_place.lng != 0 && _place.lng != null) {
+      _controller.center = LatLng(_place.lat!, _place.lng!);
+    }
     super.initWidgetModel();
   }
 
@@ -74,7 +75,7 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
 
   @override
   void gotoDefault() {
-    _controller.center = LatLng(35.68, 51.41);
+    // _controller.center = LatLng(35.68, 51.41);
   }
 
   @override
@@ -104,26 +105,52 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
       ),
     ]);
   }
+
   @override
   void pop() {
     Routemaster.of(context).pop();
   }
 
   @override
-  void create() {
-    final test = _markers.value![0].lat;
-    Routemaster.of(context).replace('/Rest', queryParameters: {
-      'category': _place.placeType.name,
-      'name': _place.name,
-      'description': _place.description,
-      'lat': test.toString(),
-      'lng': test.toString(),
-    });
-
+  void geo() {
+    model.getCurrentLocation();
   }
 
+  @override
+  void create() {
+    if (_markers.value?.isNotEmpty ?? false) {
+      Routemaster.of(context).pop();
+      if (_place.id != null) {
+        Routemaster.of(context).push(
+          '${AppRoutePaths.changingPlaceScreen}${_place.id}',
+          queryParameters: {
+            'category': _place.placeType.name,
+            'name': _place.name ?? '',
+            'description': _place.description ?? '',
+            'lat': _markers.value![0].lat.toString(),
+            'lng': _markers.value![0].lng.toString(),
+          },
+        );
+      } else {
+        Routemaster.of(context).push(
+          '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.creatingPlaceScreen}',
+          queryParameters: {
+            'category': _place.placeType.name,
+            'name': _place.name ?? '',
+            'description': _place.description ?? '',
+            'lat': _markers.value![0].lat.toString(),
+            'lng': _markers.value![0].lng.toString(),
+          },
+        );
+      }
+    }
+  }
 
-  void _updateState(BaseMapState state) {}
+  void _updateState(BaseMapState state) {
+    if (state is MapContentState) {
+      controller.center = state.currentLocation;
+    }
+  }
 
   Place _createPlaceAdder(double lat, double long) {
     return Place(
@@ -166,4 +193,7 @@ abstract class IMapAddingWidgetModel extends IWidgetModel {
 
   /// передать координаты точки
   void create();
+
+  /// получение текущих координат
+  void geo();
 }

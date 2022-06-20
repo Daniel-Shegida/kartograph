@@ -1,4 +1,3 @@
-import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/features/map/map_route.dart';
 import 'package:kartograph/features/map_adding/map_adding_route.dart';
@@ -13,8 +12,6 @@ import 'package:routemaster/routemaster.dart';
 final routes = RouteMap(
   routes: {
     /// 'путь': (_) => MaterialPage(child: виджет),
-// '/': (_) =>
-// const Redirect('${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}'),
     '/': (_) =>
         const Redirect('${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}'),
     AppRoutePaths.tabs: (route) => const TabPage(
@@ -33,28 +30,50 @@ final routes = RouteMap(
 
     '${AppRoutePaths.tabs}${AppRoutePaths.settingScreen}': (_) =>
         const SettingScreenRoute(),
-    '/Rest': (route) => PlaceAddScreenRoute(
-          category: route.queryParameters['category'] ?? '0',
-          name: route.queryParameters['name'] ?? '0',
-          description: route.queryParameters['description'] ?? '0',
-          lat: double.parse(route.queryParameters['lat'] ?? '0'),
-          lng: double.parse(route.queryParameters['lng'] ?? '0'),
-        ),
 
-    '/Rest/MapAdding': (route) => MapAddingScreenRoute(
-      category: route.queryParameters['category'] ?? '0',
-      name: route.queryParameters['name'] ?? '0',
-      description: route.queryParameters['description'] ?? '0',
+    '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.changingPlaceScreen}:id':
+        (route) => PlaceAddScreenRoute(
+              id: int.tryParse(route.pathParameters['id'] ?? 'q'),
+              category:
+                  route.queryParameters['category'] ?? Categories.other.name,
+              name: route.queryParameters['name'],
+              description: route.queryParameters['description'],
+              lat: double.parse(route.queryParameters['lat'] ?? '0'),
+              lng: double.parse(route.queryParameters['lng'] ?? '0'),
+            ),
+
+    '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.creatingPlaceScreen}':
+        (route) => PlaceAddScreenRoute(
+              category:
+                  route.queryParameters['category'] ?? Categories.other.name,
+              name: route.queryParameters['name'],
+              description: route.queryParameters['description'],
+              lat: double.parse(route.queryParameters['lat'] ?? '0'),
+              lng: double.parse(route.queryParameters['lng'] ?? '0'),
+            ),
+
+    '${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}${AppRoutePaths.mapAdding}': (route) => MapAddingScreenRoute(
+      category: route.queryParameters['category'] ?? Categories.other.name,
+      name: route.queryParameters['name'],
+      description: route.queryParameters['description'],
       lat: double.parse(route.queryParameters['lat'] ?? '0'),
       lng: double.parse(route.queryParameters['lng'] ?? '0'),
     ),
-    '${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}/MapAdding': (route) =>  MapAddingScreenRoute(
-category: route.queryParameters['category'] ?? '0',
-name: route.queryParameters['name'] ?? '0',
-description: route.queryParameters['description'] ?? '0',
-lat: double.parse(route.queryParameters['lat'] ?? '0'),
-lng: double.parse(route.queryParameters['lng'] ?? '0'),
-),
+    '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.creatingPlaceScreen}${AppRoutePaths.mapAdding}': (route) => MapAddingScreenRoute(
+      category: route.queryParameters['category'] ?? Categories.other.name,
+      name: route.queryParameters['name'],
+      description: route.queryParameters['description'],
+      lat: double.parse(route.queryParameters['lat'] ?? '0'),
+      lng: double.parse(route.queryParameters['lng'] ?? '0'),
+    ),
+    '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.changingPlaceScreen}:id/${AppRoutePaths.mapAdding}': (route) => MapAddingScreenRoute(
+      id: int.tryParse(route.pathParameters['id'] ?? 'q'),
+      category: route.queryParameters['category'] ?? Categories.other.name,
+      name: route.queryParameters['name'],
+      description: route.queryParameters['description'],
+      lat: double.parse(route.queryParameters['lat'] ?? '0'),
+      lng: double.parse(route.queryParameters['lng'] ?? '0'),
+    ),
 
 // 'SettingScreenRoute': (_) => PlaceAddScreenRoute(),
 

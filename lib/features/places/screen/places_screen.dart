@@ -6,7 +6,6 @@ import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/places/screen/places_screeen_wm.dart';
-import 'package:routemaster/routemaster.dart';
 
 /// экран просмотра существующих мест
 class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {
@@ -60,7 +59,6 @@ class _PlacesCard extends StatelessWidget {
 
   final Function(Place place) onTap;
 
-
   const _PlacesCard({
     required this.cardPlace,
     required this.onTap,
@@ -76,7 +74,7 @@ class _PlacesCard extends StatelessWidget {
           Icons.circle,
           color: cardPlace.placeType.categoryColor,
         ),
-        title: Text(cardPlace.name),
+        title: Text(cardPlace.name!),
         subtitle: Text(cardPlace.placeType.categoryName),
       ),
     );

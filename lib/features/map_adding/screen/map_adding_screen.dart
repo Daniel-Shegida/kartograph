@@ -30,22 +30,23 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
             onPressed: wm.pop,
             child: const Text(
               ProjectStrings.cancel,
-              style: TextStyle(color: ProjectColors.textColorGrey, fontSize: 16),
+              style:
+                  TextStyle(color: ProjectColors.textColorGrey, fontSize: 16),
             ),
           ),
         ),
         leadingWidth: 106,
         title: const Text(
           ProjectStrings.location,
-          style:
-              TextStyle(color: ProjectColors.mainLightTheme, fontSize: 24),
+          style: TextStyle(color: ProjectColors.mainLightTheme, fontSize: 24),
         ),
         actions: [
           TextButton(
             onPressed: wm.create,
             child: const Text(
               ProjectStrings.ready,
-              style: TextStyle(color: ProjectColors.mainGreenColor, fontSize: 16),
+              style:
+                  TextStyle(color: ProjectColors.mainGreenColor, fontSize: 16),
             ),
           ),
         ],
@@ -108,7 +109,7 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
                         horizontal: 16.0,
                       ),
                       child: _RoundGeoButton(
-                        onPressed: () {},
+                        onPressed: wm.geo,
                       ),
                     ),
                   ),

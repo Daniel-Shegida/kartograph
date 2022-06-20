@@ -2,36 +2,35 @@ import 'package:kartograph/assets/enums/categories.dart';
 
 /// класс места на картах и в списке
 class Place {
-
   /// id места на сервере
-  int id;
+  int? id;
 
   /// широта места
-  double lat;
+  double? lat;
 
   /// долгота места
-  double lng;
+  double? lng;
 
   /// название места
-  String name;
+  String? name;
 
   /// urls картинок места
-  List<String> urls;
+  List<String>? urls;
 
   /// тип места
   Categories placeType;
 
   /// описание места
-  String description;
+  String? description;
 
   /// полный конструктор места
   Place({
-    required this.id,
-    required this.lat,
-    required this.lng,
-    required this.name,
-    required this.urls,
     required this.placeType,
-    required this.description,
+    this.id,
+    this.lat,
+    this.lng,
+    this.name,
+    this.urls,
+    this.description,
   });
 }
