@@ -51,8 +51,6 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   void initWidgetModel() {
     model.mapStateStream.listen(_updateState);
     _markers.accept([]);
-    // ignore: avoid_print
-    print("init");
     super.initWidgetModel();
   }
 
@@ -74,7 +72,10 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
 
   @override
   void gotoDefault() {
-    _controller.center = LatLng(35.68, 51.41);
+    _controller.center = LatLng(
+      Environment<AppConfig>.instance().config.lat,
+      Environment<AppConfig>.instance().config.lng,
+    );
   }
 
   @override
