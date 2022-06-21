@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
+import 'package:kartograph/features/place_adding/domain/entity_place.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen.dart';
 import 'package:provider/provider.dart';
 
 /// Роут экрана [PlaceAddingScreen]
 class PlaceAddScreenRoute extends MaterialPage<PlaceAddingScreen> {
-  final String category;
+  final Categories category;
   final int? id;
   final String? name;
   final String? description;
@@ -15,25 +16,14 @@ class PlaceAddScreenRoute extends MaterialPage<PlaceAddingScreen> {
 
   /// конструктор MaterialPage экрана [PlaceAddingScreen]
   PlaceAddScreenRoute({
-    required this.category,
+    this.category = Categories.other,
     this.id,
     this.name,
     this.description,
     this.lat,
     this.lng,
   }) : super(
-          child:
-              Provider.value(
-                value: Place(
-                    id: id,
-                    lat: lat,
-                    lng: lng,
-                    name: name,
-                    placeType: Categories.values.byName(category),
-                    description: description,),
-                child:  PlaceAddingScreen(),
-
-              ),
+                child:  PlaceAddingScreen(place: EntityPlace(),),
         );
 
 // child: constonst PlaceAddingScreen(),

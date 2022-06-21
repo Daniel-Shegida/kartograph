@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
+import 'package:kartograph/features/place_adding/domain/entity_place.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen_wm.dart';
 import 'package:kartograph/features/place_adding/widgets/custom_text_field.dart';
 import 'package:kartograph/features/place_adding/widgets/locked_button.dart';
@@ -11,10 +12,10 @@ import 'package:kartograph/features/place_adding/widgets/selector.dart';
 /// экран добавления места
 class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
   /// standard consctructor for elem
-  const PlaceAddingScreen({
+  PlaceAddingScreen({
+    required EntityPlace place,
     Key? key,
-    WidgetModelFactory wmFactory = placeAddingWidgetModelFactory,
-  }) : super(wmFactory, key: key);
+  }) : super(mapAddingWidgetModelFactoryWithParams(place), key: key);
 
   @override
   Widget build(IPlaceAddingWidgetModel wm) {

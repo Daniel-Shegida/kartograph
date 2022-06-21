@@ -53,24 +53,6 @@ final routes = RouteMap(
             ),
 
     '${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}${AppRoutePaths.mapAdding}': (route) => MapAddingScreenRoute(
-      category: route.queryParameters['category'] ?? Categories.other.name,
-      name: route.queryParameters['name'],
-      description: route.queryParameters['description'],
-      lat: double.parse(route.queryParameters['lat'] ?? '0'),
-      lng: double.parse(route.queryParameters['lng'] ?? '0'),
-    ),
-    '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.creatingPlaceScreen}${AppRoutePaths.mapAdding}': (route) => MapAddingScreenRoute(
-      category: route.queryParameters['category'] ?? Categories.other.name,
-      name: route.queryParameters['name'],
-      description: route.queryParameters['description'],
-      lat: double.parse(route.queryParameters['lat'] ?? '0'),
-      lng: double.parse(route.queryParameters['lng'] ?? '0'),
-    ),
-    '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.changingPlaceScreen}:id/${AppRoutePaths.mapAdding}': (route) => MapAddingScreenRoute(
-      id: int.tryParse(route.pathParameters['id'] ?? 'q'),
-      category: route.queryParameters['category'] ?? Categories.other.name,
-      name: route.queryParameters['name'],
-      description: route.queryParameters['description'],
       lat: double.parse(route.queryParameters['lat'] ?? '0'),
       lng: double.parse(route.queryParameters['lng'] ?? '0'),
     ),

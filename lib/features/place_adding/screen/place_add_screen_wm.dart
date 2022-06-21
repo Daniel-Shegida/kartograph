@@ -2,19 +2,24 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
-import 'package:kartograph/features/map_adding/map_adding_route.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_screen.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
+import 'package:kartograph/features/place_adding/domain/entity_place.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen.dart';
 import 'package:kartograph/features/place_adding/screen/place_screen_model.dart';
+import 'package:latlng/latlng.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
-/// factory for [PlaceAddingScreen]
-PlaceAddingWidgetModel placeAddingWidgetModelFactory(BuildContext context) {
-  return PlaceAddingWidgetModel(PlaceAddingModel());
+PlaceAddingWidgetModel Function(BuildContext context) mapAddingWidgetModelFactoryWithParams(EntityPlace place){
+  return (BuildContext context){
+    return PlaceAddingWidgetModel(
+      PlaceAddingModel(
+      ),
+      place,
+    );
+  };
 }
-
 /// WidgetModel for [PlaceAddingScreen]
 class PlaceAddingWidgetModel
     extends WidgetModel<PlaceAddingScreen, PlaceAddingModel>
@@ -43,6 +48,9 @@ class PlaceAddingWidgetModel
   late final Place _place;
 
   late final bool _isChange;
+
+  late final EntityPlace placeTest;
+
 
   final List<DropdownMenuItem<Categories>> _choises =
       Categories.values.map<DropdownMenuItem<Categories>>((value) {
@@ -89,7 +97,7 @@ class PlaceAddingWidgetModel
   bool get isChange => _isChange;
 
   /// standard consctructor for elem
-  PlaceAddingWidgetModel(PlaceAddingModel model) : super(model);
+  PlaceAddingWidgetModel(PlaceAddingModel model, this.placeTest ) : super(model);
 
   @override
   void initWidgetModel() {
@@ -155,9 +163,9 @@ class PlaceAddingWidgetModel
     //   'name': _place.name ?? '',
     //   'description': _place.description ?? '',
     // });
-    final result = await Navigator.push(
+    LatLng? result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) =>  MapAddingScreen(test: 3,)),
+      MaterialPageRoute(builder: (context) =>  MapAddingScreen(coordinates: LatLng(72, 72,),)),
     );
     // ignore: avoid_print
     print(result);

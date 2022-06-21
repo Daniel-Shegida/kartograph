@@ -12,10 +12,9 @@ import 'package:kartograph/features/map_adding/screen/map_adding_screen.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
-MapAddingWidgetModel Function(BuildContext context) mapAddingWidgetModelFactoryWithParams(double value){
+MapAddingWidgetModel Function(BuildContext context) mapAddingWidgetModelFactoryWithParams(LatLng value){
   return (BuildContext context){
     return MapAddingWidgetModel(
       MapAddingModel(
@@ -30,12 +29,7 @@ MapAddingWidgetModel Function(BuildContext context) mapAddingWidgetModelFactoryW
 class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
     with SingleTickerProviderWidgetModelMixin
     implements IMapAddingWidgetModel {
-  final _controller = MapController(
-    location: LatLng(
-      Environment<AppConfig>.instance().config.lat,
-      Environment<AppConfig>.instance().config.lng,
-    ),
-  );
+  late final MapController _controller;
   final StateNotifier<List<Place>> _markers = StateNotifier<List<Place>>();
 
   // late final Place _place;
@@ -51,21 +45,18 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
 
   double _scaleStart = 1.0;
 
-  final double test;
+  final LatLng coordinates;
 
   /// standard consctructor for elem
-  MapAddingWidgetModel(MapAddingModel model, this.test) : super(model);
+  MapAddingWidgetModel(MapAddingModel model, this.coordinates) : super(model);
 
   @override
   void initWidgetModel() {
     model.mapStateStream.listen(_updateState);
     _markers.accept([]);
-    // _place = context.read<Place>();
-    // if (_place.lng != 0 && _place.lng != null) {
-    //   _controller.center = LatLng(_place.lat!, _place.lng!);
-    // }
-    // ignore: avoid_print
-    print(test);
+    _controller = MapController(
+      location: coordinates,
+    );
     super.initWidgetModel();
   }
 
@@ -157,7 +148,7 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
             );
       }
       else {
-        Navigator.pop(context, 'Nope.');
+        Navigator.pop(context, LatLng(_markers.value![0].lat!, _markers.value![0].lng!),);
       }
     }
     // if (_markers.value?.isNotEmpty ?? false) {
