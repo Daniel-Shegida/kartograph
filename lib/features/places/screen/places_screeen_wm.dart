@@ -26,8 +26,8 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
 
   final List<String> _searchParams = [];
 
-  final StateNotifier<ListPlacesToShow> _checkBoxNotifier =
-      StateNotifier<ListPlacesToShow>();
+  final StateNotifier<PlaceFiltersList> _checkBoxNotifier =
+      StateNotifier<PlaceFiltersList>();
 
   @override
   TextEditingController get controller => _controller;
@@ -45,7 +45,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
     _blocSubscription = model.placeStateStream.listen(_updateState);
     placesListState.loading();
     controller.addListener(_searchPlace);
-    _checkBoxNotifier.accept(ListPlacesToShow.createStandard());
+    _checkBoxNotifier.accept(PlaceFiltersList.init());
     for (final e in _checkBoxNotifier.value!.listCategoriesToShow) {
       _searchParams.add(e.category.name);
     }
