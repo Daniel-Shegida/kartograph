@@ -6,7 +6,7 @@ import 'package:kartograph/features/places/domain/types_to_show.dart';
 /// виджет, который показывает, которые типы мест ищутся
 class PlacesChoiseDialogWidget extends StatelessWidget {
   /// список найденных мест
-  final ListenableState<ListPlacesToShow> statesList;
+  final ListenableState<PlaceFiltersList> statesList;
 
   /// функция изменения типа места
   final void Function(bool?, int) onChanged;
@@ -20,7 +20,7 @@ class PlacesChoiseDialogWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StateNotifierBuilder<ListPlacesToShow>(
+    return StateNotifierBuilder<PlaceFiltersList>(
       listenableState: statesList,
       builder: (_, value) {
         return Column(

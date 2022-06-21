@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/assets/enums/categories.dart';
+import 'package:kartograph/config/app_config.dart';
+import 'package:kartograph/config/environment/environment.dart';
 import 'package:kartograph/features/map/screen/map_screen.dart';
 import 'package:kartograph/features/map/screen/map_screen_model.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
@@ -21,7 +24,10 @@ MapWidgetModel mapWidgetModelFactory(BuildContext context) {
 class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     implements IMapWidgetModel {
   final _controller = MapController(
-    location: LatLng(35.68, 51.41),
+    location: LatLng(
+      Environment<AppConfig>.instance().config.lat,
+      Environment<AppConfig>.instance().config.lng,
+    ),
   );
 
   final StateNotifier<List<Place>> _placesListState =
@@ -71,7 +77,10 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   @override
   void gotoDefault() {
-    _controller.center = LatLng(35.68, 51.41);
+    _controller.center = LatLng(
+      Environment<AppConfig>.instance().config.lat,
+      Environment<AppConfig>.instance().config.lng,
+    );
   }
 
   @override

@@ -22,7 +22,7 @@ enum Categories {
   park(ProjectStrings.park, Colors.green, Icons.location_on),
 
   /// добавление места
-  placeAdder('_', Colors.grey, Icons.add_circle);
+  newPlace('_', Colors.grey, Icons.add_circle);
 
   /// имя категории
   final String categoryName;
@@ -30,7 +30,7 @@ enum Categories {
   /// цвет категории
   final Color categoryColor;
 
-  /// цвет категории
+  /// иконка категории
   final IconData categoryIcon;
 
   /// конструктор [Categories]

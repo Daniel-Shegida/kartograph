@@ -3,18 +3,19 @@ import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_event.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
 
-/// Model of SpecialWidgetModel
+/// модель SpecialWidgetModel
 class MapAddingModel extends ElementaryModel {
-  /// Bloc for working with profile states.
+
+  /// блок работающий с состояниями карты.
   final MapBloc _mapBloc;
 
-  /// Stream to track the state of the profile_bloc.
+  /// поток отслеживающий состояния из блока
   Stream<BaseMapState> get mapStateStream => _mapBloc.stream;
 
-  /// Gives the current state.
+  /// получение текущего потока.
   BaseMapState get currentState => _mapBloc.state;
 
-  /// Create an instance [MapAddingModel].
+  /// стандартный конструктор.
   MapAddingModel(
     this._mapBloc,
   ) : super();
@@ -22,9 +23,10 @@ class MapAddingModel extends ElementaryModel {
   @override
   void init() {
     super.init();
+    _mapBloc.add(MapGetLocationEvent());
   }
 
-  /// Method for update personal data to the [MapBloc].
+  /// метод, который отправляет ивент получения информации о карте в [MapBloc].
   void getCurrentLocation() {
     _mapBloc.add(
       MapGetLocationEvent(),

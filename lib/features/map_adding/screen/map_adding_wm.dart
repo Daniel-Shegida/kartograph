@@ -1,7 +1,10 @@
 import 'package:elementary/elementary.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
+import 'package:kartograph/config/app_config.dart';
+import 'package:kartograph/config/environment/environment.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_model.dart';
@@ -26,7 +29,10 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
     with SingleTickerProviderWidgetModelMixin
     implements IMapAddingWidgetModel {
   final _controller = MapController(
-    location: LatLng(35.68, 51.41),
+    location: LatLng(
+      Environment<AppConfig>.instance().config.lat,
+      Environment<AppConfig>.instance().config.lng,
+    ),
   );
   final StateNotifier<List<Place>> _markers = StateNotifier<List<Place>>();
 
@@ -75,7 +81,10 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
 
   @override
   void gotoDefault() {
-    // _controller.center = LatLng(35.68, 51.41);
+    _controller.center = LatLng(
+      Environment<AppConfig>.instance().config.lat,
+      Environment<AppConfig>.instance().config.lng,
+    );
   }
 
   @override
@@ -151,6 +160,16 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
       controller.center = state.currentLocation;
     }
   }
+  @override
+  void onPointerSignal(PointerSignalEvent event) {
+    if (event is PointerScrollEvent) {
+      final delta = event.scrollDelta;
+
+      _controller.zoom -= delta.dy / 1000.0;
+    }
+  }
+
+  void _updateState(BaseMapState state) {}
 
   Place _createPlaceAdder(double lat, double long) {
     return Place(
@@ -159,33 +178,33 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
       lng: long,
       name: 'name',
       urls: [],
-      placeType: Categories.placeAdder,
+      placeType: Categories.newPlace,
       description: 'description',
     );
   }
 }
 
-/// Interface of [MapAddingWidgetModel].
+/// интерфейс [MapAddingWidgetModel].
 abstract class IMapAddingWidgetModel extends IWidgetModel {
-  /// Text editing controller Main Screen.
+  /// контроллер карты
   MapController get controller;
 
-  /// Text editing controller Main Screen.
+  /// Список мест, трансформурющуюсиеся в карту.
   StateNotifier<List<Place>> get markers;
 
-  /// action to go back tp detail
+  /// ивент вернуться к изначальному значениб
   void gotoDefault();
 
-  /// action for DoubleTap
+  /// ивент при двойном нажатии на карту
   void onDoubleTap();
 
-  /// action for starting scale
+  /// ивент при начале изменения масштаба
   void onScaleStart(ScaleStartDetails details);
 
-  /// action for changing scale
+  /// ивент при изменении мастштаба
   void onScaleUpdate(ScaleUpdateDetails details);
 
-  /// action for changing scale
+  /// ивень при нажатии на карту
   void onTap(TapUpDetails details, MapTransformer transformer);
 
   /// om pop
@@ -196,4 +215,8 @@ abstract class IMapAddingWidgetModel extends IWidgetModel {
 
   /// получение текущих координат
   void geo();
+
+  /// ивент обрабатывающий взаимодействия пользователя с картой
+  /// (на данный момент только ивент изменения масштаба)
+  void onPointerSignal(PointerSignalEvent event);
 }

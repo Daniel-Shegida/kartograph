@@ -1,5 +1,4 @@
 import 'package:elementary/elementary.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/colors/colors.dart';
@@ -64,13 +63,7 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
             },
             child: Listener(
               behavior: HitTestBehavior.opaque,
-              onPointerSignal: (event) {
-                if (event is PointerScrollEvent) {
-                  final delta = event.scrollDelta;
-
-                  wm.controller.zoom -= delta.dy / 1000.0;
-                }
-              },
+              onPointerSignal: wm.onPointerSignal,
               child: Stack(
                 children: [
                   MapWidget(
