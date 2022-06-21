@@ -60,7 +60,7 @@ class _MarkersStackState extends State<MarkersStack> {
           iconData: e.placeType.categoryIcon,
           color: e.placeType.categoryColor,
           onPressed: () {
-            if (e.placeType != Categories.placeAdder) {
+            if (e.placeType != Categories.newPlace) {
               Routemaster.of(context).push(
                 '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.changingPlaceScreen}${e.id}',
                 queryParameters: {

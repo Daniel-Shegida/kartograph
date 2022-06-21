@@ -155,11 +155,6 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
     }
   }
 
-  void _updateState(BaseMapState state) {
-    if (state is MapContentState) {
-      controller.center = state.currentLocation;
-    }
-  }
   @override
   void onPointerSignal(PointerSignalEvent event) {
     if (event is PointerScrollEvent) {
@@ -169,7 +164,11 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
     }
   }
 
-  void _updateState(BaseMapState state) {}
+  void _updateState(BaseMapState state) {
+    if (state is MapContentState) {
+      controller.center = state.currentLocation;
+    }
+  }
 
   Place _createPlaceAdder(double lat, double long) {
     return Place(
