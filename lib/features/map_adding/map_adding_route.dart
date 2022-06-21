@@ -32,7 +32,7 @@ class MapAddingScreenRoute extends MaterialPage<MapAddingScreen> {
               placeType: Categories.values.byName(category),
               description: description,
             ),
-            child: MapAddingScreen(),
+            child: MapAddingScreen(test: 3,),
           ),
         );
 }

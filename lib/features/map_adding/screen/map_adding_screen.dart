@@ -4,8 +4,10 @@ import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
+import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/widgets/marker_stack.dart';
 import 'package:kartograph/features/map/widgets/round_button.dart';
+import 'package:kartograph/features/map_adding/screen/map_adding_model.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_wm.dart';
 import 'package:kartograph/util/map_widget.dart';
 import 'package:map/map.dart';
@@ -13,10 +15,10 @@ import 'package:map/map.dart';
 /// экран добавления места
 class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
   /// standard consctructor for elem
-  const MapAddingScreen({
+  MapAddingScreen({
+    required double test,
     Key? key,
-    WidgetModelFactory wmFactory = mapAddingWidgetModelFactory,
-  }) : super(wmFactory, key: key);
+}) : super(mapAddingWidgetModelFactoryWithParams(test), key: key);
 
   @override
   Widget build(IMapAddingWidgetModel wm) {

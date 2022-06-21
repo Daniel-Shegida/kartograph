@@ -2,6 +2,8 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
+import 'package:kartograph/features/map_adding/map_adding_route.dart';
+import 'package:kartograph/features/map_adding/screen/map_adding_screen.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen.dart';
 import 'package:kartograph/features/place_adding/screen/place_screen_model.dart';
@@ -147,12 +149,18 @@ class PlaceAddingWidgetModel
   }
 
   @override
-  void moveToMap() {
-    Routemaster.of(context).push(AppRoutePaths.mapAdding, queryParameters: {
-      'category': _place.placeType.name,
-      'name': _place.name ?? '',
-      'description': _place.description ?? '',
-    });
+  void moveToMap() async {
+    // Routemaster.of(context).push(AppRoutePaths.mapAdding, queryParameters: {
+    //   'category': _place.placeType.name,
+    //   'name': _place.name ?? '',
+    //   'description': _place.description ?? '',
+    // });
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) =>  MapAddingScreen(test: 3,)),
+    );
+    // ignore: avoid_print
+    print(result);
   }
 
   @override

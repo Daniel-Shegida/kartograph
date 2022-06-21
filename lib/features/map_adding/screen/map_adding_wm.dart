@@ -15,13 +15,15 @@ import 'package:map/map.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
-/// Builder for [MapAddingWidgetModel]
-MapAddingWidgetModel mapAddingWidgetModelFactory(BuildContext context) {
-  return MapAddingWidgetModel(
-    MapAddingModel(
-      MapBloc(),
-    ),
-  );
+MapAddingWidgetModel Function(BuildContext context) mapAddingWidgetModelFactoryWithParams(double value){
+  return (BuildContext context){
+    return MapAddingWidgetModel(
+      MapAddingModel(
+        MapBloc(),
+      ),
+      value,
+    );
+  };
 }
 
 /// WidgetModel for [MapAddingScreen]
@@ -36,7 +38,7 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   );
   final StateNotifier<List<Place>> _markers = StateNotifier<List<Place>>();
 
-  late final Place _place;
+  // late final Place _place;
 
   /// controller for map
   @override
@@ -49,17 +51,21 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
 
   double _scaleStart = 1.0;
 
+  final double test;
+
   /// standard consctructor for elem
-  MapAddingWidgetModel(MapAddingModel model) : super(model);
+  MapAddingWidgetModel(MapAddingModel model, this.test) : super(model);
 
   @override
   void initWidgetModel() {
     model.mapStateStream.listen(_updateState);
     _markers.accept([]);
-    _place = context.read<Place>();
-    if (_place.lng != 0 && _place.lng != null) {
-      _controller.center = LatLng(_place.lat!, _place.lng!);
-    }
+    // _place = context.read<Place>();
+    // if (_place.lng != 0 && _place.lng != null) {
+    //   _controller.center = LatLng(_place.lat!, _place.lng!);
+    // }
+    // ignore: avoid_print
+    print(test);
     super.initWidgetModel();
   }
 
@@ -117,7 +123,16 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
 
   @override
   void pop() {
-    Routemaster.of(context).pop();
+    // Routemaster.of(context).pop();
+    // Navigator.pop(context, 'Nope.');
+    // ignore: avoid_print
+    print(Routemaster.of(context).currentRoute.path);
+    if (Routemaster.of(context).currentRoute.path == '${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}${AppRoutePaths.mapAdding}'){
+      // ignore: avoid_print
+      print("yes");
+    }
+    Navigator.pop(context);
+
   }
 
   @override
@@ -128,31 +143,49 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   @override
   void create() {
     if (_markers.value?.isNotEmpty ?? false) {
-      Routemaster.of(context).pop();
-      if (_place.id != null) {
-        Routemaster.of(context).push(
-          '${AppRoutePaths.changingPlaceScreen}${_place.id}',
-          queryParameters: {
-            'category': _place.placeType.name,
-            'name': _place.name ?? '',
-            'description': _place.description ?? '',
-            'lat': _markers.value![0].lat.toString(),
-            'lng': _markers.value![0].lng.toString(),
-          },
-        );
-      } else {
-        Routemaster.of(context).push(
-          '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.creatingPlaceScreen}',
-          queryParameters: {
-            'category': _place.placeType.name,
-            'name': _place.name ?? '',
-            'description': _place.description ?? '',
-            'lat': _markers.value![0].lat.toString(),
-            'lng': _markers.value![0].lng.toString(),
-          },
-        );
+      if (Routemaster.of(context).currentRoute.path == '${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}${AppRoutePaths.mapAdding}'){
+          Routemaster.of(context).pop();
+            Routemaster.of(context).push(
+              '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.creatingPlaceScreen}',
+              queryParameters: {
+                'category': 'other',
+                'name': '',
+                'description': '',
+                'lat': _markers.value![0].lat.toString(),
+                'lng': _markers.value![0].lng.toString(),
+              },
+            );
+      }
+      else {
+        Navigator.pop(context, 'Nope.');
       }
     }
+    // if (_markers.value?.isNotEmpty ?? false) {
+    //   Routemaster.of(context).pop();
+    //   if (_place.id != null) {
+    //     Routemaster.of(context).push(
+    //       '${AppRoutePaths.changingPlaceScreen}${_place.id}',
+    //       queryParameters: {
+    //         'category': _place.placeType.name,
+    //         'name': _place.name ?? '',
+    //         'description': _place.description ?? '',
+    //         'lat': _markers.value![0].lat.toString(),
+    //         'lng': _markers.value![0].lng.toString(),
+    //       },
+    //     );
+    //   } else {
+    //     Routemaster.of(context).push(
+    //       '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.creatingPlaceScreen}',
+    //       queryParameters: {
+    //         'category': _place.placeType.name,
+    //         'name': _place.name ?? '',
+    //         'description': _place.description ?? '',
+    //         'lat': _markers.value![0].lat.toString(),
+    //         'lng': _markers.value![0].lng.toString(),
+    //       },
+    //     );
+    //   }
+    // }
   }
 
   @override
