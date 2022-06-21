@@ -1,5 +1,4 @@
 import 'package:elementary/elementary.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/colors/colors.dart';
@@ -15,9 +14,8 @@ import 'package:map/map.dart';
 class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
   /// standard consctructor for elem
   const MapAddingScreen({
-    int value,
     Key? key,
-    WidgetModelFactory wmFactory = mapAddingWidgetModelFactory(),
+    WidgetModelFactory wmFactory = mapAddingWidgetModelFactory,
   }) : super(wmFactory, key: key);
 
   @override
@@ -31,22 +29,23 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
             onPressed: () {},
             child: const Text(
               ProjectStrings.cancel,
-              style: TextStyle(color: ProjectColors.textColorGrey, fontSize: 16),
+              style:
+                  TextStyle(color: ProjectColors.textColorGrey, fontSize: 16),
             ),
           ),
         ),
         leadingWidth: 106,
         title: const Text(
           ProjectStrings.location,
-          style:
-              TextStyle(color: ProjectColors.mainLightTheme, fontSize: 24),
+          style: TextStyle(color: ProjectColors.mainLightTheme, fontSize: 24),
         ),
         actions: [
           TextButton(
             onPressed: () {},
             child: const Text(
               ProjectStrings.ready,
-              style: TextStyle(color: ProjectColors.mainGreenColor, fontSize: 16),
+              style:
+                  TextStyle(color: ProjectColors.mainGreenColor, fontSize: 16),
             ),
           ),
         ],

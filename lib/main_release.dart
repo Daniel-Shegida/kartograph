@@ -1,4 +1,5 @@
 import 'package:kartograph/config/app_config.dart';
+import 'package:kartograph/config/coordinates.dart';
 import 'package:kartograph/config/debug_options.dart';
 import 'package:kartograph/config/environment/build_types.dart';
 import 'package:kartograph/config/environment/environment.dart';
@@ -11,6 +12,8 @@ void main() {
     buildType: BuildType.release,
     config: AppConfig(
       url: Url.prodUrl,
+      lat: ProjectCoordinates.staringLat,
+      lng: ProjectCoordinates.staringLng,
       proxyUrl: Url.prodProxyUrl,
       debugOptions: DebugOptions(),
     ),

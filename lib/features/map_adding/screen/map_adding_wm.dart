@@ -3,6 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
+import 'package:kartograph/config/app_config.dart';
+import 'package:kartograph/config/environment/environment.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_model.dart';
@@ -24,7 +26,10 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
     with SingleTickerProviderWidgetModelMixin
     implements IMapAddingWidgetModel {
   final _controller = MapController(
-    location: LatLng(35.68, 51.41),
+    location: LatLng(
+      Environment<AppConfig>.instance().config.lat,
+      Environment<AppConfig>.instance().config.lng,
+    ),
   );
   final StateNotifier<List<Place>> _markers = StateNotifier<List<Place>>();
 
@@ -46,6 +51,8 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   void initWidgetModel() {
     model.mapStateStream.listen(_updateState);
     _markers.accept([]);
+    // ignore: avoid_print
+    print("init");
     super.initWidgetModel();
   }
 
