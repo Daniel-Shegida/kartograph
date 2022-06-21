@@ -11,8 +11,6 @@ import 'package:routemaster/routemaster.dart';
 final routes = RouteMap(
   routes: {
     /// 'путь': (_) => MaterialPage(child: виджет),
-    // '/': (_) =>
-    // const Redirect('${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}'),
     '/': (_) =>
     const Redirect('MapAdding'),
 

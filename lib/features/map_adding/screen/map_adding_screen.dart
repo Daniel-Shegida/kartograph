@@ -15,8 +15,9 @@ import 'package:map/map.dart';
 class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
   /// standard consctructor for elem
   const MapAddingScreen({
+    int value,
     Key? key,
-    WidgetModelFactory wmFactory = mapAddingWidgetModelFactory,
+    WidgetModelFactory wmFactory = mapAddingWidgetModelFactory(),
   }) : super(wmFactory, key: key);
 
   @override
@@ -63,13 +64,7 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
             },
             child: Listener(
               behavior: HitTestBehavior.opaque,
-              onPointerSignal: (event) {
-                if (event is PointerScrollEvent) {
-                  final delta = event.scrollDelta;
-
-                  wm.controller.zoom -= delta.dy / 1000.0;
-                }
-              },
+              onPointerSignal: wm.onPointerSignal,
               child: Stack(
                 children: [
                   MapWidget(
