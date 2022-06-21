@@ -78,7 +78,10 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   @override
   void gotoDefault() {
-    _controller.center = LatLng(35.68, 51.41);
+    _controller.center = LatLng(
+      Environment<AppConfig>.instance().config.lat,
+      Environment<AppConfig>.instance().config.lng,
+    );
   }
 
   @override
