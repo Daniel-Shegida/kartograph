@@ -23,7 +23,6 @@ class MapAddingModel extends ElementaryModel {
   @override
   void init() {
     super.init();
-    _mapBloc.add(MapGetLocationEvent());
   }
 
   /// метод, который отправляет ивент получения информации о карте в [MapBloc].

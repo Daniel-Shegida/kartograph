@@ -82,8 +82,8 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
       '${AppRoutePaths.changingPlaceScreen}${place.id}',
       queryParameters: {
         'category': place.placeType.name,
-        'name': place.name!,
-        'description': place.description!,
+        'name': place.name,
+        'description': place.description,
         'lat': place.lat.toString(),
         'lng': place.lng.toString(),
       },

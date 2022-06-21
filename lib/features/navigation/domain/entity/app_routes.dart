@@ -52,9 +52,10 @@ final routes = RouteMap(
               lng: double.parse(route.queryParameters['lng'] ?? '0'),
             ),
 
-    '${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}${AppRoutePaths.mapAdding}': (route) => MapAddingScreenRoute(
-      lat: double.parse(route.queryParameters['lat'] ?? '0'),
-      lng: double.parse(route.queryParameters['lng'] ?? '0'),
-    ),
+    '${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}${AppRoutePaths.mapAdding}':
+        (route) => MapAddingScreenRoute(
+              lat: double.parse(route.queryParameters['lat'] ?? '0'),
+              lng: double.parse(route.queryParameters['lng'] ?? '0'),
+            ),
   },
 );

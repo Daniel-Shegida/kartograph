@@ -103,7 +103,7 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
                         horizontal: 16.0,
                       ),
                       child: _RoundGeoButton(
-                        onPressed: wm.geo,
+                        onPressed: wm.getCurrentGeolocation,
                       ),
                     ),
                   ),

@@ -15,7 +15,7 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
   PlaceAddingScreen({
     required EntityPlace place,
     Key? key,
-  }) : super(mapAddingWidgetModelFactoryWithParams(place), key: key);
+  }) : super(placeAddingWidgetModelFactoryWithParams(place), key: key);
 
   @override
   Widget build(IPlaceAddingWidgetModel wm) {

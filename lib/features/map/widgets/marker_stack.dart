@@ -52,7 +52,7 @@ class _MarkersStackState extends State<MarkersStack> {
     final markerWidgets = widget.markers.map(
       (e) {
         final pos = widget.transformer.fromLatLngToXYCoords(
-          LatLng(e.lat!, e.lng!),
+          LatLng(e.lat, e.lng),
         );
         return Marker(
           leftPos: pos.dx,
@@ -65,8 +65,8 @@ class _MarkersStackState extends State<MarkersStack> {
                 '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.changingPlaceScreen}${e.id}',
                 queryParameters: {
                   'category': e.placeType.name,
-                  'name': e.name!,
-                  'description': e.description!,
+                  'name': e.name,
+                  'description': e.description,
                   'lat': e.lat.toString(),
                   'lng': e.lng.toString(),
                 },

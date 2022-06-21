@@ -16,16 +16,16 @@ class PlaceAddingModel extends ElementaryModel {
   /// метод для создания места.
   void postPlace(Place place) {
     // для создания уникального id который был бы еще и положительным
-    final id = ((place.lng! + place.lat!) * 1000000).toInt().abs();
+    final id = ((place.lng + place.lat) * 1000000).toInt().abs();
     _rep.postPlace(
       PlaceResponse(
         id: id,
-        name: place.name ?? 'name',
-        description: place.description ?? 'descr',
+        name: place.name,
+        description: place.description,
         placeType: place.placeType.name,
         urls: [],
-        lng: place.lng ?? 0,
-        lat: place.lat ?? 0,
+        lng: place.lng,
+        lat: place.lat,
       ),
     );
   }
@@ -35,13 +35,13 @@ class PlaceAddingModel extends ElementaryModel {
     _rep.putPlace(
       place.id.toString(),
       PlaceResponse(
-        id: place.id!,
-        name: place.name ?? 'name',
-        description: place.description ?? 'descr',
+        id: place.id,
+        name: place.name,
+        description: place.description,
         placeType: place.placeType.name,
         urls: [],
-        lng: place.lng ?? 0,
-        lat: place.lat ?? 0,
+        lng: place.lng,
+        lat: place.lat,
       ),
     );
   }

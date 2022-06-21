@@ -2,29 +2,34 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
+import 'package:kartograph/config/app_config.dart';
+import 'package:kartograph/config/environment/environment.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_screen.dart';
-import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:kartograph/features/place_adding/domain/entity_place.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen.dart';
 import 'package:kartograph/features/place_adding/screen/place_screen_model.dart';
 import 'package:latlng/latlng.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
-PlaceAddingWidgetModel Function(BuildContext context) mapAddingWidgetModelFactoryWithParams(EntityPlace place){
-  return (BuildContext context){
+/// фабрика создания [PlaceAddingWidgetModel]
+PlaceAddingWidgetModel Function(BuildContext context)
+    placeAddingWidgetModelFactoryWithParams(EntityPlace place) {
+  return (context) {
     return PlaceAddingWidgetModel(
-      PlaceAddingModel(
-      ),
+      PlaceAddingModel(),
       place,
     );
   };
 }
+
 /// WidgetModel for [PlaceAddingScreen]
 class PlaceAddingWidgetModel
     extends WidgetModel<PlaceAddingScreen, PlaceAddingModel>
     with SingleTickerProviderWidgetModelMixin
     implements IPlaceAddingWidgetModel {
+  /// сущность места, приходящая из других экранов
+  late final EntityPlace placeTest;
+
   final StateNotifier<bool> _nameState = StateNotifier<bool>();
 
   final StateNotifier<bool> _describeState = StateNotifier<bool>();
@@ -45,12 +50,7 @@ class PlaceAddingWidgetModel
 
   final TextEditingController _latController = TextEditingController();
 
-  late final Place _place;
-
   late final bool _isChange;
-
-  late final EntityPlace placeTest;
-
 
   final List<DropdownMenuItem<Categories>> _choises =
       Categories.values.map<DropdownMenuItem<Categories>>((value) {
@@ -97,32 +97,22 @@ class PlaceAddingWidgetModel
   bool get isChange => _isChange;
 
   /// standard consctructor for elem
-  PlaceAddingWidgetModel(PlaceAddingModel model, this.placeTest ) : super(model);
+  PlaceAddingWidgetModel(PlaceAddingModel model, this.placeTest) : super(model);
 
   @override
   void initWidgetModel() {
-    _place = context.read<Place>();
     _setStartingStates();
     _setControllers();
-    if (_place.id != null) {
+    if (placeTest.id != null) {
       _isChange = true;
+      _currentValue.accept(placeTest.placeType);
+      _nameController.text = placeTest.name!;
+      _describeController.text = placeTest.description!;
     } else {
       _isChange = false;
     }
-    _currentValue.accept(_place.placeType);
-    if (_place.name != null && _place.name != '') {
-      _nameController.text = _place.name!;
-    }
-    if (_place.description != null && _place.description != '') {
-      _describeController.text = _place.description!;
-    }
-    if (_place.lat != 0) {
-      _latController.text = _place.lat.toString();
-    }
-    if (_place.lng != 0) {
-      _lonController.text = _place.lng.toString();
-    }
-
+    _latController.text = placeTest.lat.toString();
+    _lonController.text = placeTest.lng.toString();
     super.initWidgetModel();
   }
 
@@ -142,59 +132,43 @@ class PlaceAddingWidgetModel
   }
 
   @override
-  void activate() {
-    super.activate();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
-  void reassemble() {
-    super.reassemble();
-  }
-
-  @override
-  void moveToMap() async {
-    // Routemaster.of(context).push(AppRoutePaths.mapAdding, queryParameters: {
-    //   'category': _place.placeType.name,
-    //   'name': _place.name ?? '',
-    //   'description': _place.description ?? '',
-    // });
-    LatLng? result = await Navigator.push(
+  Future<void> moveToMap() async {
+    // ignore: omit_local_variable_types
+    final LatLng? result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) =>  MapAddingScreen(coordinates: LatLng(72, 72,),)),
+      MaterialPageRoute(
+          builder: (context) => MapAddingScreen(
+                coordinates: LatLng(
+                  double.tryParse(_latController.text) ?? Environment<AppConfig>.instance().config.lat,
+                  double.tryParse(_lonController.text) ?? Environment<AppConfig>.instance().config.lng,
+                ),
+              ),),
     );
-    // ignore: avoid_print
-    print(result);
-  }
-
-  @override
-  void pop() {
-    if (_place.id != null) {
-      Routemaster.of(context).pop();
-    } else {
-      Routemaster.of(context)
-          .push('${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}');
+    if (result != null) {
+      _latController.text = result.latitude.toString();
+      _lonController.text = result.longitude.toString();
     }
   }
 
   @override
+  void pop() {
+    Routemaster.of(context).pop();
+  }
+
+  @override
   void createPlace() {
-    if (_place.id != null) {
+    if (placeTest.id != null) {
       model.putPlace(
         Place(
           placeType: _currentValue.value!,
-          id: _place.id,
+          id: placeTest.id!,
           name: _nameController.text,
           description: _describeController.text,
           lat: double.parse(_latController.text),
           lng: double.parse(_lonController.text),
+          urls: [],
         ),
       );
-      Routemaster.of(context).pop();
     } else {
       model.postPlace(
         Place(
@@ -203,12 +177,12 @@ class PlaceAddingWidgetModel
           description: _describeController.text,
           lat: double.parse(_latController.text),
           lng: double.parse(_lonController.text),
+          id: 0,
+          urls: [],
         ),
       );
-      Routemaster.of(context).pop();
-      Routemaster.of(context)
-          .push('${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}');
     }
+    Routemaster.of(context).pop();
   }
 
   @override

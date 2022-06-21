@@ -74,7 +74,7 @@ class _PlacesCard extends StatelessWidget {
           Icons.circle,
           color: cardPlace.placeType.categoryColor,
         ),
-        title: Text(cardPlace.name!),
+        title: Text(cardPlace.name),
         subtitle: Text(cardPlace.placeType.categoryName),
       ),
     );
