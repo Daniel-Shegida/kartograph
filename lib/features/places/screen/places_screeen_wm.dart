@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/features/app/di/app_scope.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:kartograph/features/places/domain/types_to_show.dart';
 import 'package:kartograph/features/places/screen/places_screeen_model.dart';
@@ -9,11 +10,18 @@ import 'package:kartograph/features/places/screen/places_screen.dart';
 import 'package:kartograph/features/places/service/bloc/place_bloc.dart';
 import 'package:kartograph/features/places/service/bloc/place_state.dart';
 import 'package:kartograph/features/places/widgets/places_choise_dialog.dart';
+import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 /// Factory for [PlacesWidgetModel]
 PlacesWidgetModel placesWidgetModelFactory(BuildContext context) {
-  return PlacesWidgetModel(PlacesModel(PlaceBloc()));
+  return PlacesWidgetModel(
+    PlacesModel(
+      PlaceBloc(
+        context.read<IAppScope>().repository,
+      ),
+    ),
+  );
 }
 
 /// WidgetModel for [PlacesScreen]

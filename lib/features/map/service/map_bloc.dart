@@ -1,22 +1,16 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:kartograph/features/map/service/map_event.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
-import 'package:kartograph/features/places/place_api/place_api.dart';
 import 'package:kartograph/features/places/service/place_rep.dart';
 import 'package:latlng/latlng.dart';
 
 /// Bloc for working with profile states.
 class MapBloc extends Bloc<BaseMapEvent, BaseMapState> {
-  final PlaceRepository _rep = PlaceRepository(
-    RestClient(
-      Dio(),
-    ),
-  );
+  final PlaceRepository _rep;
 
   /// Constructor of [MapBloc]
-  MapBloc() : super(LoadingState()) {
+  MapBloc(this._rep) : super(LoadingState()) {
     /// при событии загрузки статей запускаем стейт со статьями
     on<MapGetLocationEvent>((event, emit) async {
       bool serviceEnabled;

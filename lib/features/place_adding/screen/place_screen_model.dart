@@ -1,17 +1,14 @@
-import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/api/data/place_response.dart';
-import 'package:kartograph/features/places/place_api/place_api.dart';
 import 'package:kartograph/features/places/service/place_rep.dart';
 
-/// Model of PlaceAddingWidgetModel
+/// модель PlaceAddingWidgetModel
 class PlaceAddingModel extends ElementaryModel {
-  final PlaceRepository _rep = PlaceRepository(
-    RestClient(
-      Dio(),
-    ),
-  );
+  late final PlaceRepository _rep;
+
+  /// конструктор[PlaceAddingModel]
+  PlaceAddingModel(this._rep);
 
   /// метод для создания места.
   void postPlace(Place place) {

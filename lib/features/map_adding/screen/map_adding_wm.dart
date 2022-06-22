@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
+import 'package:kartograph/features/app/di/app_scope.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_model.dart';
@@ -10,13 +11,18 @@ import 'package:kartograph/features/map_adding/screen/map_adding_screen.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
+import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
-MapAddingWidgetModel Function(BuildContext context) mapAddingWidgetModelFactoryWithParams(LatLng value){
-  return (context){
+/// фабрака по создания [MapAddingWidgetModel]
+MapAddingWidgetModel Function(BuildContext context)
+    mapAddingWidgetModelFactoryWithParams(LatLng value) {
+  return (context) {
     return MapAddingWidgetModel(
       MapAddingModel(
-        MapBloc(),
+        MapBloc(
+          context.read<IAppScope>().repository,
+        ),
       ),
       value,
     );
@@ -114,21 +120,24 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   @override
   void create() {
     if (_markers.value?.isNotEmpty ?? false) {
-      if (Routemaster.of(context).currentRoute.path == '${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}${AppRoutePaths.mapAdding}'){
-          Routemaster.of(context).pop();
-            Routemaster.of(context).push(
-              '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.creatingPlaceScreen}',
-              queryParameters: {
-                'category': 'other',
-                'name': '',
-                'description': '',
-                'lat': _markers.value![0].lat.toString(),
-                'lng': _markers.value![0].lng.toString(),
-              },
-            );
-      }
-      else {
-        Navigator.pop(context, LatLng(_markers.value![0].lat, _markers.value![0].lng),);
+      if (Routemaster.of(context).currentRoute.path ==
+          '${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}${AppRoutePaths.mapAdding}') {
+        Routemaster.of(context).pop();
+        Routemaster.of(context).push(
+          '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.creatingPlaceScreen}',
+          queryParameters: {
+            'category': 'other',
+            'name': '',
+            'description': '',
+            'lat': _markers.value![0].lat.toString(),
+            'lng': _markers.value![0].lng.toString(),
+          },
+        );
+      } else {
+        Navigator.pop(
+          context,
+          LatLng(_markers.value![0].lat, _markers.value![0].lng),
+        );
       }
     }
   }

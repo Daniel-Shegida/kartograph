@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/config/app_config.dart';
 import 'package:kartograph/config/environment/environment.dart';
+import 'package:kartograph/features/app/di/app_scope.dart';
 import 'package:kartograph/features/map/screen/map_screen.dart';
 import 'package:kartograph/features/map/screen/map_screen_model.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
@@ -11,11 +12,16 @@ import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
+import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 /// Builder for [MapWidgetModel]
 MapWidgetModel mapWidgetModelFactory(BuildContext context) {
-  return MapWidgetModel(MapModel(MapBloc()));
+  return MapWidgetModel(MapModel(
+    MapBloc(
+      context.read<IAppScope>().repository,
+    ),
+  ));
 }
 
 /// WidgetModel for [MapScreen]
