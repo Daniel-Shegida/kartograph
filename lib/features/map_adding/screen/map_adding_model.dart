@@ -20,11 +20,6 @@ class MapAddingModel extends ElementaryModel {
     this._mapBloc,
   ) : super();
 
-  @override
-  void init() {
-    super.init();
-  }
-
   /// метод, который отправляет ивент получения информации о карте в [MapBloc].
   void getCurrentLocation() {
     _mapBloc.add(

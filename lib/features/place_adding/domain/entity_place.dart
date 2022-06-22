@@ -1,4 +1,3 @@
-import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
 
 class EntityPlace {
@@ -23,6 +22,7 @@ class EntityPlace {
   /// описание места
   String? description;
 
+  /// стандартный конструктор
   EntityPlace({
     this.placeType,
     this.id,

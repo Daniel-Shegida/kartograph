@@ -28,7 +28,7 @@ class PlaceAddingWidgetModel
     with SingleTickerProviderWidgetModelMixin
     implements IPlaceAddingWidgetModel {
   /// сущность места, приходящая из других экранов
-  late final EntityPlace placeTest;
+  late final EntityPlace entityPlace;
 
   final StateNotifier<bool> _nameState = StateNotifier<bool>();
 
@@ -97,22 +97,22 @@ class PlaceAddingWidgetModel
   bool get isChange => _isChange;
 
   /// standard consctructor for elem
-  PlaceAddingWidgetModel(PlaceAddingModel model, this.placeTest) : super(model);
+  PlaceAddingWidgetModel(PlaceAddingModel model, this.entityPlace) : super(model);
 
   @override
   void initWidgetModel() {
     _setStartingStates();
     _setControllers();
-    if (placeTest.id != null) {
+    if (entityPlace.id != null) {
       _isChange = true;
-      _currentValue.accept(placeTest.placeType);
-      _nameController.text = placeTest.name!;
-      _describeController.text = placeTest.description!;
+      _currentValue.accept(entityPlace.placeType);
+      _nameController.text = entityPlace.name!;
+      _describeController.text = entityPlace.description!;
     } else {
       _isChange = false;
     }
-    _latController.text = placeTest.lat.toString();
-    _lonController.text = placeTest.lng.toString();
+    _latController.text = entityPlace.lat.toString();
+    _lonController.text = entityPlace.lng.toString();
     super.initWidgetModel();
   }
 
@@ -157,11 +157,11 @@ class PlaceAddingWidgetModel
 
   @override
   void createPlace() {
-    if (placeTest.id != null) {
+    if (entityPlace.id != null) {
       model.putPlace(
         Place(
           placeType: _currentValue.value!,
-          id: placeTest.id!,
+          id: entityPlace.id!,
           name: _nameController.text,
           description: _describeController.text,
           lat: double.parse(_latController.text),
