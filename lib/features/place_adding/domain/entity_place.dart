@@ -1,5 +1,6 @@
 import 'package:kartograph/assets/enums/categories.dart';
 
+/// сущность места, которую можно отправить на сервер
 class EntityPlace {
   /// id места на сервере
   int? id;
