@@ -12,8 +12,8 @@ void main() {
     buildType: BuildType.debug,
     config: AppConfig(
       url: Url.testUrl,
-      lat: ProjectCoordinates.staringLat,
-      lng: ProjectCoordinates.staringLng,
+      lat: ProjectCoordinates.staringCords.latitude,
+      lng: ProjectCoordinates.staringCords.longitude,
       proxyUrl: Url.devProxyUrl,
       debugOptions: DebugOptions(
         debugShowCheckedModeBanner: true,

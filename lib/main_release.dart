@@ -12,8 +12,8 @@ void main() {
     buildType: BuildType.release,
     config: AppConfig(
       url: Url.prodUrl,
-      lat: ProjectCoordinates.staringLat,
-      lng: ProjectCoordinates.staringLng,
+      lat: ProjectCoordinates.staringCords.latitude,
+      lng: ProjectCoordinates.staringCords.longitude,
       proxyUrl: Url.prodProxyUrl,
       debugOptions: DebugOptions(),
     ),
