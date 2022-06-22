@@ -17,7 +17,7 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
   MapAddingScreen({
     required LatLng coordinates,
     Key? key,
-}) : super(mapAddingWidgetModelFactoryWithParams(coordinates), key: key);
+  }) : super(mapAddingWidgetModelFactoryWithParams(coordinates), key: key);
 
   @override
   Widget build(IMapAddingWidgetModel wm) {
@@ -70,13 +70,13 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
                   MapWidget(
                     mapController: wm.controller,
                   ),
-                  StateNotifierBuilder<List<Place>>(
-                    listenableState: wm.markers,
+                  StateNotifierBuilder<Place>(
+                    listenableState: wm.marker,
                     builder: (ctx, value) {
                       return MarkersStack(
                         controller: wm.controller,
                         transformer: transformer,
-                        markers: value ?? [],
+                        markers: (value != null) ? [value] : [],
                       );
                     },
                   ),

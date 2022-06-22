@@ -37,14 +37,14 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   final LatLng coordinates;
 
   late final MapController _controller;
-  final StateNotifier<List<Place>> _markers = StateNotifier<List<Place>>();
+  final StateNotifier<Place> _marker = StateNotifier<Place>();
 
   /// controller for map
   @override
   MapController get controller => _controller;
 
   @override
-  StateNotifier<List<Place>> get markers => _markers;
+  StateNotifier<Place> get marker => _marker;
 
   late Offset? _dragStart;
 
@@ -56,7 +56,6 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   @override
   void initWidgetModel() {
     model.mapStateStream.listen(_updateState);
-    _markers.accept([]);
     _controller = MapController(
       location: coordinates,
     );
@@ -99,12 +98,12 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   @override
   void onTap(TapUpDetails details, MapTransformer transformer) {
     final location = transformer.fromXYCoordsToLatLng(details.localPosition);
-    _markers.accept([
+    _marker.accept(
       _createPlaceAdder(
         location.latitude,
         location.longitude,
       ),
-    ]);
+    );
   }
 
   @override
@@ -119,7 +118,7 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
 
   @override
   void create() {
-    if (_markers.value?.isNotEmpty ?? false) {
+    if (_marker.value != null) {
       if (Routemaster.of(context).currentRoute.path ==
           '${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}${AppRoutePaths.mapAdding}') {
         Routemaster.of(context).pop();
@@ -129,14 +128,14 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
             'category': 'other',
             'name': '',
             'description': '',
-            'lat': _markers.value![0].lat.toString(),
-            'lng': _markers.value![0].lng.toString(),
+            'lat': _marker.value!.lat.toString(),
+            'lng': _marker.value!.lng.toString(),
           },
         );
       } else {
         Navigator.pop(
           context,
-          LatLng(_markers.value![0].lat, _markers.value![0].lng),
+          LatLng(_marker.value!.lat, _marker.value!.lng),
         );
       }
     }
@@ -176,7 +175,7 @@ abstract class IMapAddingWidgetModel extends IWidgetModel {
   MapController get controller;
 
   /// Список мест, трансформурющуюсиеся в карту.
-  StateNotifier<List<Place>> get markers;
+  StateNotifier<Place> get marker;
 
   /// ивент при двойном нажатии на карту
   void onDoubleTap();
