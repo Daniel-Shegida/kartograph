@@ -58,7 +58,7 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
                         titleText: ProjectStrings.category,
                       ),
                       StateNotifierBuilder<Categories>(
-                        listenableState: wm.currentTypeState,
+                        listenableState: wm.categoriesState,
                         builder: (_, value) {
                           return SelectorWidget(
                             currentValue: value!,

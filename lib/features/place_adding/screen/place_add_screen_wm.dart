@@ -42,7 +42,7 @@ class PlaceAddingWidgetModel
 
   final StateNotifier<bool> _readyState = StateNotifier<bool>();
 
-  final StateNotifier<Categories> _currentTypeValue = StateNotifier<Categories>();
+  final StateNotifier<Categories> _categoriesState = StateNotifier<Categories>();
 
   final TextEditingController _nameController = TextEditingController();
 
@@ -93,7 +93,7 @@ class PlaceAddingWidgetModel
   List<DropdownMenuItem<Categories>> get choises => _choises;
 
   @override
-  StateNotifier<Categories> get currentTypeState => _currentTypeValue;
+  StateNotifier<Categories> get categoriesState => _categoriesState;
 
   @override
   bool get isChange => _isChange;
@@ -107,7 +107,7 @@ class PlaceAddingWidgetModel
     _setControllers();
     if (entityPlace.id != null) {
       _isChange = true;
-      _currentTypeValue.accept(entityPlace.placeType);
+      _categoriesState.accept(entityPlace.placeType);
       _nameController.text = entityPlace.name!;
       _describeController.text = entityPlace.description!;
     } else {
@@ -125,7 +125,7 @@ class PlaceAddingWidgetModel
     _readyState.dispose();
     _latState.dispose();
     _lonState.accept(false);
-    _currentTypeValue.dispose();
+    _categoriesState.dispose();
     _nameController.dispose();
     _describeController.dispose();
     _latController.dispose();
@@ -162,7 +162,7 @@ class PlaceAddingWidgetModel
     if (entityPlace.id != null) {
       model.putPlace(
         Place(
-          placeType: _currentTypeValue.value!,
+          placeType: _categoriesState.value!,
           id: entityPlace.id!,
           name: _nameController.text,
           description: _describeController.text,
@@ -174,7 +174,7 @@ class PlaceAddingWidgetModel
     } else {
       model.postPlace(
         Place(
-          placeType: _currentTypeValue.value ?? Categories.other,
+          placeType: _categoriesState.value ?? Categories.other,
           name: _nameController.text,
           description: _describeController.text,
           lat: double.parse(_latController.text),
@@ -189,7 +189,7 @@ class PlaceAddingWidgetModel
 
   @override
   void changeType(Categories? newType) {
-    _currentTypeValue.accept(newType);
+    _categoriesState.accept(newType);
   }
 
   /// функция для листенера контроллера поля имени
@@ -251,7 +251,7 @@ class PlaceAddingWidgetModel
     _readyState.accept(false);
     _latState.accept(false);
     _lonState.accept(false);
-    _currentTypeValue.accept(Categories.other);
+    _categoriesState.accept(Categories.other);
   }
 
   /// функция проверяющая все ли поля заполнены нормально
@@ -281,7 +281,7 @@ abstract class IPlaceAddingWidgetModel extends IWidgetModel {
   StateNotifier<bool> get readyState;
 
   /// выбронный тип места
-  StateNotifier<Categories> get currentTypeState;
+  StateNotifier<Categories> get categoriesState;
 
   ///  контроллер поля имени
   TextEditingController get nameController;
