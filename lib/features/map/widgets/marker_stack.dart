@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/features/map/widgets/marker.dart';
+import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
+import 'package:routemaster/routemaster.dart';
 
 /// виджет, что подготавливает стек маркеров для карты
 class MarkersStack extends StatefulWidget {
@@ -56,7 +59,20 @@ class _MarkersStackState extends State<MarkersStack> {
           topPos: pos.dy,
           iconData: e.placeType.categoryIcon,
           color: e.placeType.categoryColor,
-          onPressed: () {},
+          onPressed: () {
+            if (e.placeType != Categories.newPlace) {
+              Routemaster.of(context).push(
+                '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.changingPlaceScreen}${e.id}',
+                queryParameters: {
+                  'category': e.placeType.name,
+                  'name': e.name,
+                  'description': e.description,
+                  'lat': e.lat.toString(),
+                  'lng': e.lng.toString(),
+                },
+              );
+            }
+          },
         );
       },
     ).toList();

@@ -31,4 +31,11 @@ class MapModel extends ElementaryModel {
       MapGetLocationEvent(),
     );
   }
+
+  /// получить список мест для карты
+  void search() {
+    _mapBloc.add(
+      MapGetPlacesEvent(),
+    );
+  }
 }

@@ -3,54 +3,62 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
-import 'package:kartograph/config/app_config.dart';
-import 'package:kartograph/config/environment/environment.dart';
+import 'package:kartograph/features/app/di/app_scope.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_model.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_screen.dart';
+import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
+import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
-/// Builder for [MapAddingWidgetModel]
-MapAddingWidgetModel mapAddingWidgetModelFactory(BuildContext context) {
-  return MapAddingWidgetModel(
-    MapAddingModel(
-      MapBloc(),
-    ),
-  );
+/// фабрака по создания [MapAddingWidgetModel]
+MapAddingWidgetModel Function(BuildContext context)
+    mapAddingWidgetModelFactoryWithParams(LatLng value) {
+  return (context) {
+    return MapAddingWidgetModel(
+      MapAddingModel(
+        MapBloc(
+          context.read<IAppScope>().repository,
+        ),
+      ),
+      value,
+    );
+  };
 }
 
 /// WidgetModel for [MapAddingScreen]
 class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
     with SingleTickerProviderWidgetModelMixin
     implements IMapAddingWidgetModel {
-  final _controller = MapController(
-    location: LatLng(
-      Environment<AppConfig>.instance().config.lat,
-      Environment<AppConfig>.instance().config.lng,
-    ),
-  );
-  final StateNotifier<List<Place>> _markers = StateNotifier<List<Place>>();
+  /// передаваемые координаты для отображения места
+  final LatLng coordinates;
+
+  late final MapController _controller;
+  final StateNotifier<Place> _marker = StateNotifier<Place>();
 
   /// controller for map
   @override
   MapController get controller => _controller;
 
   @override
-  StateNotifier<List<Place>> get markers => _markers;
+  StateNotifier<Place> get marker => _marker;
 
   late Offset? _dragStart;
 
   double _scaleStart = 1.0;
 
   /// standard consctructor for elem
-  MapAddingWidgetModel(MapAddingModel model) : super(model);
+  MapAddingWidgetModel(MapAddingModel model, this.coordinates) : super(model);
 
   @override
   void initWidgetModel() {
     model.mapStateStream.listen(_updateState);
-    _markers.accept([]);
+    _controller = MapController(
+      location: coordinates,
+    );
     super.initWidgetModel();
   }
 
@@ -68,14 +76,6 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   @override
   void onDoubleTap() {
     _controller.zoom += 0.5;
-  }
-
-  @override
-  void gotoDefault() {
-    _controller.center = LatLng(
-      Environment<AppConfig>.instance().config.lat,
-      Environment<AppConfig>.instance().config.lng,
-    );
   }
 
   @override
@@ -98,12 +98,47 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   @override
   void onTap(TapUpDetails details, MapTransformer transformer) {
     final location = transformer.fromXYCoordsToLatLng(details.localPosition);
-    _markers.accept([
+    _marker.accept(
       _createPlaceAdder(
         location.latitude,
         location.longitude,
       ),
-    ]);
+    );
+  }
+
+  @override
+  void pop() {
+    Navigator.pop(context);
+  }
+
+  @override
+  void getCurrentGeolocation() {
+    model.getCurrentLocation();
+  }
+
+  @override
+  void create() {
+    if (_marker.value != null) {
+      if (Routemaster.of(context).currentRoute.path ==
+          '${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}${AppRoutePaths.mapAdding}') {
+        Routemaster.of(context).pop();
+        Routemaster.of(context).push(
+          '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.creatingPlaceScreen}',
+          queryParameters: {
+            'category': 'other',
+            'name': '',
+            'description': '',
+            'lat': _marker.value!.lat.toString(),
+            'lng': _marker.value!.lng.toString(),
+          },
+        );
+      } else {
+        Navigator.pop(
+          context,
+          LatLng(_marker.value!.lat, _marker.value!.lng),
+        );
+      }
+    }
   }
 
   @override
@@ -115,7 +150,11 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
     }
   }
 
-  void _updateState(BaseMapState state) {}
+  void _updateState(BaseMapState state) {
+    if (state is MapContentState) {
+      controller.center = state.currentLocation;
+    }
+  }
 
   Place _createPlaceAdder(double lat, double long) {
     return Place(
@@ -136,10 +175,7 @@ abstract class IMapAddingWidgetModel extends IWidgetModel {
   MapController get controller;
 
   /// Список мест, трансформурющуюсиеся в карту.
-  StateNotifier<List<Place>> get markers;
-
-  /// ивент вернуться к изначальному значениб
-  void gotoDefault();
+  StateNotifier<Place> get marker;
 
   /// ивент при двойном нажатии на карту
   void onDoubleTap();
@@ -152,6 +188,15 @@ abstract class IMapAddingWidgetModel extends IWidgetModel {
 
   /// ивень при нажатии на карту
   void onTap(TapUpDetails details, MapTransformer transformer);
+
+  /// om pop
+  void pop();
+
+  /// передать координаты точки
+  void create();
+
+  /// получение текущих координат
+  void getCurrentGeolocation();
 
   /// ивент обрабатывающий взаимодействия пользователя с картой
   /// (на данный момент только ивент изменения масштаба)

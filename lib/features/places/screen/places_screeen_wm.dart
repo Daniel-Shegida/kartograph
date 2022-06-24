@@ -1,18 +1,27 @@
 import 'dart:async';
-
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/features/app/di/app_scope.dart';
+import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:kartograph/features/places/domain/types_to_show.dart';
 import 'package:kartograph/features/places/screen/places_screeen_model.dart';
 import 'package:kartograph/features/places/screen/places_screen.dart';
 import 'package:kartograph/features/places/service/bloc/place_bloc.dart';
 import 'package:kartograph/features/places/service/bloc/place_state.dart';
 import 'package:kartograph/features/places/widgets/places_choise_dialog.dart';
+import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
 /// Factory for [PlacesWidgetModel]
 PlacesWidgetModel placesWidgetModelFactory(BuildContext context) {
-  return PlacesWidgetModel(PlacesModel(PlaceBloc()));
+  return PlacesWidgetModel(
+    PlacesModel(
+      PlaceBloc(
+        context.read<IAppScope>().repository,
+      ),
+    ),
+  );
 }
 
 /// WidgetModel for [PlacesScreen]
@@ -75,6 +84,20 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
     );
   }
 
+  @override
+  void navigateToPlaceDetails(Place place) {
+    Routemaster.of(context).push(
+      '${AppRoutePaths.changingPlaceScreen}${place.id}',
+      queryParameters: {
+        'category': place.placeType.name,
+        'name': place.name,
+        'description': place.description,
+        'lat': place.lat.toString(),
+        'lng': place.lng.toString(),
+      },
+    );
+  }
+
   void _updateState(BasePlaceState state) {
     if (state is PlaceContentState) {
       _placesListState.content(state.list);
@@ -112,4 +135,7 @@ abstract class IPlacesWidgetModel extends IWidgetModel {
 
   /// action of dialog
   void showPicker();
+
+  /// action of navigate to a place on card
+  void navigateToPlaceDetails(Place place);
 }

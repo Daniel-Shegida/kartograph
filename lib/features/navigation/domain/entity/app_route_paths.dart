@@ -10,9 +10,15 @@ abstract class AppRoutePaths {
   static const String tabs = '/tabs/';
 
   /// Path to map screen.
-  static const String mapScreen = 'mapScreen';
+  static const String mapScreen = 'mapScreen/';
   /// Path to places screen.
-  static const String placesScreen = 'placesScreen';
+  static const String placesScreen = 'placesScreen/';
   /// Path to settings screen.
-  static const String settingScreen = 'settingScreen';
+  static const String settingScreen = 'settingScreen/';
+  /// Path to change place
+  static const String changingPlaceScreen = 'changingPlaceScreen/';
+  /// Path to creating place
+  static const String creatingPlaceScreen = 'creatingPlaceScreen/';
+  /// Path to map with adding place
+  static const String mapAdding = 'mapAdding/';
 }

@@ -8,15 +8,16 @@ import 'package:kartograph/features/map/widgets/marker_stack.dart';
 import 'package:kartograph/features/map/widgets/round_button.dart';
 import 'package:kartograph/features/map_adding/screen/map_adding_wm.dart';
 import 'package:kartograph/util/map_widget.dart';
+import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 
 /// экран добавления места
 class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
   /// standard consctructor for elem
-  const MapAddingScreen({
+  MapAddingScreen({
+    required LatLng coordinates,
     Key? key,
-    WidgetModelFactory wmFactory = mapAddingWidgetModelFactory,
-  }) : super(wmFactory, key: key);
+  }) : super(mapAddingWidgetModelFactoryWithParams(coordinates), key: key);
 
   @override
   Widget build(IMapAddingWidgetModel wm) {
@@ -26,7 +27,7 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
         elevation: 0,
         leading: Center(
           child: TextButton(
-            onPressed: () {},
+            onPressed: wm.pop,
             child: const Text(
               ProjectStrings.cancel,
               style:
@@ -41,7 +42,7 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: wm.create,
             child: const Text(
               ProjectStrings.ready,
               style:
@@ -69,13 +70,13 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
                   MapWidget(
                     mapController: wm.controller,
                   ),
-                  StateNotifierBuilder<List<Place>>(
-                    listenableState: wm.markers,
+                  StateNotifierBuilder<Place>(
+                    listenableState: wm.marker,
                     builder: (ctx, value) {
                       return MarkersStack(
                         controller: wm.controller,
                         transformer: transformer,
-                        markers: value ?? [],
+                        markers: (value != null) ? [value] : [],
                       );
                     },
                   ),
@@ -102,7 +103,7 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
                         horizontal: 16.0,
                       ),
                       child: _RoundGeoButton(
-                        onPressed: () {},
+                        onPressed: wm.getCurrentGeolocation,
                       ),
                     ),
                   ),

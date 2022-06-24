@@ -1,3 +1,4 @@
+import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/features/map/map_route.dart';
 import 'package:kartograph/features/map_adding/map_adding_route.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
@@ -12,11 +13,8 @@ final routes = RouteMap(
   routes: {
     /// 'путь': (_) => MaterialPage(child: виджет),
     '/': (_) =>
-    const Redirect('MapAdding'),
-
-
-
-    '/tabs': (route) => const TabPage(
+        const Redirect('${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}'),
+    AppRoutePaths.tabs: (route) => const TabPage(
           child: BottomNavigator(),
           paths: [
             AppRoutePaths.placesScreen,
@@ -32,9 +30,32 @@ final routes = RouteMap(
 
     '${AppRoutePaths.tabs}${AppRoutePaths.settingScreen}': (_) =>
         const SettingScreenRoute(),
-    'SettingScreenRoute': (_) => PlaceAddScreenRoute(),
 
-    'MapAdding': (_) =>
-    const MapAddingScreenRoute(),
+    '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.changingPlaceScreen}:id':
+        (route) => PlaceAddScreenRoute(
+              id: int.tryParse(route.pathParameters['id'] ?? 'q'),
+              category:
+                  route.queryParameters['category'] ?? Categories.other.name,
+              name: route.queryParameters['name'],
+              description: route.queryParameters['description'],
+              lat: double.parse(route.queryParameters['lat'] ?? '0'),
+              lng: double.parse(route.queryParameters['lng'] ?? '0'),
+            ),
+
+    '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.creatingPlaceScreen}':
+        (route) => PlaceAddScreenRoute(
+              category:
+                  route.queryParameters['category'] ?? Categories.other.name,
+              name: route.queryParameters['name'],
+              description: route.queryParameters['description'],
+              lat: double.parse(route.queryParameters['lat'] ?? '0'),
+              lng: double.parse(route.queryParameters['lng'] ?? '0'),
+            ),
+
+    '${AppRoutePaths.tabs}${AppRoutePaths.mapScreen}${AppRoutePaths.mapAdding}':
+        (route) => MapAddingScreenRoute(
+              lat: double.parse(route.queryParameters['lat'] ?? '0'),
+              lng: double.parse(route.queryParameters['lng'] ?? '0'),
+            ),
   },
 );

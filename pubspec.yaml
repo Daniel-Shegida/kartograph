@@ -23,7 +23,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
 #  навигация
-  routemaster: ^1.0.0
+  routemaster: ^1.0.1
 #  иконки
   flutter_svg: ^1.1.0
 #  библиотеки для работы с сервером
@@ -33,11 +33,13 @@ dependencies:
   dio: ^4.0.6
   retrofit: ^3.0.1+1
 #  библиотеки отвечающие за работу с картами
-  map: ^1.0.1
+#  необходима миграция на версию выше 1.0.1
+  map: 1.0.1
   latlng: ^0.1.0
   cached_network_image: ^3.2.1
 # геолокация
   geolocator: ^8.2.1
+  shared_preferences: ^2.0.15
 
 
 dev_dependencies:

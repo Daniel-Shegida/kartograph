@@ -17,14 +17,8 @@ class MapAddingModel extends ElementaryModel {
 
   /// стандартный конструктор.
   MapAddingModel(
-      this._mapBloc,
-      ) : super();
-
-  @override
-  void init() {
-    super.init();
-    _mapBloc.add(MapGetLocationEvent());
-  }
+    this._mapBloc,
+  ) : super();
 
   /// метод, который отправляет ивент получения информации о карте в [MapBloc].
   void getCurrentLocation() {
