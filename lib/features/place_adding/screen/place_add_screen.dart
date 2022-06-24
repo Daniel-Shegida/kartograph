@@ -1,8 +1,9 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/assets/colors/colors.dart';
+import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
-import 'package:kartograph/features/place_adding/domain/categories.dart';
+import 'package:kartograph/features/place_adding/domain/entity_place.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen_wm.dart';
 import 'package:kartograph/features/place_adding/widgets/custom_text_field.dart';
 import 'package:kartograph/features/place_adding/widgets/locked_button.dart';
@@ -11,10 +12,10 @@ import 'package:kartograph/features/place_adding/widgets/selector.dart';
 /// экран добавления места
 class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
   /// standard consctructor for elem
-  const PlaceAddingScreen({
+  PlaceAddingScreen({
+    required EntityPlace place,
     Key? key,
-    WidgetModelFactory wmFactory = placeAddingWidgetModelFactory,
-  }) : super(wmFactory, key: key);
+  }) : super(placeAddingWidgetModelFactoryWithParams(place), key: key);
 
   @override
   Widget build(IPlaceAddingWidgetModel wm) {
@@ -22,10 +23,10 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Center(
+        title: Center(
           child: Text(
-            ProjectStrings.newPlace,
-            style: TextStyle(
+            wm.isChange ? ProjectStrings.change : ProjectStrings.newPlace,
+            style: const TextStyle(
               color: ProjectColors.textColorPrimary,
               fontSize: 16,
             ),
@@ -35,7 +36,7 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
           style: TextButton.styleFrom(
             primary: ProjectColors.textColorGrey,
           ),
-          onPressed: () {},
+          onPressed: wm.pop,
           child: const Text(ProjectStrings.cancel),
         ),
         leadingWidth: 100,
@@ -57,7 +58,7 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
                         titleText: ProjectStrings.category,
                       ),
                       StateNotifierBuilder<Categories>(
-                        listenableState: wm.currentState,
+                        listenableState: wm.categoriesState,
                         builder: (_, value) {
                           return SelectorWidget(
                             currentValue: value!,
@@ -101,7 +102,7 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
                         lonController: wm.lonController,
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: wm.moveToMap,
                         child: const Text(
                           ProjectStrings.show,
                           style: TextStyle(
@@ -117,6 +118,7 @@ class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
                           return LockedButton(
                             onPressed: wm.createPlace,
                             isReady: value ?? false,
+                            isChange: wm.isChange,
                           );
                         },
                       ),

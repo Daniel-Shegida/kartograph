@@ -1,6 +1,7 @@
+import 'package:kartograph/assets/enums/categories.dart';
+
 /// класс места на картах и в списке
 class Place {
-
   /// id места на сервере
   int id;
 
@@ -17,19 +18,19 @@ class Place {
   List<String> urls;
 
   /// тип места
-  String placeType;
+  Categories placeType;
 
   /// описание места
   String description;
 
   /// полный конструктор места
   Place({
+    required this.placeType,
     required this.id,
     required this.lat,
     required this.lng,
     required this.name,
     required this.urls,
-    required this.placeType,
     required this.description,
   });
 }

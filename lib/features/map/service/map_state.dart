@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:kartograph/api/data/place.dart';
 import 'package:latlng/latlng.dart';
 
 /// Base state for profile.
@@ -18,4 +18,13 @@ class MapContentState extends BaseMapState {
 
 /// Состояние загрузки данных для карты.
 class LoadingState extends BaseMapState {
+}
+
+/// Состояние поиска мест.
+class MapPlacesContentState extends BaseMapState {
+  /// список найденных мест
+  final List<Place> list;
+
+  /// конструктор [MapPlacesContentState]
+  MapPlacesContentState({required this.list});
 }

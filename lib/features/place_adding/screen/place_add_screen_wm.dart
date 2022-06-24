@@ -1,12 +1,27 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:kartograph/features/place_adding/domain/categories.dart';
+import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/assets/enums/categories.dart';
+import 'package:kartograph/config/app_config.dart';
+import 'package:kartograph/config/environment/environment.dart';
+import 'package:kartograph/features/app/di/app_scope.dart';
+import 'package:kartograph/features/map_adding/screen/map_adding_screen.dart';
+import 'package:kartograph/features/place_adding/domain/entity_place.dart';
 import 'package:kartograph/features/place_adding/screen/place_add_screen.dart';
 import 'package:kartograph/features/place_adding/screen/place_screen_model.dart';
+import 'package:latlng/latlng.dart';
+import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 
-/// factory for [PlaceAddingScreen]
-PlaceAddingWidgetModel placeAddingWidgetModelFactory(BuildContext context) {
-  return PlaceAddingWidgetModel(PlaceAddingModel());
+/// фабрика создания [PlaceAddingWidgetModel]
+PlaceAddingWidgetModel Function(BuildContext context)
+    placeAddingWidgetModelFactoryWithParams(EntityPlace place) {
+  return (context) {
+    return PlaceAddingWidgetModel(
+      PlaceAddingModel(context.read<IAppScope>().repository,),
+      place,
+    );
+  };
 }
 
 /// WidgetModel for [PlaceAddingScreen]
@@ -14,6 +29,9 @@ class PlaceAddingWidgetModel
     extends WidgetModel<PlaceAddingScreen, PlaceAddingModel>
     with SingleTickerProviderWidgetModelMixin
     implements IPlaceAddingWidgetModel {
+  /// сущность места, приходящая из других экранов
+  late final EntityPlace entityPlace;
+
   final StateNotifier<bool> _nameState = StateNotifier<bool>();
 
   final StateNotifier<bool> _describeState = StateNotifier<bool>();
@@ -24,7 +42,7 @@ class PlaceAddingWidgetModel
 
   final StateNotifier<bool> _readyState = StateNotifier<bool>();
 
-  final StateNotifier<Categories> _currentValue = StateNotifier<Categories>();
+  final StateNotifier<Categories> _categoriesState = StateNotifier<Categories>();
 
   final TextEditingController _nameController = TextEditingController();
 
@@ -33,6 +51,8 @@ class PlaceAddingWidgetModel
   final TextEditingController _lonController = TextEditingController();
 
   final TextEditingController _latController = TextEditingController();
+
+  late final bool _isChange;
 
   final List<DropdownMenuItem<Categories>> _choises =
       Categories.values.map<DropdownMenuItem<Categories>>((value) {
@@ -73,15 +93,28 @@ class PlaceAddingWidgetModel
   List<DropdownMenuItem<Categories>> get choises => _choises;
 
   @override
-  StateNotifier<Categories> get currentState => _currentValue;
+  StateNotifier<Categories> get categoriesState => _categoriesState;
+
+  @override
+  bool get isChange => _isChange;
 
   /// standard consctructor for elem
-  PlaceAddingWidgetModel(PlaceAddingModel model) : super(model);
+  PlaceAddingWidgetModel(PlaceAddingModel model, this.entityPlace) : super(model);
 
   @override
   void initWidgetModel() {
     _setStartingStates();
     _setControllers();
+    if (entityPlace.id != null) {
+      _isChange = true;
+      _categoriesState.accept(entityPlace.placeType);
+      _nameController.text = entityPlace.name!;
+      _describeController.text = entityPlace.description!;
+    } else {
+      _isChange = false;
+    }
+    _latController.text = entityPlace.lat.toString();
+    _lonController.text = entityPlace.lng.toString();
     super.initWidgetModel();
   }
 
@@ -92,7 +125,7 @@ class PlaceAddingWidgetModel
     _readyState.dispose();
     _latState.dispose();
     _lonState.accept(false);
-    _currentValue.dispose();
+    _categoriesState.dispose();
     _nameController.dispose();
     _describeController.dispose();
     _latController.dispose();
@@ -101,13 +134,62 @@ class PlaceAddingWidgetModel
   }
 
   @override
+  Future<void> moveToMap() async {
+    // ignore: omit_local_variable_types
+    final LatLng? result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => MapAddingScreen(
+                coordinates: LatLng(
+                  double.tryParse(_latController.text) ?? Environment<AppConfig>.instance().config.lat,
+                  double.tryParse(_lonController.text) ?? Environment<AppConfig>.instance().config.lng,
+                ),
+              ),),
+    );
+    if (result != null) {
+      _latController.text = result.latitude.toString();
+      _lonController.text = result.longitude.toString();
+    }
+  }
+
+  @override
+  void pop() {
+    Routemaster.of(context).pop();
+  }
+
+  @override
   void createPlace() {
-    _describeState.accept(true);
+    if (entityPlace.id != null) {
+      model.putPlace(
+        Place(
+          placeType: _categoriesState.value!,
+          id: entityPlace.id!,
+          name: _nameController.text,
+          description: _describeController.text,
+          lat: double.parse(_latController.text),
+          lng: double.parse(_lonController.text),
+          urls: [],
+        ),
+      );
+    } else {
+      model.postPlace(
+        Place(
+          placeType: _categoriesState.value ?? Categories.other,
+          name: _nameController.text,
+          description: _describeController.text,
+          lat: double.parse(_latController.text),
+          lng: double.parse(_lonController.text),
+          id: 0,
+          urls: [],
+        ),
+      );
+    }
+    Routemaster.of(context).pop();
   }
 
   @override
   void changeType(Categories? newType) {
-    _currentValue.accept(newType);
+    _categoriesState.accept(newType);
   }
 
   /// функция для листенера контроллера поля имени
@@ -169,7 +251,7 @@ class PlaceAddingWidgetModel
     _readyState.accept(false);
     _latState.accept(false);
     _lonState.accept(false);
-    _currentValue.accept(Categories.other);
+    _categoriesState.accept(Categories.other);
   }
 
   /// функция проверяющая все ли поля заполнены нормально
@@ -199,7 +281,7 @@ abstract class IPlaceAddingWidgetModel extends IWidgetModel {
   StateNotifier<bool> get readyState;
 
   /// выбронный тип места
-  StateNotifier<Categories> get currentState;
+  StateNotifier<Categories> get categoriesState;
 
   ///  контроллер поля имени
   TextEditingController get nameController;
@@ -216,8 +298,17 @@ abstract class IPlaceAddingWidgetModel extends IWidgetModel {
   /// список типов мест
   List<DropdownMenuItem<Categories>> get choises;
 
+  /// изменять или создавать новое место
+  bool get isChange;
+
   /// метод изменения  типа
   void changeType(Categories? newType);
+
+  /// метод перехода на карту
+  void moveToMap();
+
+  /// метод закрытия экрана
+  void pop();
 
   /// метод создания нового места
   void createPlace();

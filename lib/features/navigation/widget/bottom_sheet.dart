@@ -16,6 +16,7 @@ class BottomNavigator extends StatelessWidget {
 
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: tabPage.index,
         items: const [
           BottomNavigationBarItem(
@@ -51,6 +52,7 @@ class BottomNavigator extends StatelessWidget {
         },
       ),
       body: TabBarView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: tabPage.controller,
         children: [
           for (final stack in tabPage.stacks) PageStackNavigator(stack: stack),

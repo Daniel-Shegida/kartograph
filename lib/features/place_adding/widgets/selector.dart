@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kartograph/assets/colors/colors.dart';
+import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
-import 'package:kartograph/features/place_adding/domain/categories.dart';
 
 /// виджет для выбора из нескольких элементов
 class SelectorWidget extends StatelessWidget {
