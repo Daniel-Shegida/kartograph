@@ -59,13 +59,20 @@ abstract class ProjectStrings {
   static const String show = 'Указать на карте';
   /// добавить место создать место.
   static const String create = 'Создать';
+  /// добавить место изменить место.
+  static const String change = 'Изменить место';
   /// широта.
   static const String latitude = 'Широта';
   /// долгота.
   static const String longitude = 'Долгота';
-
   /// Название экрана добавить место
   static const String addPlace = 'Новое место';
+  /// местоположение на экране добавить место
+  static const String location = 'Местоположение';
+  /// готово на экране добавить место
+  static const String ready = 'готово';
+  /// подсказка на экране добавить место
+  static const String mapAddHint = 'потяните карту чтобы выбрать правильное местоположение';
 
 
   /// Метод возвращающий url.

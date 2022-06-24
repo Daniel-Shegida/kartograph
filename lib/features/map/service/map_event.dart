@@ -7,3 +7,6 @@ abstract class BaseMapEvent{
 
 /// map get current location event.
 class MapGetLocationEvent extends BaseMapEvent {}
+
+/// map get current location event.
+class MapGetPlacesEvent extends BaseMapEvent {}

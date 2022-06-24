@@ -4,6 +4,8 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/config/app_config.dart';
 import 'package:kartograph/config/environment/environment.dart';
+import 'package:kartograph/features/places/place_api/place_api.dart';
+import 'package:kartograph/features/places/service/place_rep.dart';
 import 'package:kartograph/util/default_error_handler.dart';
 
 /// Scope of dependencies which need through all app's life.
@@ -11,6 +13,7 @@ class AppScope implements IAppScope {
   late final Dio _dio;
   late final ErrorHandler _errorHandler;
   late final VoidCallback _applicationRebuilder;
+  late final PlaceRepository _repository;
 
   @override
   Dio get dio => _dio;
@@ -21,6 +24,9 @@ class AppScope implements IAppScope {
   @override
   VoidCallback get applicationRebuilder => _applicationRebuilder;
 
+  @override
+  PlaceRepository get repository => _repository;
+
   /// Create an instance [AppScope].
   AppScope({
     required VoidCallback applicationRebuilder,
@@ -30,6 +36,7 @@ class AppScope implements IAppScope {
 
     _dio = _initDio(additionalInterceptors);
     _errorHandler = DefaultErrorHandler();
+    _repository = _initRep(_dio);
   }
 
   Dio _initDio(Iterable<Interceptor> additionalInterceptors) {
@@ -68,6 +75,14 @@ class AppScope implements IAppScope {
 
     return dio;
   }
+
+  PlaceRepository _initRep(Dio dio) {
+    final rep = PlaceRepository(RestClient(
+      dio,
+    ),);
+
+    return rep;
+  }
 }
 
 /// App dependencies.
@@ -80,5 +95,8 @@ abstract class IAppScope {
 
   /// Callback to rebuild the whole application.
   VoidCallback get applicationRebuilder;
+
+  /// репозиторий, получающий все места в приложении.
+  PlaceRepository get repository;
 
 }
