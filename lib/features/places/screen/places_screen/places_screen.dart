@@ -5,7 +5,7 @@ import 'package:kartograph/api/data/place.dart';
 import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
-import 'package:kartograph/features/places/screen/places_screeen_wm.dart';
+import 'package:kartograph/features/places/screen/places_screen/places_screeen_wm.dart';
 
 /// экран просмотра существующих мест
 class PlacesScreen extends ElementaryWidget<IPlacesWidgetModel> {

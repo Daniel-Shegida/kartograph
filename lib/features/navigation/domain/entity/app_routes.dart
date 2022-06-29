@@ -1,10 +1,10 @@
 import 'package:kartograph/assets/enums/categories.dart';
-import 'package:kartograph/features/map/map_route.dart';
-import 'package:kartograph/features/map_adding/map_adding_route.dart';
+import 'package:kartograph/features/map/routes/map_route.dart';
+import 'package:kartograph/features/map/routes/map_adding_route.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:kartograph/features/navigation/widget/bottom_sheet.dart';
-import 'package:kartograph/features/place_adding/place_add_route.dart';
-import 'package:kartograph/features/places/place_route.dart';
+import 'package:kartograph/features/places/routes/place_add_route.dart';
+import 'package:kartograph/features/places/routes/place_route.dart';
 import 'package:kartograph/features/setting/setting_route.dart';
 import 'package:routemaster/routemaster.dart';
 

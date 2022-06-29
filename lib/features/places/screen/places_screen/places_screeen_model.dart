@@ -19,12 +19,7 @@ class PlacesModel extends ElementaryModel {
     this._placeBloc,
   ) : super();
 
-  /// иницилизация модели
-  @override
-  void init() {
-    super.init();
-  }
-  /// ada
+  /// закрытие потоков
   @override
   void dispose(){
     _placeBloc.close();

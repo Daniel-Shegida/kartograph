@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kartograph/features/map_adding/screen/map_adding_screen.dart';
+import 'package:kartograph/features/map/screen/map_adding_screen/map_adding_screen.dart';
 import 'package:latlng/latlng.dart';
 
 /// Роут экрана [MapAddingScreen]

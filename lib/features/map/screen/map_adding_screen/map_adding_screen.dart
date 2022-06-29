@@ -6,7 +6,7 @@ import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/map/widgets/marker_stack.dart';
 import 'package:kartograph/features/map/widgets/round_button.dart';
-import 'package:kartograph/features/map_adding/screen/map_adding_wm.dart';
+import 'package:kartograph/features/map/screen/map_adding_screen/map_adding_wm.dart';
 import 'package:kartograph/util/map_widget.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
