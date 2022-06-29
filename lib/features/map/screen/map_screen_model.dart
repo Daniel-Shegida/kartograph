@@ -1,4 +1,3 @@
-
 import 'package:elementary/elementary.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_event.dart';
@@ -17,12 +16,26 @@ class MapModel extends ElementaryModel {
 
   /// Create an instance [MapModel].
   MapModel(
-      this._mapBloc,
-      ) : super();
+    this._mapBloc,
+  ) : super();
 
   @override
   void init() {
     super.init();
-    _mapBloc.add(MapLoadEvent());
+    _mapBloc.add(MapGetLocationEvent());
+  }
+
+  /// Method for update personal data to the [MapBloc].
+  void getCurrentLocation() {
+    _mapBloc.add(
+      MapGetLocationEvent(),
+    );
+  }
+
+  /// получить список мест для карты
+  void search() {
+    _mapBloc.add(
+      MapGetPlacesEvent(),
+    );
   }
 }
