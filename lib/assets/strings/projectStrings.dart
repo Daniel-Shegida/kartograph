@@ -1,5 +1,13 @@
 /// Strings of Kartograph project
 abstract class ProjectStrings {
+  /// Название страницы настроек.
+  static const String settings = 'Настройки';
+  /// Название темной темы.
+  static const String darkTheme = 'Темная тема';
+  /// Название светлой темы.
+  static const String lightTheme = 'Светлая тема';
+  /// Название страницы настроек.
+  static const String tutorialCard = 'Смотреть туториал';
   /// PlacesScreen bottom name.
   static const String placesBottom = 'places';
   /// MapScreen bottom name.
