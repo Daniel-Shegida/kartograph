@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kartograph/api/data/place_response.dart';
+import 'package:kartograph/api/domain/place_response.dart';
 import 'package:kartograph/features/places/service/bloc/place_event.dart';
 import 'package:kartograph/features/places/service/bloc/place_state.dart';
 import 'package:kartograph/features/places/service/place_rep.dart';

@@ -4,21 +4,21 @@ import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/places/domain/entity_place.dart';
-import 'package:kartograph/features/places/screen/place_detail_screen/place_add_screen_wm.dart';
+import 'package:kartograph/features/places/screen/place_detail_screen/place_detail_screen_wm.dart';
 import 'package:kartograph/features/places/widgets/custom_text_field.dart';
 import 'package:kartograph/features/places/widgets/locked_button.dart';
 import 'package:kartograph/features/places/widgets/selector.dart';
 
 /// экран добавления места
-class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {
+class PlaceDetailScreen extends ElementaryWidget<IPlaceDetailWidgetModel> {
   /// standard consctructor for elem
-  PlaceAddingScreen({
+  PlaceDetailScreen({
     required EntityPlace place,
     Key? key,
-  }) : super(placeAddingWidgetModelFactoryWithParams(place), key: key);
+  }) : super(placeDetailWidgetModelFactoryWithParams(place), key: key);
 
   @override
-  Widget build(IPlaceAddingWidgetModel wm) {
+  Widget build(IPlaceDetailWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

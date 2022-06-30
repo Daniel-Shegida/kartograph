@@ -7,19 +7,19 @@ import 'package:kartograph/config/environment/environment.dart';
 import 'package:kartograph/features/app/di/app_scope.dart';
 import 'package:kartograph/features/map/screen/map_adding_screen/map_adding_screen.dart';
 import 'package:kartograph/features/places/domain/entity_place.dart';
-import 'package:kartograph/features/places/screen/place_detail_screen/place_add_screen.dart';
-import 'package:kartograph/features/places/screen/place_detail_screen/place_screen_model.dart';
+import 'package:kartograph/features/places/screen/place_detail_screen/place_detail_screen.dart';
+import 'package:kartograph/features/places/screen/place_detail_screen/place_detail_model.dart';
 import 'package:kartograph/features/places/service/bloc/place_bloc.dart';
 import 'package:latlng/latlng.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
-/// фабрика создания [PlaceAddingWidgetModel]
-PlaceAddingWidgetModel Function(BuildContext context)
-    placeAddingWidgetModelFactoryWithParams(EntityPlace place) {
+/// фабрика создания [PlaceDetailWidgetModel]
+PlaceDetailWidgetModel Function(BuildContext context)
+    placeDetailWidgetModelFactoryWithParams(EntityPlace place) {
   return (context) {
-    return PlaceAddingWidgetModel(
-      PlaceAddingModel(
+    return PlaceDetailWidgetModel(
+      PlaceDetailModel(
         PlaceBloc(
           context.read<IAppScope>().repository,
         ),
@@ -29,11 +29,11 @@ PlaceAddingWidgetModel Function(BuildContext context)
   };
 }
 
-/// WidgetModel for [PlaceAddingScreen]
-class PlaceAddingWidgetModel
-    extends WidgetModel<PlaceAddingScreen, PlaceAddingModel>
+/// WidgetModel for [PlaceDetailScreen]
+class PlaceDetailWidgetModel
+    extends WidgetModel<PlaceDetailScreen, PlaceDetailModel>
     with SingleTickerProviderWidgetModelMixin
-    implements IPlaceAddingWidgetModel {
+    implements IPlaceDetailWidgetModel {
   /// сущность места, приходящая из других экранов
   late final EntityPlace entityPlace;
 
@@ -105,7 +105,7 @@ class PlaceAddingWidgetModel
   bool get isChange => _isChange;
 
   /// standard consctructor for elem
-  PlaceAddingWidgetModel(PlaceAddingModel model, this.entityPlace)
+  PlaceDetailWidgetModel(PlaceDetailModel model, this.entityPlace)
       : super(model);
 
   @override
@@ -273,8 +273,8 @@ class PlaceAddingWidgetModel
   }
 }
 
-/// Interface of [PlaceAddingWidgetModel].
-abstract class IPlaceAddingWidgetModel extends IWidgetModel {
+/// Interface of [PlaceDetailWidgetModel].
+abstract class IPlaceDetailWidgetModel extends IWidgetModel {
   /// состояния поля имени
   StateNotifier<bool> get nameState;
 

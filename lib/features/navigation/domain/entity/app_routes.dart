@@ -5,7 +5,7 @@ import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dar
 import 'package:kartograph/features/navigation/widget/bottom_sheet.dart';
 import 'package:kartograph/features/places/routes/place_add_route.dart';
 import 'package:kartograph/features/places/routes/place_route.dart';
-import 'package:kartograph/features/setting/setting_route.dart';
+import 'package:kartograph/features/setting/routes/setting_route.dart';
 import 'package:routemaster/routemaster.dart';
 
 /// all routes for kartograph project

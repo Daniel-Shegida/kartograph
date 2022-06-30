@@ -1,11 +1,11 @@
 import 'package:elementary/elementary.dart';
-import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/api/domain/place.dart';
 import 'package:kartograph/features/places/service/bloc/place_bloc.dart';
 import 'package:kartograph/features/places/service/bloc/place_event.dart';
 import 'package:kartograph/features/places/service/bloc/place_state.dart';
 
 /// модель PlaceAddingWidgetModel
-class PlaceAddingModel extends ElementaryModel {
+class PlaceDetailModel extends ElementaryModel {
   /// Блок с которого получают состояния.
   final PlaceBloc _placeBloc;
 
@@ -15,8 +15,8 @@ class PlaceAddingModel extends ElementaryModel {
   /// Получает стейт из блока.
   BasePlaceState get currentState => _placeBloc.state;
 
-  /// конструктор[PlaceAddingModel]
-  PlaceAddingModel(this._placeBloc);
+  /// конструктор[PlaceDetailModel]
+  PlaceDetailModel(this._placeBloc);
 
   /// метод для создания места.
   void postPlace(Place place) {

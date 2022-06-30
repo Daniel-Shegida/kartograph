@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/api/domain/place.dart';
 
 /// Базовое событие места.
 abstract class BasePlaceEvent extends Equatable {

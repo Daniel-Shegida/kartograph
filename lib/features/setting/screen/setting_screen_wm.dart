@@ -37,16 +37,12 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('AlertDialog Title'),
-        content: const Text('AlertDialog description'),
+        title: const Text('Еще в производстве'),
+        content: const Text('Тема будет скоро'),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'OK'),
-            child: const Text('OK'),
+            child: const Text('ОК'),
           ),
         ],
       ),
@@ -62,14 +58,10 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
   void onTutorialTap() {
     showDialog<String>(
       context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('AlertDialog Title'),
-        content: const Text('AlertDialog description'),
+      builder: (context) => AlertDialog(
+        title: const Text('Еще в производстве'),
+        content: const Text('Обучение будет не скоро'),
         actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('Cancel'),
-          ),
           TextButton(
             onPressed: () => Navigator.pop(context, 'OK'),
             child: const Text('OK'),
