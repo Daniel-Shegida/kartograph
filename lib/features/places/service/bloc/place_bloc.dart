@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kartograph/api/data/place_response.dart';
 import 'package:kartograph/features/places/service/bloc/place_event.dart';
 import 'package:kartograph/features/places/service/bloc/place_state.dart';
 import 'package:kartograph/features/places/service/place_rep.dart';
@@ -19,6 +20,37 @@ class PlaceBloc extends Bloc<BasePlaceEvent, BasePlaceState> {
         event.search,
       );
       emit(PlaceContentState(list: list));
+    });
+
+    on<PlacePostEvent>((event, emit) async {
+      // для создания уникального id который был бы еще и положительным
+      final id = ((event.place.lng + event.place.lat) * 1000000).toInt().abs();
+      await _rep.postPlace(
+        PlaceResponse(
+          id: id,
+          name: event.place.name,
+          description: event.place.description,
+          placeType: event.place.placeType.name,
+          urls: [],
+          lng: event.place.lng,
+          lat: event.place.lat,
+        ),
+      );
+    });
+
+    on<PlacePutEvent>((event, emit) async {
+      await _rep.putPlace(
+        event.place.id.toString(),
+        PlaceResponse(
+          id: event.place.id,
+          name: event.place.name,
+          description: event.place.description,
+          placeType: event.place.placeType.name,
+          urls: [],
+          lng: event.place.lng,
+          lat: event.place.lat,
+        ),
+      );
     });
   }
 }

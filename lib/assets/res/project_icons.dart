@@ -25,4 +25,6 @@ abstract class ProjectIcons {
   static const String search = 'assets/icons/Search.svg';
   /// PlaceAdd type adding.
   static const String view = 'assets/icons/View.svg';
+  /// infoIcon name.
+  static const String infoIcon = 'assets/icons/Info.svg';
 }

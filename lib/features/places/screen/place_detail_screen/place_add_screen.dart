@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
-import 'package:kartograph/features/place_adding/domain/entity_place.dart';
-import 'package:kartograph/features/place_adding/screen/place_add_screen_wm.dart';
-import 'package:kartograph/features/place_adding/widgets/custom_text_field.dart';
-import 'package:kartograph/features/place_adding/widgets/locked_button.dart';
-import 'package:kartograph/features/place_adding/widgets/selector.dart';
+import 'package:kartograph/features/places/domain/entity_place.dart';
+import 'package:kartograph/features/places/screen/place_detail_screen/place_add_screen_wm.dart';
+import 'package:kartograph/features/places/widgets/custom_text_field.dart';
+import 'package:kartograph/features/places/widgets/locked_button.dart';
+import 'package:kartograph/features/places/widgets/selector.dart';
 
 /// экран добавления места
 class PlaceAddingScreen extends ElementaryWidget<IPlaceAddingWidgetModel> {

@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:kartograph/api/data/place.dart';
 
 /// Базовое событие места.
-abstract class BasePlaceEvent extends Equatable{
-
+abstract class BasePlaceEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
@@ -20,4 +20,28 @@ class PlaceSearchEvent extends BasePlaceEvent {
 
   /// конструктор [PlaceSearchEvent]
   PlaceSearchEvent({required this.searchingTypeList, required this.search});
+}
+
+/// Событие Добавления места на сервер.
+class PlacePostEvent extends BasePlaceEvent {
+  /// Класс места для добавления на сервер
+  final Place place;
+
+  @override
+  List<Object?> get props => [place];
+
+  /// конструктор [PlacePostEvent]
+  PlacePostEvent({required this.place});
+}
+
+/// Событие изменения места на сервере.
+class PlacePutEvent extends BasePlaceEvent {
+  /// Класс места для добавления на сервер
+  final Place place;
+
+  @override
+  List<Object?> get props => [place];
+
+  /// конструктор [PlacePutEvent]
+  PlacePutEvent({required this.place});
 }
