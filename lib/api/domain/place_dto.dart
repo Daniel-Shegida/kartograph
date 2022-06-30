@@ -1,13 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/api/domain/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
 
-part 'place_response.g.dart';
+part 'place_dto.g.dart';
 
-/// класс ответа с сервера
+/// класс ответа dto с сервера
 @JsonSerializable()
-class PlaceResponse {
-
+class PlaceDto {
   /// id места на сервере
   final int id;
 
@@ -17,11 +16,11 @@ class PlaceResponse {
   /// долгота места
   final double lng;
 
+  /// дистанция до места места
+  final double distance;
+
   /// название места
   final String name;
-
-  /// urls картинок места
-  final List<String>  urls;
 
   /// тип места
   final String placeType;
@@ -29,27 +28,31 @@ class PlaceResponse {
   /// описание места
   final String description;
 
+  /// urls картинок места
+  final List<String> urls;
+
   /// полный конструктор ответа с сервера
-  PlaceResponse({
+  PlaceDto({
     required this.id,
     required this.lat,
     required this.lng,
+    required this.distance,
     required this.name,
     required this.urls,
     required this.placeType,
     required this.description,
   });
 
-  /// сгенерированная функция получающая [PlaceResponse] c json
-  factory PlaceResponse.fromJson(Map<String, dynamic> json) =>
-      _$PlaceResponseFromJson(json);
+  /// сгенерированная функция получающая [PlaceDto] c json
+  factory PlaceDto.fromJson(Map<String, dynamic> json) =>
+      _$PlaceDtoFromJson(json);
 
-  /// сгенерированная функция создающая [PlaceResponse] json для сервера
-  Map<String, dynamic> toJson() => _$PlaceResponseToJson(this);
+  /// сгенерированная функция создающая [PlaceDto] json для сервера
+  Map<String, dynamic> toJson() => _$PlaceDtoToJson(this);
 }
 
 /// функция трансформирующая ответ с сервера под конкретную реализацию места
-Place mapResponseToPlace(PlaceResponse response) => Place(
+Place mapDtoResponseToPlace(PlaceDto response) => Place(
   id: response.id,
   lat: response.lat,
   lng: response.lng,

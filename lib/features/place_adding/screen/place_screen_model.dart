@@ -1,6 +1,6 @@
 import 'package:elementary/elementary.dart';
-import 'package:kartograph/api/data/place.dart';
-import 'package:kartograph/api/data/place_response.dart';
+import 'package:kartograph/api/domain/place.dart';
+import 'package:kartograph/api/domain/place_response.dart';
 import 'package:kartograph/features/places/service/place_rep.dart';
 
 /// модель PlaceAddingWidgetModel

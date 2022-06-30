@@ -1,4 +1,4 @@
-import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/api/domain/place.dart';
 import 'package:latlng/latlng.dart';
 
 /// Base state for profile.

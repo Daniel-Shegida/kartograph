@@ -1,12 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/api/domain/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
 
-part 'place_dto.g.dart';
+part 'place_response.g.dart';
 
-/// класс ответа dto с сервера
+/// класс ответа с сервера
 @JsonSerializable()
-class PlaceDto {
+class PlaceResponse {
+
   /// id места на сервере
   final int id;
 
@@ -16,11 +17,11 @@ class PlaceDto {
   /// долгота места
   final double lng;
 
-  /// дистанция до места места
-  final double distance;
-
   /// название места
   final String name;
+
+  /// urls картинок места
+  final List<String>  urls;
 
   /// тип места
   final String placeType;
@@ -28,31 +29,27 @@ class PlaceDto {
   /// описание места
   final String description;
 
-  /// urls картинок места
-  final List<String> urls;
-
   /// полный конструктор ответа с сервера
-  PlaceDto({
+  PlaceResponse({
     required this.id,
     required this.lat,
     required this.lng,
-    required this.distance,
     required this.name,
     required this.urls,
     required this.placeType,
     required this.description,
   });
 
-  /// сгенерированная функция получающая [PlaceDto] c json
-  factory PlaceDto.fromJson(Map<String, dynamic> json) =>
-      _$PlaceDtoFromJson(json);
+  /// сгенерированная функция получающая [PlaceResponse] c json
+  factory PlaceResponse.fromJson(Map<String, dynamic> json) =>
+      _$PlaceResponseFromJson(json);
 
-  /// сгенерированная функция создающая [PlaceDto] json для сервера
-  Map<String, dynamic> toJson() => _$PlaceDtoToJson(this);
+  /// сгенерированная функция создающая [PlaceResponse] json для сервера
+  Map<String, dynamic> toJson() => _$PlaceResponseToJson(this);
 }
 
 /// функция трансформирующая ответ с сервера под конкретную реализацию места
-Place mapDtoResponseToPlace(PlaceDto response) => Place(
+Place mapResponseToPlace(PlaceResponse response) => Place(
   id: response.id,
   lat: response.lat,
   lng: response.lng,

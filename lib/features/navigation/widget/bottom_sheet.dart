@@ -21,28 +21,28 @@ class BottomNavigator extends StatelessWidget {
         items: const [
           BottomNavigationBarItem(
             icon: _BottomIcons(
-              iconAddress: ProjectIcons.list,
+              iconAddress: ProjectIcons.iList,
             ),
             activeIcon: _BottomIcons(
-              iconAddress: ProjectIcons.listFull,
+              iconAddress: ProjectIcons.iListFull,
             ),
             label: ProjectStrings.placesBottom,
           ),
           BottomNavigationBarItem(
             icon: _BottomIcons(
-              iconAddress: ProjectIcons.map,
+              iconAddress: ProjectIcons.iMap,
             ),
             activeIcon: _BottomIcons(
-              iconAddress: ProjectIcons.mapFull,
+              iconAddress: ProjectIcons.iMapFull,
             ),
             label: ProjectStrings.mapBottom,
           ),
           BottomNavigationBarItem(
             icon: _BottomIcons(
-              iconAddress: ProjectIcons.settings,
+              iconAddress: ProjectIcons.iSettings,
             ),
             activeIcon: _BottomIcons(
-              iconAddress: ProjectIcons.settingsFull,
+              iconAddress: ProjectIcons.iSettingsFull,
             ),
             label: ProjectStrings.settingBottom,
           ),

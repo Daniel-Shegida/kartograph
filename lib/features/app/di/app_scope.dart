@@ -2,9 +2,9 @@ import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:kartograph/api/service/place_api/place_api.dart';
 import 'package:kartograph/config/app_config.dart';
 import 'package:kartograph/config/environment/environment.dart';
-import 'package:kartograph/features/places/place_api/place_api.dart';
 import 'package:kartograph/features/places/service/place_rep.dart';
 import 'package:kartograph/util/default_error_handler.dart';
 
@@ -77,7 +77,7 @@ class AppScope implements IAppScope {
   }
 
   PlaceRepository _initRep(Dio dio) {
-    final rep = PlaceRepository(RestClient(
+    final rep = PlaceRepository(PlaceApi(
       dio,
     ),);
 

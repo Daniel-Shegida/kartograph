@@ -1,7 +1,7 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/api/domain/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/features/app/di/app_scope.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';

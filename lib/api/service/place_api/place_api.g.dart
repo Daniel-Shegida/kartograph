@@ -8,7 +8,7 @@ part of 'place_api.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps
 
-class _RestClient implements RestClient {
+class _RestClient implements PlaceApi {
   _RestClient(this._dio, {this.baseUrl}) {
     baseUrl ??= 'https://test-backend-flutter.surfstudio.ru/';
   }
