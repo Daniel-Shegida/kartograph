@@ -7,6 +7,7 @@ class LastCordsStorage {
 
   final GetStorage _getStorage;
 
+  /// Стандартный иницилизатор [LastCordsStorage]
   LastCordsStorage(this._getStorage);
 
   /// Очистка хранилища,
@@ -14,13 +15,13 @@ class LastCordsStorage {
     await _getStorage.erase();
   }
 
+  /// сохраняет последние полученные координаты
   Future<void> saveLastCords(LatLng cords) async {
     await _getStorage.write(_keyLastCords, cords);
   }
 
-
+  /// удаляет последние полученные координаты
   Future<LatLng?> getLastCords() async {
     return _getStorage.read<LatLng>(_keyLastCords);
   }
-
 }

@@ -7,7 +7,18 @@ import 'package:kartograph/features/map/service/storage/last_cords_storage.dart'
 import 'package:kartograph/features/places/service/place_rep.dart';
 import 'package:latlng/latlng.dart';
 
+/// максимаотный ралиус, который поддерживается при запросе на сервер
 const double maxRadius = 3000000;
+
+/// все типы мест, поддерживаемые сервером
+const List<String> allPlacesTypes = [
+  'hotel',
+  'restaurant',
+  'other',
+  'cafe',
+  'museum',
+  'park',
+];
 
 /// Bloc for working with profile states.
 class MapBloc extends Bloc<BaseMapEvent, BaseMapState> {
@@ -20,22 +31,21 @@ class MapBloc extends Bloc<BaseMapEvent, BaseMapState> {
     on<MapGetLocationEvent>((event, emit) async {
       final cords = await _getCordsFormGeolocator();
 
-      _cordsStorage.saveLastCords(cords!);
+      await _cordsStorage.saveLastCords(cords!);
       emit(MapContentState(
-        currentLocation: cords!,
+        currentLocation: cords,
       ));
     });
 
     /// обработка события загрузки мест на карте
     on<MapGetPlacesEvent>((event, emit) async {
-      // ignore: omit_local_variable_types
-      LatLng? cords = await _cordsStorage.getLastCords();
+      final cords = await _cordsStorage.getLastCords();
 
       final list = await _rep.getSearchedPlaces(
         cords?.latitude ?? ProjectCoordinates.staringCords.latitude,
         cords?.longitude ?? ProjectCoordinates.staringCords.latitude,
         maxRadius,
-        ['hotel', 'restaurant', 'other', 'cafe', 'museum', 'park'],
+        allPlacesTypes,
         '',
       );
       emit(MapPlacesContentState(list: list));
@@ -78,6 +88,9 @@ class MapBloc extends Bloc<BaseMapEvent, BaseMapState> {
     }
 
     final location = await Geolocator.getCurrentPosition();
+
+    await _cordsStorage
+        .saveLastCords(LatLng(location.latitude, location.longitude));
 
     return LatLng(location.latitude, location.longitude);
   }
