@@ -13,29 +13,11 @@ abstract class PlaceApi {
   /// фабрика для ретрофита
   factory PlaceApi(Dio dio, {String baseUrl}) = _RestClient;
 
-  // /// Получает список мест с сервера
-  // @GET(PlaceUrls.place)
-  // Future<List<PlaceResponse>> getPlaces(
-  //   @Query('count') int id,
-  // );
-
   /// создает новое место на сервере
   @POST(PlaceUrls.place)
   Future<void> postPlace(
     @Body() PlaceResponse body,
   );
-
-  // /// Получает место с сервера по id
-  // @GET('${PlaceUrls.place}/{id}')
-  // Future<PlaceResponse> getPlace(
-  //   @Path('id') String id,
-  // );
-
-  // /// удаляет место с сервера по id
-  // @DELETE('${PlaceUrls.place}/{id}')
-  // Future<PlaceResponse> deletePlace(
-  //   @Path('id') String id,
-  // );
 
   /// заменяет место на сервере по id
   @PUT('${PlaceUrls.place}/{id}')
