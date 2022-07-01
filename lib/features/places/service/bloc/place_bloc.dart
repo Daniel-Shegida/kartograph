@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartograph/api/domain/place_response.dart';
 import 'package:kartograph/features/places/service/bloc/place_event.dart';
 import 'package:kartograph/features/places/service/bloc/place_state.dart';
-import 'package:kartograph/features/places/service/place_rep.dart';
+import 'package:kartograph/api/service/place_rep/place_rep.dart';
 
 /// Bloc for working with profile states.
 class PlaceBloc extends Bloc<BasePlaceEvent, BasePlaceState> {

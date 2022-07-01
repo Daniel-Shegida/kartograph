@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kartograph/api/service/place_api/place_api.dart';
 import 'package:kartograph/config/app_config.dart';
 import 'package:kartograph/config/environment/environment.dart';
-import 'package:kartograph/features/places/service/place_rep.dart';
+import 'package:kartograph/api/service/place_rep/place_rep.dart';
 import 'package:kartograph/util/default_error_handler.dart';
 
 /// Scope of dependencies which need through all app's life.

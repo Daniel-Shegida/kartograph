@@ -34,62 +34,34 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
 
   @override
   void onChangedTheme(bool switchFlag) {
-    showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('Еще в производстве'),
-        content: const Text('Тема будет скоро'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('ОК'),
-          ),
-        ],
-      ),
-    );
-    // if (switchFlag) {
-    //   _themeNotifier.accept(Themes.dark);
-    // } else {
-    //   _themeNotifier.accept(Themes.light);
-    // }
+    if (switchFlag) {
+      _themeNotifier.accept(Themes.dark);
+      _showDialogOfUnready();
+    } else {
+      _themeNotifier.accept(Themes.light);
+      _showDialogOfUnready();
+    }
   }
 
   @override
   void onTutorialTap() {
-    showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Еще в производстве'),
-        content: const Text('Обучение будет не скоро'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'OK'),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
+    _showDialogOfUnready();
   }
 
-
-  @override
-  void show() {
+  void _showDialogOfUnready() {
     showDialog<String>(
       context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('AlertDialog Title'),
-        content: const Text('AlertDialog description'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('Cancel'),
+      builder: (context) =>
+          AlertDialog(
+            title: const Text('Еще в производстве'),
+            content: const Text('будет скоро'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'OK'),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
     );
   }
 }
