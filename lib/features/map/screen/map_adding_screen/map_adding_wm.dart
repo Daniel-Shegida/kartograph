@@ -22,6 +22,7 @@ MapAddingWidgetModel Function(BuildContext context)
       MapAddingModel(
         MapBloc(
           context.read<IAppScope>().repository,
+          context.read<IAppScope>().lastCordsStorage,
         ),
       ),
       value,
