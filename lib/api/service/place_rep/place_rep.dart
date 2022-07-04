@@ -31,15 +31,15 @@ class PlaceRepository {
     List<String> typeFilter,
     String nameFilter,
   ) async {
-    final test = PlacesFilterRequestDto(
+    final placeDto = PlacesFilterRequestDto(
       lat: lat,
       lng: lng,
       radius: radius,
       typeFilter: typeFilter,
       nameFilter: nameFilter,
     );
-    final testResponses = await _placeRepositoryApi.getFilteredPlaces(test);
+    final PlaceResponses = await _placeRepositoryApi.getFilteredPlaces(placeDto);
 
-    return testResponses.map(mapDtoResponseToPlace).toList();
+    return PlaceResponses.map(mapDtoResponseToPlace).toList();
   }
 }
