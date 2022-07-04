@@ -1,47 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:kartograph/api/domain/place.dart';
+import 'package:kartograph/assets/enums/categories.dart';
+import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
+import 'package:routemaster/routemaster.dart';
 
 /// виджет маркера на карте
-class Marker extends StatelessWidget {
-  /// горизонтальная позиция маркера
-  final double leftPos;
-
-  /// вертикальная позиция маркера
-  final double topPos;
-
+class TransferMarker extends StatelessWidget {
   /// иконка маркера
-  final IconData iconData;
+  final Place place;
 
-  /// цвет маркера
-  final Color color;
-
-  /// цвет маркера
-  final VoidCallback onPressed;
-
-  /// конструктор [Marker]
-  const Marker({
-    required this.leftPos,
-    required this.topPos,
-    required this.iconData,
-    required this.color,
-    required this.onPressed,
+  /// конструктор [TransferMarker]
+  const TransferMarker({
+    required this.place,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      left: leftPos - 24,
-      top: topPos - 24,
-      width: 48,
-      height: 48,
-      child: GestureDetector(
+    return GestureDetector(
         child: Icon(
-          iconData,
-          color: color,
+          place.placeType.categoryIcon,
+          color: place.placeType.categoryColor,
           size: 48,
         ),
-        onTap: onPressed,
-      ),
-    );
+        onTap: () {
+          if (place.placeType != Categories.newPlace) {
+            Routemaster.of(context).push(
+              '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.changingPlaceScreen}${place.id}',
+              queryParameters: {
+                'category': place.placeType.name,
+                'name': place.name,
+                'description': place.description,
+                'lat': place.lat.toString(),
+                'lng': place.lng.toString(),
+              },
+            );
+          }
+        },
+      );
   }
 }

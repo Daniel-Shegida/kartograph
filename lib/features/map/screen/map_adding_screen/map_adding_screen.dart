@@ -4,10 +4,10 @@ import 'package:kartograph/api/domain/place.dart';
 import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
+import 'package:kartograph/features/map/widgets/map_widget.dart';
 import 'package:kartograph/features/map/widgets/marker_stack.dart';
 import 'package:kartograph/features/map/widgets/round_button.dart';
 import 'package:kartograph/features/map/screen/map_adding_screen/map_adding_wm.dart';
-import 'package:kartograph/util/map_widget.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 
@@ -67,19 +67,19 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
               onPointerSignal: wm.onPointerSignal,
               child: Stack(
                 children: [
-                  MapWidget(
+                  MapLayerWidget(
                     mapController: wm.controller,
                   ),
-                  StateNotifierBuilder<Place>(
-                    listenableState: wm.marker,
-                    builder: (ctx, value) {
-                      return MarkersStack(
-                        controller: wm.controller,
-                        transformer: transformer,
-                        markers: (value != null) ? [value] : [],
-                      );
-                    },
-                  ),
+                  // StateNotifierBuilder<Place>(
+                  //   listenableState: wm.marker,
+                  //   builder: (ctx, value) {
+                  //     return MarkersStack(
+                  //       controller: wm.controller,
+                  //       transformer: transformer,
+                  //       markers: (value != null) ? [value] : [],
+                  //     );
+                  //   },
+                  // ),
                   FractionallySizedBox(
                     alignment: Alignment.topCenter,
                     widthFactor: 1,

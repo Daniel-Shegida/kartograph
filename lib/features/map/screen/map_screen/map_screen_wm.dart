@@ -1,17 +1,36 @@
+// import 'dart:async';
+// import 'package:elementary/elementary.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_map/flutter_map.dart';
+// import 'package:kartograph/api/domain/place.dart';
+// import 'package:flutter_map/flutter_map.dart';
+// import 'package:kartograph/features/app/di/app_scope.dart';
+// import 'package:kartograph/features/map/screen/map_screen/map_screen.dart';
+// import 'package:kartograph/features/map/screen/map_screen/map_screen_model.dart';
+// import 'package:kartograph/features/map/service/map_bloc.dart';
+// import 'package:kartograph/features/map/service/map_state.dart';
+// import 'package:kartograph/features/map/widgets/marker.dart';
+// import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
+// import 'package:latlong2/latlong.dart';
+// import 'package:map/map.dart';
+// import 'package:provider/provider.dart';
+// import 'package:routemaster/routemaster.dart';
+
+
 import 'dart:async';
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:kartograph/api/domain/place.dart';
-import 'package:kartograph/config/app_config.dart';
-import 'package:kartograph/config/environment/environment.dart';
 import 'package:kartograph/features/app/di/app_scope.dart';
 import 'package:kartograph/features/map/screen/map_screen/map_screen.dart';
 import 'package:kartograph/features/map/screen/map_screen/map_screen_model.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
+import 'package:kartograph/features/map/widgets/marker.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
-import 'package:latlng/latlng.dart';
-import 'package:map/map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -27,34 +46,39 @@ MapWidgetModel mapWidgetModelFactory(BuildContext context) {
 /// WidgetModel for [MapScreen]
 class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     implements IMapWidgetModel {
-  final _controller = MapController(
-    location: LatLng(
-      Environment<AppConfig>.instance().config.lat,
-      Environment<AppConfig>.instance().config.lng,
-    ),
-  );
+  // final _controller = MapController(
+  //   location: LatLng(
+  //     Environment<AppConfig>.instance().config.lat,
+  //     Environment<AppConfig>.instance().config.lng,
+  //   ),
+  // );
 
-  final StateNotifier<List<Place>> _placesListState =
-      StateNotifier<List<Place>>();
+  final StateNotifier<List<Marker> > _placesListState =
+      StateNotifier<List<Marker> >();
 
-  /// controller for map
+  // /// controller for map
+  // @override
+  // MapController get controller => _controller;
+
   @override
-  MapController get controller => _controller;
-
-  @override
-  StateNotifier<List<Place>> get placesListState => _placesListState;
+  StateNotifier<List<Marker> > get placesListState => _placesListState;
 
   late Offset? _dragStart;
+
+  late final MapController mapController;
 
   late StreamSubscription _blocSubscription;
 
   double _scaleStart = 1.0;
+
+  List<Marker> _test = [];
 
   /// standard consctructor for elem
   MapWidgetModel(MapModel model) : super(model);
 
   @override
   void initWidgetModel() {
+    mapController = MapController();
     _blocSubscription = model.mapStateStream.listen(_updateState);
     model.getCurrentLocation();
     _placesListState.accept([]);
@@ -75,39 +99,6 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   }
 
   @override
-  void onDoubleTap() {
-    _controller.zoom += 0.5;
-  }
-
-  @override
-  void gotoDefault() {
-    _controller.center = LatLng(
-      Environment<AppConfig>.instance().config.lat,
-      Environment<AppConfig>.instance().config.lng,
-    );
-  }
-
-  @override
-  void onScaleUpdate(ScaleUpdateDetails details) {
-    final scaleDiff = details.scale - _scaleStart;
-    _scaleStart = details.scale;
-
-    if (scaleDiff > 0) {
-      _controller.zoom += 0.02;
-    } else if (scaleDiff < 0) {
-      _controller.zoom -= 0.02;
-    } else {
-      final now = details.focalPoint;
-      final diff = now - _dragStart!;
-      _dragStart = now;
-      _controller.drag(diff.dx, diff.dy);
-    }
-  }
-
-  @override
-  void onTap(TapUpDetails details, MapTransformer transformer) {}
-
-  @override
   void getCurrentLocation() {
     model.getCurrentLocation();
   }
@@ -120,23 +111,63 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   @override
   void addPlace() {
     Routemaster.of(context).push(AppRoutePaths.mapAdding, queryParameters: {
-      'lat': _controller.center.latitude.toString(),
-      'lng': _controller.center.longitude.toString(),
+      'lat': mapController.center.latitude.toString(),
+      'lng': mapController.center.longitude.toString(),
     });
   }
 
   void _updateState(BaseMapState state) {
     if (state is MapContentState) {
-      controller.center = state.currentLocation;
+      // controller.center = state.currentLocation;
     }
     if (state is MapPlacesContentState) {
-      _placesListState.accept(state.list);
+
+      List<Marker> test1 = [];
+      for (Place e in state.list) {
+        // ignore: avoid_print
+        print(test1);
+        test1.add(
+          Marker(
+            width: 80.0,
+            height: 80.0,
+            point: LatLng(e.lat, e.lng),
+            builder: (ctx) => TransferMarker(place: e),
+            // const FlutterLogo(
+            //   textColor: Colors.green,
+            //   key: ObjectKey(Colors.green),
+            // ),
+          ),
+        );
+        // ignore: avoid_print
+        print(e);
+      }
+      _test = test1;
+      // ignore: avoid_print
+      print(test.length);
+      _placesListState.accept(test1);
+
+      // state.list.map((e) {
+      //   // ignore: avoid_print
+      //   print(_test.length);
+      //   _test.add(Marker(point: LatLng(e.lng, e.lng),
+      //       builder: (context) =>
+      //       KMarker(iconData: Icons.add_circle, color: Colors.green, onPressed: () {  },)
+      //   ));
+      // });
     }
   }
 
   void _searchPlace() {
     model.search();
   }
+
+  @override
+  // TODO: implement test
+  List<Marker> get test => _test;
+
+  @override
+  // TODO: implement controller
+  MapController get controller => mapController;
 }
 
 /// Interface of [MapWidgetModel].
@@ -145,25 +176,27 @@ abstract class IMapWidgetModel extends IWidgetModel {
   MapController get controller;
 
   /// показываемые темы
-  StateNotifier<List<Place>> get placesListState;
+  StateNotifier<List<Marker> > get placesListState;
 
-  /// action to go back tp detail
-  void gotoDefault();
+  List<Marker> get test;
 
-  /// action for DoubleTap
-  void onDoubleTap();
-
-  /// action for starting scale
-  void onScaleStart(ScaleStartDetails details);
-
-  /// action for changing scale
-  void onScaleUpdate(ScaleUpdateDetails details);
-
-  /// action for changing scale
-  void onTap(TapUpDetails details, MapTransformer transformer);
-
-  /// action to go back to current location
-  void getCurrentLocation();
+  // /// action to go back tp detail
+  // void gotoDefault();
+  //
+  // /// action for DoubleTap
+  // void onDoubleTap();
+  //
+  // /// action for starting scale
+  // void onScaleStart(ScaleStartDetails details);
+  //
+  // /// action for changing scale
+  // void onScaleUpdate(ScaleUpdateDetails details);
+  //
+  // /// action for changing scale
+  // void onTap(TapUpDetails details, MapTransformer transformer);
+  //
+  // /// action to go back to current location
+  // void getCurrentLocation();
 
   /// пока ивента для него нет
   void refresh();

@@ -40,6 +40,8 @@ dependencies:
 # геолокация
   geolocator: ^8.2.1
   shared_preferences: ^2.0.15
+  flutter_map: ^1.1.1
+  latlong2: ^0.8.1
 
 
 dev_dependencies:
