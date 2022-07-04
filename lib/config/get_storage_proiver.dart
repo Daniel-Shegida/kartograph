@@ -5,8 +5,6 @@ class GetStorageProvider {
   final _getStorage = GetStorage();
   final _lastCordsStorage = GetStorage('_lastCordsStorage');
 
-  GetStorage get storage => _getStorage;
-
   GetStorage get lastCordsStorage => _lastCordsStorage;
 
   Future<void> init() {
