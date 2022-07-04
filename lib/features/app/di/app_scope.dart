@@ -3,13 +3,11 @@ import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/service/place_api/place_api.dart';
+import 'package:kartograph/api/service/place_rep/place_rep.dart';
 import 'package:kartograph/config/app_config.dart';
 import 'package:kartograph/config/environment/environment.dart';
 import 'package:kartograph/config/get_storage_proiver.dart';
 import 'package:kartograph/features/map/service/storage/last_cords_storage.dart';
-import 'package:kartograph/features/places/place_api/place_api.dart';
-import 'package:kartograph/features/places/service/place_rep.dart';
-import 'package:kartograph/api/service/place_rep/place_rep.dart';
 import 'package:kartograph/util/default_error_handler.dart';
 
 /// Scope of dependencies which need through all app's life.
@@ -89,9 +87,11 @@ class AppScope implements IAppScope {
   }
 
   PlaceRepository _initRep(Dio dio) {
-    final rep = PlaceRepository(PlaceApi(
-      dio,
-    ),);
+    final rep = PlaceRepository(
+      PlaceApi(
+        dio,
+      ),
+    );
 
     return rep;
   }
@@ -117,5 +117,4 @@ abstract class IAppScope {
 
   /// Хранилище координат
   LastCordsStorage get lastCordsStorage;
-
 }
