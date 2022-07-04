@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kartograph/api/data/place.dart';
+import 'package:kartograph/api/domain/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/features/map/widgets/marker.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';

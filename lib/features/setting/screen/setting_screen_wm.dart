@@ -36,13 +36,34 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
   void onChangedTheme(bool switchFlag) {
     if (switchFlag) {
       _themeNotifier.accept(Themes.dark);
+      _showDialogOfUnready();
     } else {
       _themeNotifier.accept(Themes.light);
+      _showDialogOfUnready();
     }
   }
 
   @override
-  void onTutorialTap() {}
+  void onTutorialTap() {
+    _showDialogOfUnready();
+  }
+
+  void _showDialogOfUnready() {
+    showDialog<String>(
+      context: context,
+      builder: (context) =>
+          AlertDialog(
+            title: const Text('Еще в производстве'),
+            content: const Text('будет скоро'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+    );
+  }
 }
 
 /// Interface of [SettingWidgetModel].
