@@ -19,7 +19,13 @@ class SettingScreen extends ElementaryWidget<ISettingWidgetModel> {
   Widget build(ISettingWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(ProjectStrings.settings),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Center(
+            child: Text(
+          ProjectStrings.settings,
+          style: TextStyle(color: ProjectColors.textColorPrimary),
+        ),),
       ),
       body: Column(
         children: [

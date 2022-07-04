@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:kartograph/features/map/service/map_event.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
-import 'package:kartograph/features/places/service/place_rep.dart';
+import 'package:kartograph/api/service/place_rep/place_rep.dart';
 import 'package:latlng/latlng.dart';
 
 /// Bloc for working with profile states.
