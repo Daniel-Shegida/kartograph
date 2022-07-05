@@ -7,6 +7,7 @@ import 'package:kartograph/features/map/screen/map_screen/map_screen.dart';
 import 'package:kartograph/features/map/screen/map_screen/map_screen_model.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
+import 'package:kartograph/features/map/utils/mapSettings.dart';
 import 'package:kartograph/features/map/widgets/marker.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:latlong2/latlong.dart';
@@ -85,8 +86,8 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
       for (final place in state.list) {
         placesList.add(
           Marker(
-            width: 80.0,
-            height: 80.0,
+            width: ProjectMapSettings.markersWidth,
+            height: ProjectMapSettings.markersHeight,
             point: LatLng(place.lat, place.lng),
             builder: (_) => TransferMarker(place: place),
           ),

@@ -8,6 +8,7 @@ import 'package:kartograph/features/map/screen/map_adding_screen/map_adding_mode
 import 'package:kartograph/features/map/screen/map_adding_screen/map_adding_screen.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
+import 'package:kartograph/features/map/utils/mapSettings.dart';
 import 'package:kartograph/features/map/widgets/marker.dart';
 import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
 import 'package:latlong2/latlong.dart';
@@ -114,20 +115,24 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
 
   Marker _createPlaceAdder(LatLng latLng) {
     return Marker(
-      width: 80.0,
-      height: 80.0,
+      width: ProjectMapSettings.markersWidth,
+      height: ProjectMapSettings.markersHeight,
       point: latLng,
-      builder: (ctx) => TransferMarker(
-        place: Place(
-          id: 1,
-          lat: latLng.latitude,
-          lng: latLng.longitude,
-          name: 'name',
-          urls: [],
-          placeType: Categories.newPlace,
-          description: 'description',
-        ),
+      builder: (_) => TransferMarker(
+        place: _createBasicPlace(latLng),
       ),
+    );
+  }
+
+  Place _createBasicPlace(LatLng latLng) {
+    return Place(
+      id: 1,
+      lat: latLng.latitude,
+      lng: latLng.longitude,
+      name: 'name',
+      urls: [],
+      placeType: Categories.newPlace,
+      description: 'description',
     );
   }
 }

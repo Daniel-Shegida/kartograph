@@ -6,6 +6,7 @@ import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/map/screen/map_screen/map_screen_wm.dart';
+import 'package:kartograph/features/map/utils/mapSettings.dart';
 import 'package:kartograph/features/map/widgets/round_button.dart';
 
 /// Main Screen
@@ -25,7 +26,8 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
           return FlutterMap(
             mapController: wm.controller,
             options: MapOptions(
-              zoom: 5.0,
+              zoom: ProjectMapSettings.zoom,
+              interactiveFlags: ProjectMapSettings.interactiveFlags,
             ),
             layers: [
               TileLayerOptions(
