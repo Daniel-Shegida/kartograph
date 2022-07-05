@@ -5,6 +5,7 @@ import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/map/screen/map_adding_screen/map_adding_wm.dart';
+import 'package:kartograph/features/map/utils/mapSettings.dart';
 import 'package:kartograph/features/map/widgets/round_button.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -54,7 +55,8 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
           return FlutterMap(
             options: MapOptions(
               onTap: (tapPositon, latlng) => wm.onTap(latlng),
-              zoom: 5.0,
+              zoom: ProjectMapSettings.zoom,
+              interactiveFlags: ProjectMapSettings.interactiveFlags,
             ),
             layers: [
               TileLayerOptions(
