@@ -3,9 +3,11 @@ import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/service/place_api/place_api.dart';
+import 'package:kartograph/api/service/place_rep/place_rep.dart';
 import 'package:kartograph/config/app_config.dart';
 import 'package:kartograph/config/environment/environment.dart';
-import 'package:kartograph/api/service/place_rep/place_rep.dart';
+import 'package:kartograph/config/get_storage_proiver.dart';
+import 'package:kartograph/features/map/service/storage/last_cords_storage.dart';
 import 'package:kartograph/util/default_error_handler.dart';
 
 /// Scope of dependencies which need through all app's life.
@@ -14,6 +16,10 @@ class AppScope implements IAppScope {
   late final ErrorHandler _errorHandler;
   late final VoidCallback _applicationRebuilder;
   late final PlaceRepository _repository;
+  late final _getStorageProvider = GetStorageProvider();
+
+  // Storages
+  late final LastCordsStorage _lastCordsStorage;
 
   @override
   Dio get dio => _dio;
@@ -27,6 +33,9 @@ class AppScope implements IAppScope {
   @override
   PlaceRepository get repository => _repository;
 
+  @override
+  LastCordsStorage get lastCordsStorage => _lastCordsStorage;
+
   /// Create an instance [AppScope].
   AppScope({
     required VoidCallback applicationRebuilder,
@@ -37,6 +46,7 @@ class AppScope implements IAppScope {
     _dio = _initDio(additionalInterceptors);
     _errorHandler = DefaultErrorHandler();
     _repository = _initRep(_dio);
+    _initStorages();
   }
 
   Dio _initDio(Iterable<Interceptor> additionalInterceptors) {
@@ -77,11 +87,17 @@ class AppScope implements IAppScope {
   }
 
   PlaceRepository _initRep(Dio dio) {
-    final rep = PlaceRepository(PlaceApi(
-      dio,
-    ),);
+    final rep = PlaceRepository(
+      PlaceApi(
+        dio,
+      ),
+    );
 
     return rep;
+  }
+
+  void _initStorages() {
+    _lastCordsStorage = LastCordsStorage(_getStorageProvider.lastCordsStorage);
   }
 }
 
@@ -99,4 +115,6 @@ abstract class IAppScope {
   /// репозиторий, получающий все места в приложении.
   PlaceRepository get repository;
 
+  /// Хранилище координат
+  LastCordsStorage get lastCordsStorage;
 }
