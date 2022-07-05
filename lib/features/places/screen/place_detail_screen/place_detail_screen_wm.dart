@@ -10,7 +10,7 @@ import 'package:kartograph/features/places/domain/entity_place.dart';
 import 'package:kartograph/features/places/screen/place_detail_screen/place_detail_screen.dart';
 import 'package:kartograph/features/places/screen/place_detail_screen/place_detail_model.dart';
 import 'package:kartograph/features/places/service/bloc/place_bloc.dart';
-import 'package:latlng/latlng.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 

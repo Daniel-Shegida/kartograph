@@ -518,13 +518,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.2.0"
-  latlng:
-    dependency: "direct main"
-    description:
-      name: latlng
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.0"
   latlong2:
     dependency: "direct main"
     description:
@@ -560,13 +553,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  map:
-    dependency: "direct main"
-    description:
-      name: map
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
   matcher:
     dependency: transitive
     description:
@@ -770,13 +756,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  protobuf:
-    dependency: transitive
-    description:
-      name: protobuf
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
   provider:
     dependency: "direct main"
     description:

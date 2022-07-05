@@ -1,8 +1,6 @@
 
 /// svg path of icons of Kartograph project
 abstract class ProjectIcons {
-  ///
-
   /// PlacesScreen bottom name.
   static const String iList = 'assets/icons/List.svg';
   /// MapScreen bottom name.

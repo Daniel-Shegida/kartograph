@@ -1,4 +1,4 @@
-import 'package:latlng/latlng.dart';
+import 'package:latlong2/latlong.dart';
 
 /// Координаты проекта.
 abstract class ProjectCoordinates {

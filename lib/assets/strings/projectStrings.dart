@@ -16,7 +16,7 @@ abstract class ProjectStrings {
   static const String settingBottom = 'setting';
   /// Сайт откуда берется карта.
   static const String mapSite =
-      'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/';
+      'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}@2x?access_token=';
 
   /// Персональный токен.
   static const String mapToken =

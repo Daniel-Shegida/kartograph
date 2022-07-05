@@ -3,7 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:kartograph/features/map/service/map_event.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:kartograph/api/service/place_rep/place_rep.dart';
-import 'package:latlng/latlng.dart';
+import 'package:latlong2/latlong.dart';
 
 /// Bloc for working with profile states.
 class MapBloc extends Bloc<BaseMapEvent, BaseMapState> {

@@ -1,15 +1,12 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:kartograph/api/domain/place.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
-import 'package:kartograph/features/map/widgets/map_widget.dart';
-import 'package:kartograph/features/map/widgets/marker_stack.dart';
-import 'package:kartograph/features/map/widgets/round_button.dart';
 import 'package:kartograph/features/map/screen/map_adding_screen/map_adding_wm.dart';
-import 'package:latlng/latlng.dart';
-import 'package:map/map.dart';
+import 'package:kartograph/features/map/widgets/round_button.dart';
+import 'package:latlong2/latlong.dart';
 
 /// экран добавления места
 class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
@@ -51,65 +48,50 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
           ),
         ],
       ),
-      body: MapLayoutBuilder(
-        controller: wm.controller,
-        builder: (context, transformer) {
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onDoubleTap: wm.onDoubleTap,
-            onScaleStart: wm.onScaleStart,
-            onScaleUpdate: wm.onScaleUpdate,
-            onTapUp: (details) {
-              wm.onTap(details, transformer);
-            },
-            child: Listener(
-              behavior: HitTestBehavior.opaque,
-              onPointerSignal: wm.onPointerSignal,
-              child: Stack(
-                children: [
-                  MapLayerWidget(
-                    mapController: wm.controller,
-                  ),
-                  // StateNotifierBuilder<Place>(
-                  //   listenableState: wm.marker,
-                  //   builder: (ctx, value) {
-                  //     return MarkersStack(
-                  //       controller: wm.controller,
-                  //       transformer: transformer,
-                  //       markers: (value != null) ? [value] : [],
-                  //     );
-                  //   },
-                  // ),
-                  FractionallySizedBox(
-                    alignment: Alignment.topCenter,
-                    widthFactor: 1,
-                    child: Container(
-                      padding: const EdgeInsets.all(16.0),
-                      color: ProjectColors.mapScreenHelper,
-                      child: const Text(
-                        ProjectStrings.mapAddHint,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 16.0,
-                        horizontal: 16.0,
-                      ),
-                      child: _RoundGeoButton(
-                        onPressed: wm.getCurrentGeolocation,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+      body: StateNotifierBuilder<Marker>(
+        listenableState: wm.marker,
+        builder: (ctx, value) {
+          return FlutterMap(
+            options: MapOptions(
+              onTap: (tapPositon, latlng) => wm.onTap(latlng),
+              zoom: 5.0,
             ),
+            layers: [
+              TileLayerOptions(
+                urlTemplate:
+                    '${ProjectStrings.mapSite}${ProjectStrings.mapToken}',
+              ),
+              MarkerLayerOptions(markers: (value != null) ? [value] : []),
+            ],
+            nonRotatedChildren: [
+              FractionallySizedBox(
+                alignment: Alignment.topCenter,
+                widthFactor: 1,
+                child: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  color: ProjectColors.mapScreenHelper,
+                  child: const Text(
+                    ProjectStrings.mapAddHint,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16.0,
+                    horizontal: 16.0,
+                  ),
+                  child: _RoundGeoButton(
+                    onPressed: wm.getCurrentGeolocation,
+                  ),
+                ),
+              ),
+            ],
           );
         },
       ),
