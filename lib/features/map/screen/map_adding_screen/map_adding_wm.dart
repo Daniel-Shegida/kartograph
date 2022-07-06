@@ -129,6 +129,7 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
       point: latLng,
       builder: (_) => TransferMarker(
         place: _createBasicPlace(latLng),
+        onTap: _navigationHelper.moveToPlaceDetailScreen,
       ),
     );
   }

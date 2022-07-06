@@ -103,7 +103,10 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
             width: ProjectMapSettings.markersWidth,
             height: ProjectMapSettings.markersHeight,
             point: LatLng(place.lat, place.lng),
-            builder: (_) => TransferMarker(place: place),
+            builder: (_) => TransferMarker(
+              place: place,
+              onTap: _navigationHelper.moveToPlaceDetailScreen,
+            ),
           ),
         );
       }
