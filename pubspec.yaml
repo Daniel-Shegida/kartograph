@@ -68,6 +68,7 @@ flutter_icons:
   ios: true
   image_path: "assets/images/start.png"
   adaptive_icon_background: "assets/images/start.png"
+  adaptive_icon_foreground: "assets/images/start.png"
 
 flutter_native_splash:
   # Customize the parameters below, and run the following command in the terminal:
