@@ -1,6 +1,5 @@
-
 /// Basic map event.
-abstract class BaseMapEvent{
+abstract class BaseMapEvent {
   /// Constructor.
   const BaseMapEvent();
 }

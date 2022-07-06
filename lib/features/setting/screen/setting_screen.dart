@@ -22,10 +22,11 @@ class SettingScreen extends ElementaryWidget<ISettingWidgetModel> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Center(
-            child: Text(
-          ProjectStrings.settings,
-          style: TextStyle(color: ProjectColors.textColorPrimary),
-        ),),
+          child: Text(
+            ProjectStrings.settings,
+            style: TextStyle(color: ProjectColors.textColorPrimary),
+          ),
+        ),
       ),
       body: Column(
         children: [

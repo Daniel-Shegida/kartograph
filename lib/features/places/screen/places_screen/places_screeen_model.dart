@@ -21,13 +21,14 @@ class PlacesModel extends ElementaryModel {
 
   /// закрытие потоков
   @override
-  void dispose(){
+  void dispose() {
     _placeBloc.close();
     super.dispose();
   }
 
   /// получить список мест с параметрами поиска
   void search(List<String> searchingTypeList, String search) {
-    _placeBloc.add(PlaceSearchEvent(searchingTypeList: searchingTypeList, search: search));
+    _placeBloc.add(
+        PlaceSearchEvent(searchingTypeList: searchingTypeList, search: search));
   }
 }
