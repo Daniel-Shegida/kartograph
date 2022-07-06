@@ -60,8 +60,7 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
             ),
             layers: [
               TileLayerOptions(
-                urlTemplate:
-                    '${ProjectStrings.mapSite}${ProjectStrings.mapToken}',
+                urlTemplate: wm.getMapUrl(),
               ),
               MarkerLayerOptions(markers: (value != null) ? [value] : []),
             ],

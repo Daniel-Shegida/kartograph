@@ -31,8 +31,7 @@ class MapScreen extends ElementaryWidget<IMapWidgetModel> {
             ),
             layers: [
               TileLayerOptions(
-                urlTemplate:
-                    '${ProjectStrings.mapSite}${ProjectStrings.mapToken}',
+                urlTemplate: wm.getMapUrl(),
               ),
               MarkerLayerOptions(markers: value ?? []),
             ],
