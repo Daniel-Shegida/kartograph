@@ -29,7 +29,6 @@ import 'package:kartograph/assets/colors/colors.dart';
 
 /// Strings of Kartograph project
 abstract class ProjectTextStyle {
-
   static const TextStyle _text = TextStyle(
     fontStyle: FontStyle.normal,
     color: ProjectColors.textColorPrimary,

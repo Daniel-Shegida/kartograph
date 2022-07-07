@@ -7,7 +7,6 @@ part 'place_response.g.dart';
 /// класс ответа с сервера
 @JsonSerializable()
 class PlaceResponse {
-
   /// id места на сервере
   final int id;
 
@@ -21,7 +20,7 @@ class PlaceResponse {
   final String name;
 
   /// urls картинок места
-  final List<String>  urls;
+  final List<String> urls;
 
   /// тип места
   final String placeType;
@@ -50,11 +49,11 @@ class PlaceResponse {
 
 /// функция трансформирующая ответ с сервера под конкретную реализацию места
 Place mapResponseToPlace(PlaceResponse response) => Place(
-  id: response.id,
-  lat: response.lat,
-  lng: response.lng,
-  name: response.name,
-  urls: response.urls,
-  placeType: Categories.values.byName(response.placeType),
-  description: response.description,
-);
+      id: response.id,
+      lat: response.lat,
+      lng: response.lng,
+      name: response.name,
+      urls: response.urls,
+      placeType: Categories.values.byName(response.placeType),
+      description: response.description,
+    );

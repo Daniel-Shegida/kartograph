@@ -2,8 +2,7 @@ import 'package:kartograph/api/domain/place.dart';
 import 'package:latlong2/latlong.dart';
 
 /// Base state for profile.
-abstract class BaseMapState{
-}
+abstract class BaseMapState {}
 
 /// Состояние карты и текущего состояния
 class MapContentState extends BaseMapState {
@@ -17,8 +16,7 @@ class MapContentState extends BaseMapState {
 }
 
 /// Состояние загрузки данных для карты.
-class LoadingState extends BaseMapState {
-}
+class LoadingState extends BaseMapState {}
 
 /// Состояние поиска мест.
 class MapPlacesContentState extends BaseMapState {
