@@ -18,7 +18,6 @@ class LockedButton extends StatelessWidget {
     required this.onPressed,
     required this.isReady,
     required this.isChange,
-
     Key? key,
   }) : super(key: key);
 
@@ -36,8 +35,7 @@ class LockedButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              isChange ? ProjectStrings.change
-                  : ProjectStrings.create,
+              isChange ? ProjectStrings.change : ProjectStrings.create,
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
           ],

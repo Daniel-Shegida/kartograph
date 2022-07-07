@@ -38,7 +38,8 @@ class PlaceRepository {
       typeFilter: typeFilter,
       nameFilter: nameFilter,
     );
-    final PlaceResponses = await _placeRepositoryApi.getFilteredPlaces(placeDto);
+    final PlaceResponses =
+        await _placeRepositoryApi.getFilteredPlaces(placeDto);
 
     return PlaceResponses.map(mapDtoResponseToPlace).toList();
   }

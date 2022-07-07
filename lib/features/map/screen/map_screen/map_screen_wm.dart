@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/app/di/app_scope.dart';
 import 'package:kartograph/features/map/screen/map_screen/map_screen.dart';
 import 'package:kartograph/features/map/screen/map_screen/map_screen_model.dart';
@@ -9,19 +10,21 @@ import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:kartograph/features/map/utils/mapSettings.dart';
 import 'package:kartograph/features/map/widgets/marker.dart';
-import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
+import 'package:kartograph/features/navigation/utils/navigation_helper.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
-import 'package:routemaster/routemaster.dart';
 
 /// Builder for [MapWidgetModel]
 MapWidgetModel mapWidgetModelFactory(BuildContext context) {
-  return MapWidgetModel(MapModel(
-    MapBloc(
-      context.read<IAppScope>().repository,
+  return MapWidgetModel(
+    MapModel(
+      MapBloc(
+        context.read<IAppScope>().repository,
         context.read<IAppScope>().lastCordsStorage,
+      ),
     ),
-  ));
+    context.read<IAppScope>().navigationHelper,
+  );
 }
 
 /// WidgetModel for [MapScreen]
@@ -29,6 +32,8 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     implements IMapWidgetModel {
   final StateNotifier<List<Marker>> _placesListState =
       StateNotifier<List<Marker>>();
+
+  final NavigationHelper _navigationHelper;
 
   late final MapController _controller;
 
@@ -41,7 +46,10 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   late StreamSubscription _blocSubscription;
 
   /// standard consctructor for elem
-  MapWidgetModel(MapModel model) : super(model);
+  MapWidgetModel(
+    MapModel model,
+    this._navigationHelper,
+  ) : super(model);
 
   @override
   void initWidgetModel() {
@@ -71,10 +79,16 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   @override
   void addPlace() {
-    Routemaster.of(context).push(AppRoutePaths.mapAdding, queryParameters: {
-      'lat': _controller.center.latitude.toString(),
-      'lng': _controller.center.longitude.toString(),
-    });
+    _navigationHelper.moveToMapAddingScreen(
+      _controller.center.latitude,
+      _controller.center.longitude,
+      context,
+    );
+  }
+
+  @override
+  String getMapUrl() {
+    return ProjectStrings.getUrl();
   }
 
   void _updateState(BaseMapState state) {
@@ -89,7 +103,10 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
             width: ProjectMapSettings.markersWidth,
             height: ProjectMapSettings.markersHeight,
             point: LatLng(place.lat, place.lng),
-            builder: (_) => TransferMarker(place: place),
+            builder: (_) => TransferMarker(
+              place: place,
+              onTap: _navigationHelper.moveToPlaceDetailScreen,
+            ),
           ),
         );
       }
@@ -118,4 +135,7 @@ abstract class IMapWidgetModel extends IWidgetModel {
 
   /// переходит на экран добавления места
   void addPlace();
+
+  /// получение url карты
+  String getMapUrl();
 }

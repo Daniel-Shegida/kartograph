@@ -8,6 +8,7 @@ import 'package:kartograph/config/app_config.dart';
 import 'package:kartograph/config/environment/environment.dart';
 import 'package:kartograph/config/get_storage_proiver.dart';
 import 'package:kartograph/features/map/service/storage/last_cords_storage.dart';
+import 'package:kartograph/features/navigation/utils/navigation_helper.dart';
 import 'package:kartograph/util/default_error_handler.dart';
 
 /// Scope of dependencies which need through all app's life.
@@ -16,7 +17,8 @@ class AppScope implements IAppScope {
   late final ErrorHandler _errorHandler;
   late final VoidCallback _applicationRebuilder;
   late final PlaceRepository _repository;
-  late final _getStorageProvider = GetStorageProvider();
+  late final NavigationHelper _navigationHelper;
+  late final GetStorageProvider _getStorageProvider;
 
   // Storages
   late final LastCordsStorage _lastCordsStorage;
@@ -34,6 +36,9 @@ class AppScope implements IAppScope {
   PlaceRepository get repository => _repository;
 
   @override
+  NavigationHelper get navigationHelper => _navigationHelper;
+
+  @override
   LastCordsStorage get lastCordsStorage => _lastCordsStorage;
 
   /// Create an instance [AppScope].
@@ -46,6 +51,8 @@ class AppScope implements IAppScope {
     _dio = _initDio(additionalInterceptors);
     _errorHandler = DefaultErrorHandler();
     _repository = _initRep(_dio);
+    _navigationHelper = NavigationHelper();
+    _getStorageProvider = GetStorageProvider();
     _initStorages();
   }
 
@@ -114,6 +121,9 @@ abstract class IAppScope {
 
   /// репозиторий, получающий все места в приложении.
   PlaceRepository get repository;
+
+  /// Модель унифицирующая навигацию между экранами
+  NavigationHelper get navigationHelper;
 
   /// Хранилище координат
   LastCordsStorage get lastCordsStorage;

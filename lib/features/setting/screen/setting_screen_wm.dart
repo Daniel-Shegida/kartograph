@@ -51,17 +51,16 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
   void _showDialogOfUnready() {
     showDialog<String>(
       context: context,
-      builder: (context) =>
-          AlertDialog(
-            title: const Text('Еще в производстве'),
-            content: const Text('будет скоро'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text('Еще в производстве'),
+        content: const Text('будет скоро'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
           ),
+        ],
+      ),
     );
   }
 }
