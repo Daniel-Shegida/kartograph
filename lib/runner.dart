@@ -6,7 +6,6 @@ import 'package:kartograph/features/app/app.dart';
 import 'package:kartograph/util/crashlytics_strategy.dart';
 import 'package:surf_logger/surf_logger.dart';
 
-
 /// App launch.
 Future<void> run() async {
   /// It must be called so that the orientation does not fall.

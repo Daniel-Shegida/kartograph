@@ -1,5 +1,3 @@
-
-
 import 'package:kartograph/config/app_config.dart';
 import 'package:kartograph/config/environment/environment.dart';
 

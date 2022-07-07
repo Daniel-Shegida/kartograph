@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:kartograph/config/environment/build_types.dart';
 
-
-
 /// Environment configuration.
 class Environment<T> implements Listenable {
   static Environment? _instance;
