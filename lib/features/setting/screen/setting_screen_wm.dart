@@ -1,8 +1,10 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:kartograph/features/app/di/theme_provider.dart';
 import 'package:kartograph/features/setting/domain/themes.dart';
 import 'package:kartograph/features/setting/screen/setting_screen.dart';
 import 'package:kartograph/features/setting/screen/setting_screen_model.dart';
+import 'package:provider/provider.dart';
 
 /// Builder for [SettingWidgetModel]
 SettingWidgetModel settingWidgetModelFactory(BuildContext context) {
@@ -15,6 +17,8 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
     implements ISettingWidgetModel {
   final _themeNotifier = StateNotifier<Themes>();
 
+  late final void Function(Themes currentTheme) _changeTheme;
+
   @override
   StateNotifier<Themes> get themeNotifier => _themeNotifier;
 
@@ -24,6 +28,7 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
   @override
   void initWidgetModel() {
     _themeNotifier.accept(Themes.light);
+    _changeTheme = Provider.of<ThemeProvider>(context).changeThemeMode;
     super.initWidgetModel();
   }
 
@@ -36,10 +41,11 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
   void onChangedTheme(bool switchFlag) {
     if (switchFlag) {
       _themeNotifier.accept(Themes.dark);
-      _showDialogOfUnready();
+      _changeTheme(Themes.dark);
     } else {
       _themeNotifier.accept(Themes.light);
-      _showDialogOfUnready();
+      _changeTheme(Themes.light);
+
     }
   }
 
@@ -51,17 +57,16 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
   void _showDialogOfUnready() {
     showDialog<String>(
       context: context,
-      builder: (context) =>
-          AlertDialog(
-            title: const Text('Еще в производстве'),
-            content: const Text('будет скоро'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text('Еще в производстве'),
+        content: const Text('будет скоро'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
           ),
+        ],
+      ),
     );
   }
 }
