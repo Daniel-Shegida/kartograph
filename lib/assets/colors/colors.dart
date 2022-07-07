@@ -16,9 +16,8 @@ abstract class ProjectColors {
   static const Color green = _green;
   static const Color mapScreenHelper = _lightGrey;
 
-
-
   static const Color searchColor = _lightGrey;
+
 // Main palette (https://www.figma.com/file/Bzz1tcNFWc28YHlm2CRmbd/дизайн-ver-0.1?node-id=237%3A1514).
 
   static const Color _oxfordBlue = Color(0xFF263238);

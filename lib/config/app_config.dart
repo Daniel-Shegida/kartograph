@@ -1,5 +1,3 @@
-
-
 import 'package:kartograph/config/debug_options.dart';
 
 /// Настройки приложения.

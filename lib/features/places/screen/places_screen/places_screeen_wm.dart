@@ -3,7 +3,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:kartograph/api/domain/place.dart';
 import 'package:kartograph/features/app/di/app_scope.dart';
-import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
+import 'package:kartograph/features/navigation/utils/navigation_helper.dart';
 import 'package:kartograph/features/places/domain/types_to_show.dart';
 import 'package:kartograph/features/places/screen/places_screen/places_screeen_model.dart';
 import 'package:kartograph/features/places/screen/places_screen/places_screen.dart';
@@ -11,7 +11,6 @@ import 'package:kartograph/features/places/service/bloc/place_bloc.dart';
 import 'package:kartograph/features/places/service/bloc/place_state.dart';
 import 'package:kartograph/features/places/widgets/places_choise_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:routemaster/routemaster.dart';
 
 /// Factory for [PlacesWidgetModel]
 PlacesWidgetModel placesWidgetModelFactory(BuildContext context) {
@@ -21,6 +20,7 @@ PlacesWidgetModel placesWidgetModelFactory(BuildContext context) {
         context.read<IAppScope>().repository,
       ),
     ),
+    context.read<IAppScope>().navigationHelper,
   );
 }
 
@@ -28,6 +28,8 @@ PlacesWidgetModel placesWidgetModelFactory(BuildContext context) {
 class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
     with SingleTickerProviderWidgetModelMixin
     implements IPlacesWidgetModel {
+  late final NavigationHelper _navigationHepper;
+
   final _controller = TextEditingController();
 
   final EntityStateNotifier<List<Place>> _placesListState =
@@ -47,7 +49,10 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   late StreamSubscription _blocSubscription;
 
   /// standard consctructor for elem
-  PlacesWidgetModel(PlacesModel model) : super(model);
+  PlacesWidgetModel(
+    PlacesModel model,
+    this._navigationHepper,
+  ) : super(model);
 
   @override
   void initWidgetModel() {
@@ -86,16 +91,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
 
   @override
   void navigateToPlaceDetails(Place place) {
-    Routemaster.of(context).push(
-      '${AppRoutePaths.changingPlaceScreen}${place.id}',
-      queryParameters: {
-        'category': place.placeType.name,
-        'name': place.name,
-        'description': place.description,
-        'lat': place.lat.toString(),
-        'lng': place.lng.toString(),
-      },
-    );
+    _navigationHepper.moveToPlaceDetailScreen(place, context);
   }
 
   void _updateState(BasePlaceState state) {

@@ -5,7 +5,6 @@ import 'package:kartograph/features/map/service/map_state.dart';
 
 /// модель SpecialWidgetModel
 class MapAddingModel extends ElementaryModel {
-
   /// блок работающий с состояниями карты.
   final MapBloc _mapBloc;
 

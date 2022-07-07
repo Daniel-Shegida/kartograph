@@ -53,11 +53,11 @@ class PlaceDto {
 
 /// функция трансформирующая ответ с сервера под конкретную реализацию места
 Place mapDtoResponseToPlace(PlaceDto response) => Place(
-  id: response.id,
-  lat: response.lat,
-  lng: response.lng,
-  name: response.name,
-  urls: response.urls,
-  placeType: Categories.values.byName(response.placeType),
-  description: response.description,
-);
+      id: response.id,
+      lat: response.lat,
+      lng: response.lng,
+      name: response.name,
+      urls: response.urls,
+      placeType: Categories.values.byName(response.placeType),
+      description: response.description,
+    );
