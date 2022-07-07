@@ -45,7 +45,6 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
     } else {
       _themeNotifier.accept(Themes.light);
       _changeTheme(Themes.light);
-
     }
   }
 
