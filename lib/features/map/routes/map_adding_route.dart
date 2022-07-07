@@ -6,6 +6,7 @@ import 'package:latlng/latlng.dart';
 class MapAddingScreenRoute extends MaterialPage<MapAddingScreen> {
   /// широта отображаемая при переходе на экран
   final double lat;
+
   /// долгота отображаемая при переходе на экран
   final double lng;
 
@@ -14,7 +15,11 @@ class MapAddingScreenRoute extends MaterialPage<MapAddingScreen> {
     required this.lat,
     required this.lng,
   }) : super(
-
-            child: MapAddingScreen(coordinates: LatLng(lat, lng,),),
+          child: MapAddingScreen(
+            coordinates: LatLng(
+              lat,
+              lng,
+            ),
+          ),
         );
 }

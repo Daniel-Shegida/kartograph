@@ -20,7 +20,7 @@ MapWidgetModel mapWidgetModelFactory(BuildContext context) {
   return MapWidgetModel(MapModel(
     MapBloc(
       context.read<IAppScope>().repository,
-        context.read<IAppScope>().lastCordsStorage,
+      context.read<IAppScope>().lastCordsStorage,
     ),
   ));
 }

@@ -7,14 +7,19 @@ import 'package:kartograph/features/places/screen/place_detail_screen/place_deta
 class PlaceAddScreenRoute extends MaterialPage<PlaceDetailScreen> {
   /// передоваемая категория на экран создания места
   final String category;
+
   /// передовай id на экран создания места
   final int? id;
+
   /// передоваемое имя на экран создания места
   final String? name;
+
   /// передоваемое описание на экран создания места
   final String? description;
+
   /// передоваемая широта на экран создания места
   final double? lat;
+
   /// передоваемая долгота на экран создания места
   final double? lng;
 
@@ -38,6 +43,4 @@ class PlaceAddScreenRoute extends MaterialPage<PlaceDetailScreen> {
             ),
           ),
         );
-
-// child: constonst PlaceAddingScreen(),
 }

@@ -2,8 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:kartograph/api/domain/place.dart';
 
 /// Базовое состояние места.
-abstract class BasePlaceState extends Equatable{
-
+abstract class BasePlaceState extends Equatable {
   @override
   List<Object?> get props => [];
 }
