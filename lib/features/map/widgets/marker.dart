@@ -1,47 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:kartograph/api/domain/place.dart';
+import 'package:kartograph/assets/enums/categories.dart';
 
 /// виджет маркера на карте
-class Marker extends StatelessWidget {
-  /// горизонтальная позиция маркера
-  final double leftPos;
-
-  /// вертикальная позиция маркера
-  final double topPos;
-
+class TransferMarker extends StatelessWidget {
   /// иконка маркера
-  final IconData iconData;
+  final Place place;
 
-  /// цвет маркера
-  final Color color;
+  /// функция перехода на экран подробностей места
+  final void Function(Place place, BuildContext context) onTap;
 
-  /// цвет маркера
-  final VoidCallback onPressed;
-
-  /// конструктор [Marker]
-  const Marker({
-    required this.leftPos,
-    required this.topPos,
-    required this.iconData,
-    required this.color,
-    required this.onPressed,
+  /// конструктор [TransferMarker]
+  const TransferMarker({
+    required this.place,
+    required this.onTap,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      left: leftPos - 24,
-      top: topPos - 24,
-      width: 48,
-      height: 48,
-      child: GestureDetector(
-        child: Icon(
-          iconData,
-          color: color,
-          size: 48,
-        ),
-        onTap: onPressed,
+    return GestureDetector(
+      child: Icon(
+        place.placeType.categoryIcon,
+        color: place.placeType.categoryColor,
+        size: 48,
       ),
+      onTap: () {
+        if (place.placeType != Categories.newPlace) {
+          onTap(place, context);
+        }
+      },
     );
   }
 }

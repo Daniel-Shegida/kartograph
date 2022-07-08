@@ -23,11 +23,11 @@ abstract class ProjectStrings {
 
   /// Сайт откуда берется карта.
   static const String mapSite =
-      'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/';
+      'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}@2x?access_token=';
 
   /// Персональный токен.
   static const String mapToken =
-      '?access_token=pk.eyJ1IjoidGVzdGVyLWRvbm8iLCJhIjoiY2wzbG1idXVuMW9jZzNkcXdnNGZwN2NlOSJ9.LGGfGe5NuuAyD-FFepK47g';
+      'pk.eyJ1IjoidGVzdGVyLWRvbm8iLCJhIjoiY2wzbG1idXVuMW9jZzNkcXdnNGZwN2NlOSJ9.LGGfGe5NuuAyD-FFepK47g';
 
   /// PlacesScreen название фильтра.
   static const String filter = 'фильтр';
@@ -106,7 +106,7 @@ abstract class ProjectStrings {
       'потяните карту чтобы выбрать правильное местоположение';
 
   /// Метод возвращающий url.
-  static String getUrl(int x, int y, int z) {
-    return '${ProjectStrings.mapSite}$z/$x/$y${ProjectStrings.mapToken}';
+  static String getUrl() {
+    return '${ProjectStrings.mapSite}${ProjectStrings.mapToken}';
   }
 }

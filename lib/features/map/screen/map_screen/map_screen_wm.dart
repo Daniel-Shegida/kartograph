@@ -1,61 +1,59 @@
 import 'dart:async';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:kartograph/api/domain/place.dart';
-import 'package:kartograph/config/app_config.dart';
-import 'package:kartograph/config/environment/environment.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/app/di/app_scope.dart';
 import 'package:kartograph/features/map/screen/map_screen/map_screen.dart';
 import 'package:kartograph/features/map/screen/map_screen/map_screen_model.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
-import 'package:kartograph/features/navigation/domain/entity/app_route_paths.dart';
-import 'package:latlng/latlng.dart';
-import 'package:map/map.dart';
+import 'package:kartograph/features/map/utils/mapSettings.dart';
+import 'package:kartograph/features/map/widgets/marker.dart';
+import 'package:kartograph/features/navigation/utils/navigation_helper.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
-import 'package:routemaster/routemaster.dart';
 
 /// Builder for [MapWidgetModel]
 MapWidgetModel mapWidgetModelFactory(BuildContext context) {
-  return MapWidgetModel(MapModel(
-    MapBloc(
-      context.read<IAppScope>().repository,
-      context.read<IAppScope>().lastCordsStorage,
+  return MapWidgetModel(
+    MapModel(
+      MapBloc(
+        context.read<IAppScope>().repository,
+        context.read<IAppScope>().lastCordsStorage,
+      ),
     ),
-  ));
+    context.read<IAppScope>().navigationHelper,
+  );
 }
 
 /// WidgetModel for [MapScreen]
 class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     implements IMapWidgetModel {
-  final _controller = MapController(
-    location: LatLng(
-      Environment<AppConfig>.instance().config.lat,
-      Environment<AppConfig>.instance().config.lng,
-    ),
-  );
+  final StateNotifier<List<Marker>> _placesListState =
+      StateNotifier<List<Marker>>();
 
-  final StateNotifier<List<Place>> _placesListState =
-      StateNotifier<List<Place>>();
+  final NavigationHelper _navigationHelper;
 
-  /// controller for map
+  late final MapController _controller;
+
   @override
   MapController get controller => _controller;
 
   @override
-  StateNotifier<List<Place>> get placesListState => _placesListState;
-
-  late Offset? _dragStart;
+  StateNotifier<List<Marker>> get placesListState => _placesListState;
 
   late StreamSubscription _blocSubscription;
 
-  double _scaleStart = 1.0;
-
   /// standard consctructor for elem
-  MapWidgetModel(MapModel model) : super(model);
+  MapWidgetModel(
+    MapModel model,
+    this._navigationHelper,
+  ) : super(model);
 
   @override
   void initWidgetModel() {
+    _controller = MapController();
     _blocSubscription = model.mapStateStream.listen(_updateState);
     model.getCurrentLocation();
     _placesListState.accept([]);
@@ -70,45 +68,6 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   }
 
   @override
-  void onScaleStart(ScaleStartDetails details) {
-    _dragStart = details.focalPoint;
-    _scaleStart = 1.0;
-  }
-
-  @override
-  void onDoubleTap() {
-    _controller.zoom += 0.5;
-  }
-
-  @override
-  void gotoDefault() {
-    _controller.center = LatLng(
-      Environment<AppConfig>.instance().config.lat,
-      Environment<AppConfig>.instance().config.lng,
-    );
-  }
-
-  @override
-  void onScaleUpdate(ScaleUpdateDetails details) {
-    final scaleDiff = details.scale - _scaleStart;
-    _scaleStart = details.scale;
-
-    if (scaleDiff > 0) {
-      _controller.zoom += 0.02;
-    } else if (scaleDiff < 0) {
-      _controller.zoom -= 0.02;
-    } else {
-      final now = details.focalPoint;
-      final diff = now - _dragStart!;
-      _dragStart = now;
-      _controller.drag(diff.dx, diff.dy);
-    }
-  }
-
-  @override
-  void onTap(TapUpDetails details, MapTransformer transformer) {}
-
-  @override
   void getCurrentLocation() {
     model.getCurrentLocation();
   }
@@ -120,18 +79,38 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   @override
   void addPlace() {
-    Routemaster.of(context).push(AppRoutePaths.mapAdding, queryParameters: {
-      'lat': _controller.center.latitude.toString(),
-      'lng': _controller.center.longitude.toString(),
-    });
+    _navigationHelper.moveToMapAddingScreen(
+      _controller.center.latitude,
+      _controller.center.longitude,
+      context,
+    );
+  }
+
+  @override
+  String getMapUrl() {
+    return ProjectStrings.getUrl();
   }
 
   void _updateState(BaseMapState state) {
     if (state is MapContentState) {
-      controller.center = state.currentLocation;
+      controller.move(state.currentLocation, controller.zoom);
     }
     if (state is MapPlacesContentState) {
-      _placesListState.accept(state.list);
+      final placesList = <Marker>[];
+      for (final place in state.list) {
+        placesList.add(
+          Marker(
+            width: ProjectMapSettings.markersWidth,
+            height: ProjectMapSettings.markersHeight,
+            point: LatLng(place.lat, place.lng),
+            builder: (_) => TransferMarker(
+              place: place,
+              onTap: _navigationHelper.moveToPlaceDetailScreen,
+            ),
+          ),
+        );
+      }
+      _placesListState.accept(placesList);
     }
   }
 
@@ -142,26 +121,11 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
 /// Interface of [MapWidgetModel].
 abstract class IMapWidgetModel extends IWidgetModel {
-  /// Text editing controller Main Screen.
+  /// Контроллер для карты.
   MapController get controller;
 
   /// показываемые темы
-  StateNotifier<List<Place>> get placesListState;
-
-  /// action to go back tp detail
-  void gotoDefault();
-
-  /// action for DoubleTap
-  void onDoubleTap();
-
-  /// action for starting scale
-  void onScaleStart(ScaleStartDetails details);
-
-  /// action for changing scale
-  void onScaleUpdate(ScaleUpdateDetails details);
-
-  /// action for changing scale
-  void onTap(TapUpDetails details, MapTransformer transformer);
+  StateNotifier<List<Marker>> get placesListState;
 
   /// action to go back to current location
   void getCurrentLocation();
@@ -171,4 +135,7 @@ abstract class IMapWidgetModel extends IWidgetModel {
 
   /// переходит на экран добавления места
   void addPlace();
+
+  /// получение url карты
+  String getMapUrl();
 }

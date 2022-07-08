@@ -5,7 +5,7 @@ import 'package:kartograph/config/coordinates.dart';
 import 'package:kartograph/features/map/service/map_event.dart';
 import 'package:kartograph/features/map/service/map_state.dart';
 import 'package:kartograph/features/map/service/storage/last_cords_storage.dart';
-import 'package:latlng/latlng.dart';
+import 'package:latlong2/latlong.dart';
 
 /// максимаотный ралиус, который поддерживается при запросе на сервер
 const double maxRadius = 3000000;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kartograph/features/map/screen/map_adding_screen/map_adding_screen.dart';
-import 'package:latlng/latlng.dart';
+import 'package:latlong2/latlong.dart';
 
 /// Роут экрана [MapAddingScreen]
 class MapAddingScreenRoute extends MaterialPage<MapAddingScreen> {

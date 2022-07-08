@@ -5,12 +5,12 @@ import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/config/app_config.dart';
 import 'package:kartograph/config/environment/environment.dart';
 import 'package:kartograph/features/app/di/app_scope.dart';
-import 'package:kartograph/features/map/screen/map_adding_screen/map_adding_screen.dart';
+import 'package:kartograph/features/navigation/utils/navigation_helper.dart';
 import 'package:kartograph/features/places/domain/entity_place.dart';
 import 'package:kartograph/features/places/screen/place_detail_screen/place_detail_screen.dart';
 import 'package:kartograph/features/places/screen/place_detail_screen/place_detail_model.dart';
 import 'package:kartograph/features/places/service/bloc/place_bloc.dart';
-import 'package:latlng/latlng.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -25,6 +25,7 @@ PlaceDetailWidgetModel Function(BuildContext context)
         ),
       ),
       place,
+      context.read<IAppScope>().navigationHelper,
     );
   };
 }
@@ -68,6 +69,8 @@ class PlaceDetailWidgetModel
     );
   }).toList();
 
+  final NavigationHelper _navigationHelper;
+
   @override
   TextEditingController get nameController => _nameController;
 
@@ -105,8 +108,11 @@ class PlaceDetailWidgetModel
   bool get isChange => _isChange;
 
   /// standard consctructor for elem
-  PlaceDetailWidgetModel(PlaceDetailModel model, this.entityPlace)
-      : super(model);
+  PlaceDetailWidgetModel(
+    PlaceDetailModel model,
+    this.entityPlace,
+    this._navigationHelper,
+  ) : super(model);
 
   @override
   void initWidgetModel() {
@@ -143,18 +149,12 @@ class PlaceDetailWidgetModel
   @override
   Future<void> moveToMap() async {
     // ignore: omit_local_variable_types
-    final LatLng? result = await Navigator.push(
+    final LatLng? result = await _navigationHelper.getCordsFromMapAddingScreen(
+      double.tryParse(_latController.text) ??
+          Environment<AppConfig>.instance().config.lat,
+      double.tryParse(_lonController.text) ??
+          Environment<AppConfig>.instance().config.lng,
       context,
-      MaterialPageRoute(
-        builder: (context) => MapAddingScreen(
-          coordinates: LatLng(
-            double.tryParse(_latController.text) ??
-                Environment<AppConfig>.instance().config.lat,
-            double.tryParse(_lonController.text) ??
-                Environment<AppConfig>.instance().config.lng,
-          ),
-        ),
-      ),
     );
     if (result != null) {
       _latController.text = result.latitude.toString();

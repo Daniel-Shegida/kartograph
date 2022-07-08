@@ -1,5 +1,5 @@
 import 'package:get_storage/get_storage.dart';
-import 'package:latlng/latlng.dart';
+import 'package:latlong2/latlong.dart';
 
 /// Хранилище информации о пользователе
 class LastCordsStorage {

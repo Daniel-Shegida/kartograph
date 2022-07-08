@@ -1,5 +1,5 @@
 import 'package:kartograph/api/domain/place.dart';
-import 'package:latlng/latlng.dart';
+import 'package:latlong2/latlong.dart';
 
 /// Base state for profile.
 abstract class BaseMapState {}
