@@ -6,6 +6,9 @@ import 'package:kartograph/features/setting/screen/setting_screen.dart';
 import 'package:kartograph/features/setting/screen/setting_screen_model.dart';
 import 'package:provider/provider.dart';
 
+/// typedef функции смены темы
+typedef ChangeTheme = void Function(Themes currentTheme);
+
 /// Builder for [SettingWidgetModel]
 SettingWidgetModel settingWidgetModelFactory(BuildContext context) {
   return SettingWidgetModel(SettingModel());
@@ -17,7 +20,7 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
     implements ISettingWidgetModel {
   final _themeNotifier = StateNotifier<Themes>();
 
-  late final void Function(Themes currentTheme) _changeTheme;
+  late final ChangeTheme _changeTheme;
 
   @override
   StateNotifier<Themes> get themeNotifier => _themeNotifier;
