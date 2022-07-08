@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/config/app_config.dart';
 import 'package:kartograph/config/debug_options.dart';
 import 'package:kartograph/config/environment/environment.dart';
@@ -62,7 +63,9 @@ class _AppState extends State<App> {
             routerDelegate: RoutemasterDelegate(routesBuilder: (_) => routes),
 
             theme: ThemeData.light(),
-            darkTheme: ThemeData.dark(),
+            darkTheme: ThemeData.dark().copyWith(
+              backgroundColor: ProjectColors.mainDarkTheme,
+            ),
             themeMode: themeProvider.themeMode,
           );
         },
