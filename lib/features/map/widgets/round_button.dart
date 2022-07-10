@@ -26,7 +26,7 @@ class RoundButton extends StatelessWidget {
           color: ProjectColors.textColorPrimary,
         ),
         shape: const CircleBorder(),
-        color: ProjectColors.white,
+        color: Theme.of(context).backgroundColor,
       ),
     );
   }

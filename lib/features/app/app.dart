@@ -62,10 +62,19 @@ class _AppState extends State<App> {
             routeInformationParser: const RoutemasterParser(),
             routerDelegate: RoutemasterDelegate(routesBuilder: (_) => routes),
 
-            theme: ThemeData.light(),
-            darkTheme: ThemeData.dark().copyWith(
-              backgroundColor: ProjectColors.mainDarkTheme,
+            theme: ThemeData.light(
             ),
+            darkTheme:
+            // ThemeData.dark().copyWith(
+            //   // primaryColor: ProjectColors.mainDarkTheme,
+            //   primaryColor: Colors.blue,
+            //   backgroundColor: Colors.blue,
+            // ),
+            // ThemeData(
+            //   backgroundColor: Colors.blue,
+            //   primarySwatch: Colors.blue,
+            // ),
+            dark,
             themeMode: themeProvider.themeMode,
           );
         },
@@ -92,3 +101,22 @@ const _localizationsDelegates = [
   GlobalWidgetsLocalizations.delegate,
   GlobalCupertinoLocalizations.delegate,
 ];
+
+ThemeData dark = ThemeData(
+  // textSelectionTheme: TextSelectionThemeData(
+  //   color: Colors.red
+  // ),
+  primaryColorDark: Colors.amber,
+  hintColor: Colors.red,
+  brightness: Brightness.dark,
+  backgroundColor: Colors.blue,
+    scaffoldBackgroundColor: const Color(0xFFEF0FEF),
+  cardColor: const Color(0xFFEF0FEF),
+  primaryIconTheme: IconThemeData(
+    color: Colors.white,
+  ),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: const Color(0xFFEF0FEF),
+
+  ),
+);

@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 
 abstract class ProjectColors {
   static const Color mainLightTheme = _greyBlue;
-  static const Color mainDarkTheme = _blackBlue;
+  static const Color mainDarkTheme = _lightGrey;
+  // static const Color mainDarkTheme = _blackBlue;
   static const Color mainGreenColor = _green;
   static const Color white = _white;
   static const Color textColorSecondary = _darkGrey;
