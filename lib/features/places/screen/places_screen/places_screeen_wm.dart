@@ -44,7 +44,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   TextEditingController get controller => _controller;
 
   @override
-  EntityStateNotifier<List<Place>> get placesListState => _placesListState;
+  ListenableState<EntityState<List<Place>>> get placesListState => _placesListState;
 
   late StreamSubscription _blocSubscription;
 
@@ -57,7 +57,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   @override
   void initWidgetModel() {
     _blocSubscription = model.placeStateStream.listen(_updateState);
-    placesListState.loading();
+    _placesListState.loading();
     controller.addListener(_searchPlace);
     _checkBoxNotifier.accept(PlaceFiltersList.init());
     for (final e in _checkBoxNotifier.value!.listCategoriesToShow) {
@@ -127,7 +127,7 @@ abstract class IPlacesWidgetModel extends IWidgetModel {
   TextEditingController get controller;
 
   /// показываемые темы
-  EntityStateNotifier<List<Place>> get placesListState;
+  ListenableState<EntityState<List<Place>>> get placesListState;
 
   /// action of dialog
   void showPicker();

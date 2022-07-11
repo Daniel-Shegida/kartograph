@@ -84,25 +84,25 @@ class PlaceDetailWidgetModel
   TextEditingController get lonController => _lonController;
 
   @override
-  StateNotifier<bool> get describeState => _describeState;
+  ListenableState<bool> get describeState => _describeState;
 
   @override
-  StateNotifier<bool> get latState => _latState;
+  ListenableState<bool> get latState => _latState;
 
   @override
-  StateNotifier<bool> get lonState => _lonState;
+  ListenableState<bool> get lonState => _lonState;
 
   @override
-  StateNotifier<bool> get readyState => _readyState;
+  ListenableState<bool> get readyState => _readyState;
 
   @override
-  StateNotifier<bool> get nameState => _nameState;
+  ListenableState<bool> get nameState => _nameState;
 
   @override
   List<DropdownMenuItem<Categories>> get choises => _choises;
 
   @override
-  StateNotifier<Categories> get categoriesState => _categoriesState;
+  ListenableState<Categories> get categoriesState => _categoriesState;
 
   @override
   bool get isChange => _isChange;
@@ -276,22 +276,22 @@ class PlaceDetailWidgetModel
 /// Interface of [PlaceDetailWidgetModel].
 abstract class IPlaceDetailWidgetModel extends IWidgetModel {
   /// состояния поля имени
-  StateNotifier<bool> get nameState;
+  ListenableState<bool> get nameState;
 
   /// состояния поля описания
-  StateNotifier<bool> get describeState;
+  ListenableState<bool> get describeState;
 
   /// состояния поля широты
-  StateNotifier<bool> get latState;
+  ListenableState<bool> get latState;
 
   /// состояния поля долготы
-  StateNotifier<bool> get lonState;
+  ListenableState<bool> get lonState;
 
   /// состояния кнопки
-  StateNotifier<bool> get readyState;
+  ListenableState<bool> get readyState;
 
   /// выбронный тип места
-  StateNotifier<Categories> get categoriesState;
+  ListenableState<Categories> get categoriesState;
 
   ///  контроллер поля имени
   TextEditingController get nameController;

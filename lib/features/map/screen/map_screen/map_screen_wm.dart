@@ -41,7 +41,7 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   MapController get controller => _controller;
 
   @override
-  StateNotifier<List<Marker>> get placesListState => _placesListState;
+  ListenableState<List<Marker>> get placesListState => _placesListState;
 
   late StreamSubscription _blocSubscription;
 
@@ -125,7 +125,7 @@ abstract class IMapWidgetModel extends IWidgetModel {
   MapController get controller;
 
   /// показываемые темы
-  StateNotifier<List<Marker>> get placesListState;
+  ListenableState<List<Marker>> get placesListState;
 
   /// action to go back to current location
   void getCurrentLocation();

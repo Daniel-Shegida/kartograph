@@ -23,7 +23,7 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
   late final ChangeTheme _changeTheme;
 
   @override
-  StateNotifier<Themes> get themeNotifier => _themeNotifier;
+  ListenableState<Themes> get themeNotifier => _themeNotifier;
 
   /// standard consctructor for elem
   SettingWidgetModel(SettingModel model) : super(model);
@@ -76,7 +76,7 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
 /// Interface of [SettingWidgetModel].
 abstract class ISettingWidgetModel extends IWidgetModel {
   /// уведомитель флага темы
-  StateNotifier<Themes> get themeNotifier;
+  ListenableState<Themes> get themeNotifier;
 
   /// метод свитчера карточки темы
   // ignore: avoid_positional_boolean_parameters
