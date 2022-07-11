@@ -31,7 +31,7 @@ import 'package:kartograph/assets/colors/colors.dart';
 abstract class ProjectTextStyle {
   static const TextStyle _text = TextStyle(
     fontStyle: FontStyle.normal,
-    color: ProjectColors.textColorPrimary,
+    color: ProjectColors.lightTextColorPrimary,
   );
 
 //Light

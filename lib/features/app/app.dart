@@ -62,19 +62,18 @@ class _AppState extends State<App> {
             routeInformationParser: const RoutemasterParser(),
             routerDelegate: RoutemasterDelegate(routesBuilder: (_) => routes),
 
-            theme: ThemeData.light(
-            ),
+            theme: light,
             darkTheme:
-            // ThemeData.dark().copyWith(
-            //   // primaryColor: ProjectColors.mainDarkTheme,
-            //   primaryColor: Colors.blue,
-            //   backgroundColor: Colors.blue,
-            // ),
-            // ThemeData(
-            //   backgroundColor: Colors.blue,
-            //   primarySwatch: Colors.blue,
-            // ),
-            dark,
+                // ThemeData.dark().copyWith(
+                //   // primaryColor: ProjectColors.mainDarkTheme,
+                //   primaryColor: Colors.blue,
+                //   backgroundColor: Colors.blue,
+                // ),
+                // ThemeData(
+                //   backgroundColor: Colors.blue,
+                //   primarySwatch: Colors.blue,
+                // ),
+                dark,
             themeMode: themeProvider.themeMode,
           );
         },
@@ -102,21 +101,92 @@ const _localizationsDelegates = [
   GlobalCupertinoLocalizations.delegate,
 ];
 
-ThemeData dark = ThemeData(
-  // textSelectionTheme: TextSelectionThemeData(
-  //   color: Colors.red
-  // ),
-  primaryColorDark: Colors.amber,
+ThemeData dark = ThemeData.dark().copyWith(
+  focusColor: ProjectColors.darkThemeActiveGreenColor,
+  textTheme: const TextTheme(
+    bodyMedium: TextStyle(
+      color: Colors.white,
+    ),
+    bodySmall: TextStyle(
+      color: ProjectColors.secondary2DarkTheme,
+    ),
+    // labelLarge: TextStyle(
+    //   color: Colors.green,
+    // ),
+    // labelMedium: TextStyle(
+    //   color: Colors.deepOrangeAccent,
+    // ),
+    // labelSmall: TextStyle(
+    //   color: Colors.deepPurple,
+    // ),
+    // headlineMedium: TextStyle(
+    //   color: Colors.cyan,
+    // ),
+    // headlineSmall: TextStyle(
+    //   color: Colors.amber,
+    // ),
+    // headlineLarge: TextStyle(
+    //   color: Colors.red,
+    // ),
+    // bodyLarge: TextStyle(
+    //   color: Colors.white,
+    // ),
+    labelLarge: const TextStyle(color: ProjectColors.white, fontSize: 24),
+    labelMedium:
+        const TextStyle(color: ProjectColors.secondary2DarkTheme, fontSize: 16),
+    labelSmall: const TextStyle(
+        color: ProjectColors.darkThemeActiveGreenColor, fontSize: 16),
+  ),
+  // primaryColor: Colors.black87,
+
+  primaryColorDark: ProjectColors.mainDarkThemeDark,
   hintColor: Colors.red,
   brightness: Brightness.dark,
-  backgroundColor: Colors.blue,
-    scaffoldBackgroundColor: const Color(0xFFEF0FEF),
-  cardColor: const Color(0xFFEF0FEF),
-  primaryIconTheme: IconThemeData(
+  backgroundColor: ProjectColors.secondaryDarkTheme,
+  scaffoldBackgroundColor: ProjectColors.mainDarkTheme,
+  cardColor: ProjectColors.mainDarkTheme,
+
+  primaryIconTheme: const IconThemeData(
     color: Colors.white,
   ),
-  bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: const Color(0xFFEF0FEF),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    backgroundColor: ProjectColors.mainDarkTheme,
+  ),
+);
 
+ThemeData light = ThemeData.light().copyWith(
+  focusColor: ProjectColors.lightThemeActiveGreenColor,
+  textTheme: const TextTheme(
+    bodyLarge: TextStyle(
+      color: ProjectColors.lightTextColorPrimary,
+    ),
+    bodyMedium: TextStyle(
+      color: ProjectColors.lightTextColorPrimary,
+    ),
+    bodySmall: TextStyle(
+      color: ProjectColors.lightTextColorPrimary,
+    ),
+    titleMedium: TextStyle(
+      // color: ProjectColors.lightTextColorPrimary,
+      color: Colors.black,
+    ),
+    labelLarge: const TextStyle(
+        color: ProjectColors.lightTextColorPrimary, fontSize: 24),
+    labelMedium:
+        const TextStyle(color: ProjectColors.secondary2DarkTheme, fontSize: 16),
+    labelSmall: const TextStyle(
+        color: ProjectColors.darkThemeActiveGreenColor, fontSize: 16),
+  ),
+  primaryColor: Colors.black,
+  primaryColorDark: ProjectColors.mainLightThemeDark,
+  brightness: Brightness.light,
+  backgroundColor: ProjectColors.white,
+  scaffoldBackgroundColor: ProjectColors.white,
+  cardColor: ProjectColors.white,
+  primaryIconTheme: const IconThemeData(
+    color: ProjectColors.secondaryDarkTheme,
+  ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    backgroundColor: ProjectColors.white,
   ),
 );

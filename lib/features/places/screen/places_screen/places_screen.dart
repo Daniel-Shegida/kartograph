@@ -92,14 +92,14 @@ class _SearchTextInput extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(_) {
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
           width: double.infinity,
           height: 40,
           decoration: BoxDecoration(
-            color: ProjectColors.searchColor,
+            color: Theme.of(context).primaryColorDark,
             borderRadius: BorderRadius.circular(5),
           ),
           child: Padding(

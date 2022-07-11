@@ -20,35 +20,40 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
   @override
   Widget build(IMapAddingWidgetModel wm) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: Center(
-          child: TextButton(
-            onPressed: wm.pop,
-            child: const Text(
-              ProjectStrings.cancel,
-              style:
-                  TextStyle(color: ProjectColors.textColorGrey, fontSize: 16),
-            ),
-          ),
-        ),
-        leadingWidth: 106,
-        title: const Text(
-          ProjectStrings.location,
-          style: TextStyle(color: ProjectColors.mainLightTheme, fontSize: 24),
-        ),
-        actions: [
-          TextButton(
-            onPressed: wm.create,
-            child: const Text(
-              ProjectStrings.ready,
-              style:
-                  TextStyle(color: ProjectColors.mainGreenColor, fontSize: 16),
-            ),
-          ),
-        ],
+      appBar: addingAppbar(
+        pop: wm.pop,
+        create: wm.create,
       ),
+      // AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   leading: Center(
+      //     child: TextButton(
+      //       onPressed: wm.pop,
+      //       child: const Text(
+      //         ProjectStrings.cancel,
+      //         // style:
+      //         //     TextStyle(color: ProjectColors.textColorGrey, fontSize: 16),
+      //       ),
+      //     ),
+      //   ),
+      //   leadingWidth: 106,
+      //   title: const Text(
+      //     ProjectStrings.location,
+      //     // style:
+      //     // TextStyle(color: ProjectColors.mainLightTheme, fontSize: 24),
+      //   ),
+      //   actions: [
+      //     TextButton(
+      //       onPressed: wm.create,
+      //       child: const Text(
+      //         ProjectStrings.ready,
+      //         // style:
+      //         //     TextStyle(color: ProjectColors.mainGreenColor, fontSize: 16),
+      //       ),
+      //     ),
+      //   ],
+      // ),
       body: StateNotifierBuilder<Marker>(
         listenableState: wm.marker,
         builder: (ctx, value) {
@@ -70,7 +75,7 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
                 widthFactor: 1,
                 child: Container(
                   padding: const EdgeInsets.all(16.0),
-                  color: ProjectColors.mapScreenHelper,
+                  color: Theme.of(ctx).primaryColorDark,
                   child: const Text(
                     ProjectStrings.mapAddHint,
                     textAlign: TextAlign.center,
@@ -116,4 +121,46 @@ class _RoundGeoButton extends StatelessWidget {
       onPressed: onPressed,
     );
   }
+}
+
+class addingAppbar extends StatelessWidget with PreferredSizeWidget {
+  VoidCallback pop;
+  VoidCallback create;
+
+  addingAppbar({required this.pop, required this.create, Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      leading: Center(
+        child: TextButton(
+          onPressed: pop,
+          child: Text(
+            ProjectStrings.cancel,
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+        ),
+      ),
+      leadingWidth: 106,
+      title: Text(
+        ProjectStrings.location,
+        style: Theme.of(context).textTheme.labelLarge,
+      ),
+      actions: [
+        TextButton(
+          onPressed: create,
+          child: Text(
+            ProjectStrings.ready,
+            style: Theme.of(context).textTheme.labelSmall,
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }

@@ -20,27 +20,31 @@ class PlaceDetailScreen extends ElementaryWidget<IPlaceDetailWidgetModel> {
   @override
   Widget build(IPlaceDetailWidgetModel wm) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Center(
-          child: Text(
-            wm.isChange ? ProjectStrings.change : ProjectStrings.newPlace,
-            style: const TextStyle(
-              color: ProjectColors.textColorPrimary,
-              fontSize: 16,
-            ),
-          ),
-        ),
-        leading: TextButton(
-          style: TextButton.styleFrom(
-            primary: ProjectColors.textColorGrey,
-          ),
-          onPressed: wm.pop,
-          child: const Text(ProjectStrings.cancel),
-        ),
-        leadingWidth: 100,
+      appBar: addingAppbar1(
+        pop: wm.pop,
+        isChange: wm.isChange,
       ),
+      // AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   title: Center(
+      //     child: Text(
+      //       wm.isChange ? ProjectStrings.change : ProjectStrings.newPlace,
+      //       style: const TextStyle(
+      //         color: ProjectColors.textColorPrimary,
+      //         fontSize: 16,
+      //       ),
+      //     ),
+      //   ),
+      //   leading: TextButton(
+      //     style: TextButton.styleFrom(
+      //       primary: ProjectColors.textColorGrey,
+      //     ),
+      //     onPressed: wm.pop,
+      //     child: const Text(ProjectStrings.cancel),
+      //   ),
+      //   leadingWidth: 100,
+      // ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.5),
         child: LayoutBuilder(
@@ -101,15 +105,8 @@ class PlaceDetailScreen extends ElementaryWidget<IPlaceDetailWidgetModel> {
                         latController: wm.latController,
                         lonController: wm.lonController,
                       ),
-                      TextButton(
+                      _MoveToMapButton(
                         onPressed: wm.moveToMap,
-                        child: const Text(
-                          ProjectStrings.show,
-                          style: TextStyle(
-                            color: ProjectColors.mainGreenColor,
-                            fontSize: 20,
-                          ),
-                        ),
                       ),
                       Expanded(child: Container()),
                       StateNotifierBuilder<bool>(
@@ -143,7 +140,7 @@ class _PlaceTitles extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       titleText,
-      style: const TextStyle(color: ProjectColors.textColorGrey, fontSize: 16),
+      style: Theme.of(context).textTheme.labelMedium,
       textAlign: TextAlign.start,
     );
   }
@@ -209,6 +206,62 @@ class _CoordsIput extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class addingAppbar1 extends StatelessWidget with PreferredSizeWidget {
+  VoidCallback pop;
+  bool isChange;
+
+  addingAppbar1({required this.pop, required this.isChange, Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: Center(
+        child: Text(
+          isChange ? ProjectStrings.change : ProjectStrings.newPlace,
+          style: Theme.of(context).textTheme.labelLarge!.copyWith(fontSize: 16),
+        ),
+      ),
+      leading: TextButton(
+        // style: TextButton.styleFrom(
+        //   primary: ProjectColors.textColorGrey,
+        // ),
+        onPressed: pop,
+        child: Text(
+          ProjectStrings.cancel,
+          style: Theme.of(context).textTheme.labelMedium,
+        ),
+      ),
+      leadingWidth: 100,
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+}
+
+class _MoveToMapButton extends StatelessWidget {
+  VoidCallback onPressed;
+
+  _MoveToMapButton({required this.onPressed, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Text(
+        ProjectStrings.show,
+        style: TextStyle(
+          color: Theme.of(context).focusColor,
+          fontSize: 20,
+        ),
+      ),
     );
   }
 }

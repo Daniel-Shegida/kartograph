@@ -21,12 +21,7 @@ class SettingScreen extends ElementaryWidget<ISettingWidgetModel> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Center(
-          child: Text(
-            ProjectStrings.settings,
-            style: TextStyle(color: ProjectColors.textColorPrimary),
-          ),
-        ),
+        title: const test1(),
       ),
       body: Column(
         children: [
@@ -98,3 +93,18 @@ class _TutorialWatcherCard extends StatelessWidget {
     );
   }
 }
+
+class test1 extends StatelessWidget {
+  const test1({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        ProjectStrings.settings,
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+    );
+  }
+}
+

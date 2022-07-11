@@ -23,7 +23,7 @@ class RoundButton extends StatelessWidget {
         onPressed: onPressed,
         child: SvgPicture.asset(
           svgPath,
-          color: ProjectColors.textColorPrimary,
+          color: Theme.of(context).iconTheme.color,
         ),
         shape: const CircleBorder(),
         color: Theme.of(context).backgroundColor,
