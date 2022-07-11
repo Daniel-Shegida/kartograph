@@ -31,11 +31,10 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
   @override
   void initWidgetModel() {
     _changeTheme = Provider.of<ThemeProvider>(context).changeThemeMode;
-    if (Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark){
+    if (Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark) {
       _themeNotifier.accept(Themes.dark);
-    }
-    else {
-    _themeNotifier.accept(Themes.light);
+    } else {
+      _themeNotifier.accept(Themes.light);
     }
     super.initWidgetModel();
   }
