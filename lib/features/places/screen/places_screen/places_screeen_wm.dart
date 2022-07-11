@@ -28,7 +28,7 @@ PlacesWidgetModel placesWidgetModelFactory(BuildContext context) {
 class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
     with SingleTickerProviderWidgetModelMixin
     implements IPlacesWidgetModel {
-  late final NavigationHelper _navigationHepper;
+  late final NavigationHelper _navigationHelper;
 
   final _controller = TextEditingController();
 
@@ -52,7 +52,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   /// standard consctructor for elem
   PlacesWidgetModel(
     PlacesModel model,
-    this._navigationHepper,
+    this._navigationHelper,
   ) : super(model);
 
   @override
@@ -92,7 +92,7 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
 
   @override
   void navigateToPlaceDetails(Place place) {
-    _navigationHepper.moveToPlaceDetailScreen(place, context);
+    _navigationHelper.moveToPlaceDetailScreen(place, context);
   }
 
   void _updateState(BasePlaceState state) {
