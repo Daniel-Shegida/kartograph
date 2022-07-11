@@ -44,7 +44,8 @@ class PlacesWidgetModel extends WidgetModel<PlacesScreen, PlacesModel>
   TextEditingController get controller => _controller;
 
   @override
-  ListenableState<EntityState<List<Place>>> get placesListState => _placesListState;
+  ListenableState<EntityState<List<Place>>> get placesListState =>
+      _placesListState;
 
   late StreamSubscription _blocSubscription;
 
