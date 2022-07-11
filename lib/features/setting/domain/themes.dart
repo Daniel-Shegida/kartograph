@@ -13,6 +13,7 @@ enum Themes {
   final String themeName;
 
   /// логическое состояние темы
+  /// передается на свитчер в экране настроек
   final bool condition;
 
   /// Состояние темы для MaterialApp

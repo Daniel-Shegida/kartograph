@@ -48,7 +48,7 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   final NavigationHelper _navigationHelper;
 
   @override
-  StateNotifier<Marker> get marker => _marker;
+  ListenableState<Marker> get marker => _marker;
 
   @override
   MapController get controller => _controller;
@@ -153,7 +153,7 @@ abstract class IMapAddingWidgetModel extends IWidgetModel {
   MapController get controller;
 
   /// Список мест, трансформурющуюсиеся в карту.
-  StateNotifier<Marker> get marker;
+  ListenableState<Marker> get marker;
 
   /// ивень при нажатии на карту
   void onTap(LatLng latLng);

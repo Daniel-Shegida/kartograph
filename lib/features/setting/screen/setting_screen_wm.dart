@@ -30,8 +30,12 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
 
   @override
   void initWidgetModel() {
-    _themeNotifier.accept(Themes.light);
     _changeTheme = Provider.of<ThemeProvider>(context).changeThemeMode;
+    if (Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark) {
+      _themeNotifier.accept(Themes.dark);
+    } else {
+      _themeNotifier.accept(Themes.light);
+    }
     super.initWidgetModel();
   }
 
@@ -76,7 +80,7 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
 /// Interface of [SettingWidgetModel].
 abstract class ISettingWidgetModel extends IWidgetModel {
   /// уведомитель флага темы
-  StateNotifier<Themes> get themeNotifier;
+  ListenableState<Themes> get themeNotifier;
 
   /// метод свитчера карточки темы
   // ignore: avoid_positional_boolean_parameters
