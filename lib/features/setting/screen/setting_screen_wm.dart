@@ -23,15 +23,20 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
   late final ChangeTheme _changeTheme;
 
   @override
-  ListenableState<Themes> get themeNotifier => _themeNotifier;
+  StateNotifier<Themes> get themeNotifier => _themeNotifier;
 
   /// standard consctructor for elem
   SettingWidgetModel(SettingModel model) : super(model);
 
   @override
   void initWidgetModel() {
-    _themeNotifier.accept(Themes.light);
     _changeTheme = Provider.of<ThemeProvider>(context).changeThemeMode;
+    if (Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark){
+      _themeNotifier.accept(Themes.dark);
+    }
+    else {
+    _themeNotifier.accept(Themes.light);
+    }
     super.initWidgetModel();
   }
 
@@ -57,19 +62,21 @@ class SettingWidgetModel extends WidgetModel<SettingScreen, SettingModel>
   }
 
   void _showDialogOfUnready() {
-    showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Еще в производстве'),
-        content: const Text('будет скоро'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
+    // ignore: avoid_print
+    print(themeNotifier.value);
+    // showDialog<String>(
+    //   context: context,
+    //   builder: (context) => AlertDialog(
+    //     title: const Text('Еще в производстве'),
+    //     content: const Text('будет скоро'),
+    //     actions: <Widget>[
+    //       TextButton(
+    //         onPressed: () => Navigator.pop(context),
+    //         child: const Text('OK'),
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 }
 
