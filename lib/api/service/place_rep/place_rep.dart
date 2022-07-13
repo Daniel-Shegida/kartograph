@@ -1,6 +1,7 @@
 import 'package:kartograph/api/domain/place.dart';
 import 'package:kartograph/api/domain/place_dto.dart';
 import 'package:kartograph/api/domain/place_response.dart';
+import 'package:kartograph/api/domain/put_place_response.dart';
 import 'package:kartograph/api/domain/places_filter_request_dto.dart';
 import 'package:kartograph/api/service/place_api/place_api.dart';
 
@@ -12,10 +13,10 @@ class PlaceRepository {
   PlaceRepository(this._placeRepositoryApi);
 
   /// заменяет место на сервере по id
-  Future<Place> putPlace(String placeId, PlaceResponse body) async {
+  Future<Place> putPlace(String placeId, PutPlaceResponse body) async {
     final placeResponse = await _placeRepositoryApi.putPlace(placeId, body);
 
-    return mapResponseToPlace(placeResponse);
+    return mapPutResponseToPlace(placeResponse);
   }
 
   /// создает новое место на сервере
