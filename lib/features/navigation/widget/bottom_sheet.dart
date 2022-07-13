@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 /// bottom that navigate main part of project
@@ -72,9 +70,7 @@ class _BottomIcons extends StatelessWidget {
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       iconAddress,
-      // color: ProjectColors.mainLightTheme,
       color: Theme.of(context).primaryIconTheme.color,
-
     );
   }
 }
