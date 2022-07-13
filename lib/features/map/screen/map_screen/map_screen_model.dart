@@ -22,7 +22,6 @@ class MapModel extends ElementaryModel {
   @override
   void init() {
     super.init();
-    _mapBloc.add(MapGetLocationEvent());
   }
 
   /// Method for update personal data to the [MapBloc].
