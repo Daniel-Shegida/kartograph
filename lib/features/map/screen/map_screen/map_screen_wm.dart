@@ -105,7 +105,7 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
             point: LatLng(place.lat, place.lng),
             builder: (_) => TransferMarker(
               place: place,
-              onTap: _navigationHelper.moveToPlaceDetailScreen,
+              onTap: _navigationHelper.moveToPlaceDetailScreenFromMap,
             ),
           ),
         );
