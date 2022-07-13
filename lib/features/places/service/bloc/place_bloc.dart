@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartograph/api/domain/place_response.dart';
+import 'package:kartograph/api/domain/put_place_response.dart';
 import 'package:kartograph/features/places/service/bloc/place_event.dart';
 import 'package:kartograph/features/places/service/bloc/place_state.dart';
 import 'package:kartograph/api/service/place_rep/place_rep.dart';
@@ -41,8 +42,7 @@ class PlaceBloc extends Bloc<BasePlaceEvent, BasePlaceState> {
     on<PlacePutEvent>((event, emit) async {
       await _rep.putPlace(
         event.place.id.toString(),
-        PlaceResponse(
-          id: event.place.id,
+        PutPlaceResponse(
           name: event.place.name,
           description: event.place.description,
           placeType: event.place.placeType.name,

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:kartograph/api/domain/place_dto.dart';
 import 'package:kartograph/api/domain/place_response.dart';
+import 'package:kartograph/api/domain/put_place_response.dart';
 import 'package:kartograph/api/domain/places_filter_request_dto.dart';
 import 'package:kartograph/assets/strings/urls.dart';
 import 'package:retrofit/retrofit.dart';
@@ -11,7 +12,7 @@ part 'place_api.g.dart';
 @RestApi(baseUrl: baseUrl)
 abstract class PlaceApi {
   /// фабрика для ретрофита
-  factory PlaceApi(Dio dio, {String baseUrl}) = _RestClient;
+  factory PlaceApi(Dio dio, {String baseUrl}) = _PlaceApi;
 
   /// создает новое место на сервере
   @POST(PlaceUrls.place)
@@ -21,9 +22,9 @@ abstract class PlaceApi {
 
   /// заменяет место на сервере по id
   @PUT('${PlaceUrls.place}/{id}')
-  Future<PlaceResponse> putPlace(
+  Future<PutPlaceResponse> putPlace(
     @Path('id') String id,
-    @Body() PlaceResponse body,
+    @Body() PutPlaceResponse body,
   );
 
   /// получает список мест с сервера по фильтру
