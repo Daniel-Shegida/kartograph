@@ -27,7 +27,7 @@ class LockedButton extends StatelessWidget {
       height: 48,
       child: MaterialButton(
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        color: ProjectColors.mainGreenColor,
+        color: Theme.of(context).focusColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -36,7 +36,8 @@ class LockedButton extends StatelessWidget {
           children: [
             Text(
               isChange ? ProjectStrings.change : ProjectStrings.create,
-              style: TextStyle(color: Colors.black, fontSize: 20),
+              style:
+                  Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 20),
             ),
           ],
         ),

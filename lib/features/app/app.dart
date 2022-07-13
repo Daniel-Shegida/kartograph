@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:kartograph/assets/themes/project_themes.dart';
 import 'package:kartograph/config/app_config.dart';
 import 'package:kartograph/config/debug_options.dart';
 import 'package:kartograph/config/environment/environment.dart';
@@ -61,8 +62,8 @@ class _AppState extends State<App> {
             routeInformationParser: const RoutemasterParser(),
             routerDelegate: RoutemasterDelegate(routesBuilder: (_) => routes),
 
-            theme: ThemeData.light(),
-            darkTheme: ThemeData.dark(),
+            theme: ProjectThemes.lightTheme,
+            darkTheme: ProjectThemes.darkTheme,
             themeMode: themeProvider.themeMode,
           );
         },

@@ -1,7 +1,6 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/map/screen/map_adding_screen/map_adding_wm.dart';
@@ -20,34 +19,9 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
   @override
   Widget build(IMapAddingWidgetModel wm) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: Center(
-          child: TextButton(
-            onPressed: wm.pop,
-            child: const Text(
-              ProjectStrings.cancel,
-              style:
-                  TextStyle(color: ProjectColors.textColorGrey, fontSize: 16),
-            ),
-          ),
-        ),
-        leadingWidth: 106,
-        title: const Text(
-          ProjectStrings.location,
-          style: TextStyle(color: ProjectColors.mainLightTheme, fontSize: 24),
-        ),
-        actions: [
-          TextButton(
-            onPressed: wm.create,
-            child: const Text(
-              ProjectStrings.ready,
-              style:
-                  TextStyle(color: ProjectColors.mainGreenColor, fontSize: 16),
-            ),
-          ),
-        ],
+      appBar: _MapAddingAppbar(
+        pop: wm.pop,
+        create: wm.create,
       ),
       body: StateNotifierBuilder<Marker>(
         listenableState: wm.marker,
@@ -70,13 +44,11 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
                 widthFactor: 1,
                 child: Container(
                   padding: const EdgeInsets.all(16.0),
-                  color: ProjectColors.mapScreenHelper,
-                  child: const Text(
+                  color: Theme.of(ctx).primaryColorDark,
+                  child: Text(
                     ProjectStrings.mapAddHint,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
-                    ),
+                    style: Theme.of(ctx).textTheme.bodySmall,
                   ),
                 ),
               ),
@@ -114,6 +86,51 @@ class _RoundGeoButton extends StatelessWidget {
     return RoundButton(
       svgPath: ProjectIcons.geo,
       onPressed: onPressed,
+    );
+  }
+}
+
+// ignore: prefer_mixin
+class _MapAddingAppbar extends StatelessWidget with PreferredSizeWidget {
+  final VoidCallback pop;
+  final VoidCallback create;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  const _MapAddingAppbar({required this.pop, required this.create, Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      leading: Center(
+        child: TextButton(
+          onPressed: pop,
+          child: Text(
+            ProjectStrings.cancel,
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
+        ),
+      ),
+      leadingWidth: 106,
+      title: Center(
+        child: Text(
+          ProjectStrings.location,
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: create,
+          child: Text(
+            ProjectStrings.ready,
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+        ),
+      ],
     );
   }
 }

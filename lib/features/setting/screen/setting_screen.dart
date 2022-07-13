@@ -1,7 +1,6 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/setting/domain/themes.dart';
@@ -21,12 +20,7 @@ class SettingScreen extends ElementaryWidget<ISettingWidgetModel> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Center(
-          child: Text(
-            ProjectStrings.settings,
-            style: TextStyle(color: ProjectColors.textColorPrimary),
-          ),
-        ),
+        title: const _SettingAppBar(),
       ),
       body: Column(
         children: [
@@ -91,9 +85,33 @@ class _TutorialWatcherCard extends StatelessWidget {
         title: const Text(ProjectStrings.tutorialCard),
         trailing: SvgPicture.asset(
           ProjectIcons.infoIcon,
-          color: ProjectColors.green,
+          color: Theme.of(context).focusColor,
         ),
         onTap: onTap,
+      ),
+    );
+  }
+}
+
+// ignore: prefer_mixin
+class _SettingAppBar extends StatelessWidget with PreferredSizeWidget {
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  const _SettingAppBar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: Center(
+        child: Text(
+          ProjectStrings.settings,
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:kartograph/api/domain/place.dart';
 import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/app/di/app_scope.dart';
+import 'package:kartograph/features/app/di/theme_provider.dart';
 import 'package:kartograph/features/map/screen/map_adding_screen/map_adding_model.dart';
 import 'package:kartograph/features/map/screen/map_adding_screen/map_adding_screen.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
@@ -47,6 +48,8 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
 
   final NavigationHelper _navigationHelper;
 
+  late final ThemeMode _currentTheme;
+
   @override
   ListenableState<Marker> get marker => _marker;
 
@@ -62,6 +65,7 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
 
   @override
   void initWidgetModel() {
+    _currentTheme = Provider.of<ThemeProvider>(context).themeMode;
     model.mapStateStream.listen(_updateState);
     _controller = MapController();
     super.initWidgetModel();
@@ -113,7 +117,11 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
 
   @override
   String getMapUrl() {
-    return ProjectStrings.getUrl();
+    if (_currentTheme != ThemeMode.dark) {
+      return ProjectStrings.getLightUrl();
+    } else {
+      return ProjectStrings.getDarkUrl();
+    }
   }
 
   void _updateState(BaseMapState state) {

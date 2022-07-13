@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/app/di/app_scope.dart';
+import 'package:kartograph/features/app/di/theme_provider.dart';
 import 'package:kartograph/features/map/screen/map_screen/map_screen.dart';
 import 'package:kartograph/features/map/screen/map_screen/map_screen_model.dart';
 import 'package:kartograph/features/map/service/map_bloc.dart';
@@ -37,6 +38,8 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   late final MapController _controller;
 
+  late final ThemeMode _currentTheme;
+
   @override
   MapController get controller => _controller;
 
@@ -53,6 +56,7 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   @override
   void initWidgetModel() {
+    _currentTheme = Provider.of<ThemeProvider>(context).themeMode;
     _controller = MapController();
     _blocSubscription = model.mapStateStream.listen(_updateState);
     model.getCurrentLocation();
@@ -88,7 +92,11 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
 
   @override
   String getMapUrl() {
-    return ProjectStrings.getUrl();
+    if (_currentTheme != ThemeMode.dark) {
+      return ProjectStrings.getLightUrl();
+    } else {
+      return ProjectStrings.getDarkUrl();
+    }
   }
 
   void _updateState(BaseMapState state) {

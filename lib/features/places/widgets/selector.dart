@@ -29,14 +29,14 @@ class SelectorWidget extends StatelessWidget {
       value: currentValue,
       icon: SvgPicture.asset(
         ProjectIcons.view,
-        color: ProjectColors.mainLightTheme,
+        color: Theme.of(context).iconTheme.color,
       ),
       isExpanded: true,
       elevation: 16,
-      style: const TextStyle(color: ProjectColors.textColorGrey),
+      // style: const TextStyle(color: ProjectColors.textColorGrey),
       underline: Container(
         height: 2,
-        color: ProjectColors.textColorGrey,
+        color: Theme.of(context).dividerColor,
       ),
       onChanged: onChange,
       items: list,

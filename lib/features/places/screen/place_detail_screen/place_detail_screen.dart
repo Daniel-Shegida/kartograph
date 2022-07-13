@@ -1,6 +1,5 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/enums/categories.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/places/domain/entity_place.dart';
@@ -20,26 +19,9 @@ class PlaceDetailScreen extends ElementaryWidget<IPlaceDetailWidgetModel> {
   @override
   Widget build(IPlaceDetailWidgetModel wm) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Center(
-          child: Text(
-            wm.isChange ? ProjectStrings.change : ProjectStrings.newPlace,
-            style: const TextStyle(
-              color: ProjectColors.textColorPrimary,
-              fontSize: 16,
-            ),
-          ),
-        ),
-        leading: TextButton(
-          style: TextButton.styleFrom(
-            primary: ProjectColors.textColorGrey,
-          ),
-          onPressed: wm.pop,
-          child: const Text(ProjectStrings.cancel),
-        ),
-        leadingWidth: 100,
+      appBar: _PlaceDetailAppBar(
+        pop: wm.pop,
+        isChange: wm.isChange,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.5),
@@ -101,15 +83,8 @@ class PlaceDetailScreen extends ElementaryWidget<IPlaceDetailWidgetModel> {
                         latController: wm.latController,
                         lonController: wm.lonController,
                       ),
-                      TextButton(
+                      _MoveToMapButton(
                         onPressed: wm.moveToMap,
-                        child: const Text(
-                          ProjectStrings.show,
-                          style: TextStyle(
-                            color: ProjectColors.mainGreenColor,
-                            fontSize: 20,
-                          ),
-                        ),
                       ),
                       Expanded(child: Container()),
                       StateNotifierBuilder<bool>(
@@ -143,7 +118,7 @@ class _PlaceTitles extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       titleText,
-      style: const TextStyle(color: ProjectColors.textColorGrey, fontSize: 16),
+      style: Theme.of(context).textTheme.labelMedium,
       textAlign: TextAlign.start,
     );
   }
@@ -209,6 +184,63 @@ class _CoordsIput extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+// ignore: prefer_mixin
+class _PlaceDetailAppBar extends StatelessWidget with PreferredSizeWidget {
+  final VoidCallback pop;
+  final bool isChange;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  const _PlaceDetailAppBar({
+    required this.pop,
+    required this.isChange,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: Center(
+        child: Text(
+          isChange ? ProjectStrings.change : ProjectStrings.newPlace,
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+      ),
+      leading: TextButton(
+        onPressed: pop,
+        child: Text(
+          ProjectStrings.cancel,
+          style: Theme.of(context).textTheme.displayMedium,
+        ),
+      ),
+      leadingWidth: 100,
+    );
+  }
+}
+
+class _MoveToMapButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const _MoveToMapButton({required this.onPressed, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Text(
+        ProjectStrings.show,
+        style: TextStyle(
+          color: Theme.of(context).focusColor,
+          fontSize: 20,
+        ),
+      ),
     );
   }
 }
