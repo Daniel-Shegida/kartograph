@@ -1,3 +1,4 @@
+import 'package:flutter/scheduler.dart';
 import 'package:kartograph/config/app_config.dart';
 import 'package:kartograph/config/coordinates.dart';
 import 'package:kartograph/config/debug_options.dart';
@@ -8,6 +9,7 @@ import 'package:kartograph/runner.dart';
 
 /// Main entry point of app.
 void main() {
+  timeDilation = 5;
   Environment.init(
     buildType: BuildType.debug,
     config: AppConfig(

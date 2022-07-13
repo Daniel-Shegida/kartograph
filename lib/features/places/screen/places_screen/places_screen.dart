@@ -2,7 +2,6 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kartograph/api/domain/place.dart';
-import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/res/project_icons.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 import 'package:kartograph/features/places/screen/places_screen/places_screeen_wm.dart';
@@ -157,30 +156,30 @@ class _WrongSearchWidget extends StatelessWidget {
   const _WrongSearchWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(_) {
+  Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           SvgPicture.asset(
             ProjectIcons.search,
-            color: ProjectColors.textColorGrey,
+            color: Theme.of(context).hintColor,
             semanticsLabel: 'иконка поиска',
             width: 64,
             height: 64,
           ),
-          const Text(
+          Text(
             ProjectStrings.wrongSearch,
             style: TextStyle(
               fontSize: 18,
-              color: ProjectColors.textColorGrey,
+              color: Theme.of(context).hintColor,
             ),
           ),
-          const Text(
+          Text(
             ProjectStrings.wrongSearch2,
             style: TextStyle(
               fontSize: 14,
-              color: ProjectColors.textColorGrey,
+              color: Theme.of(context).hintColor,
             ),
           ),
         ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kartograph/assets/colors/colors.dart';
 import 'package:kartograph/assets/strings/projectStrings.dart';
 
 /// поле ввода с двумя состояниями
@@ -39,7 +38,7 @@ class CustomTextField extends StatelessWidget {
         ),
         hintText: ProjectStrings.hint,
         hintStyle:
-            const TextStyle(fontSize: 16.0, color: ProjectColors.textColorGrey),
+        TextStyle(fontSize: 16.0, color: Theme.of(context).hintColor),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
       ),

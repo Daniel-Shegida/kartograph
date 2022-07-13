@@ -26,7 +26,7 @@ abstract class ProjectStrings {
       'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}@2x?access_token=';
 
   /// Сайт откуда берется темная карта.
-  static const String darkmapSite =
+  static const String darkMapSite =
       'https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/{z}/{x}/{y}@2x?access_token=';
 
   /// Персональный токен.
@@ -109,8 +109,13 @@ abstract class ProjectStrings {
   static const String mapAddHint =
       'потяните карту чтобы выбрать правильное местоположение';
 
-  /// Метод возвращающий url.
-  static String getUrl() {
+  /// Метод возвращающий url светлой карты.
+  static String getLightUrl() {
     return '${ProjectStrings.ligthmapSite}${ProjectStrings.mapToken}';
+  }
+
+  /// Метод возвращающий url темной карты.
+  static String getDarkUrl() {
+    return '${ProjectStrings.darkMapSite}${ProjectStrings.mapToken}';
   }
 }
