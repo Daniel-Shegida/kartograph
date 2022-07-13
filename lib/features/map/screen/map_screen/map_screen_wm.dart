@@ -57,7 +57,6 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
     _blocSubscription = model.mapStateStream.listen(_updateState);
     model.getCurrentLocation();
     _placesListState.accept([]);
-    _searchPlace();
     super.initWidgetModel();
   }
 
@@ -94,6 +93,7 @@ class MapWidgetModel extends WidgetModel<MapScreen, MapModel>
   void _updateState(BaseMapState state) {
     if (state is MapContentState) {
       controller.move(state.currentLocation, controller.zoom);
+      _searchPlace();
     }
     if (state is MapPlacesContentState) {
       final placesList = <Marker>[];
