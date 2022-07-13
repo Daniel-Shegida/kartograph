@@ -54,13 +54,30 @@ class NavigationHelper {
     );
   }
 
-  /// Метод перехода на детального просмотра места с экрана мест
+  /// Метод перехода на экран детального просмотра места с экрана мест
   void moveToPlaceDetailScreen(
     Place place,
     BuildContext context,
   ) {
     Routemaster.of(context).push(
       '${AppRoutePaths.changingPlaceScreen}${place.id}',
+      queryParameters: {
+        'category': place.placeType.name,
+        'name': place.name,
+        'description': place.description,
+        'lat': place.lat.toString(),
+        'lng': place.lng.toString(),
+      },
+    );
+  }
+
+  /// Метод перехода на экран детального просмотра места с карты
+  void moveToPlaceDetailScreenFromMap(
+    Place place,
+    BuildContext context,
+  ) {
+    Routemaster.of(context).push(
+      '${AppRoutePaths.tabs}${AppRoutePaths.placesScreen}${AppRoutePaths.changingPlaceScreen}${place.id}',
       queryParameters: {
         'category': place.placeType.name,
         'name': place.name,
