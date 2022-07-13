@@ -54,6 +54,7 @@ class MapAddingScreen extends ElementaryWidget<IMapAddingWidgetModel> {
         builder: (ctx, value) {
           return FlutterMap(
             options: MapOptions(
+              center: wm.coordinates,
               onTap: (tapPositon, latlng) => wm.onTap(latlng),
               zoom: ProjectMapSettings.zoom,
               interactiveFlags: ProjectMapSettings.interactiveFlags,

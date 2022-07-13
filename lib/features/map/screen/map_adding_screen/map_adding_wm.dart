@@ -39,7 +39,7 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
     with SingleTickerProviderWidgetModelMixin
     implements IMapAddingWidgetModel {
   /// передаваемые координаты для отображения места
-  final LatLng coordinates;
+  final LatLng _coordinates;
 
   late final MapController _controller;
 
@@ -53,10 +53,13 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   @override
   MapController get controller => _controller;
 
+  @override
+  LatLng get coordinates => _coordinates;
+
   /// standard consctructor for elem
   MapAddingWidgetModel(
     MapAddingModel model,
-    this.coordinates,
+    this._coordinates,
     this._navigationHelper,
   ) : super(model);
 
@@ -64,6 +67,9 @@ class MapAddingWidgetModel extends WidgetModel<MapAddingScreen, MapAddingModel>
   void initWidgetModel() {
     model.mapStateStream.listen(_updateState);
     _controller = MapController();
+    // ignore: avoid_print
+    print(_coordinates);
+    // _controller.move(coordinates, 6);
     super.initWidgetModel();
   }
 
@@ -154,6 +160,9 @@ abstract class IMapAddingWidgetModel extends IWidgetModel {
 
   /// Список мест, трансформурющуюсиеся в карту.
   ListenableState<Marker> get marker;
+
+  /// получение начальных координат карты
+  LatLng get coordinates;
 
   /// ивень при нажатии на карту
   void onTap(LatLng latLng);
